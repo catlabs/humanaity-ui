@@ -4,7 +4,6 @@ import {inject} from '@angular/core';
 import {City} from '../core/graphql/models';
 
 export const cityListResolver: ResolveFn<City[]> = (route, state) => {
-  console.log('cityResolver', state);
   const service = inject(CityService);
   return service.getCities();
 };

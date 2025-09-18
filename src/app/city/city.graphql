@@ -4,3 +4,20 @@ query GetCities {
     name
   }
 }
+
+query GetCity($id: ID!) {
+  city(id: $id) {
+    id
+    name
+  }
+}
+
+subscription PositionSub($cityId: ID!){
+  humansByCityPositions(cityId: $cityId) {
+    id
+    name
+    x
+    y
+    happiness
+  }
+}

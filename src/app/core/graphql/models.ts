@@ -19,9 +19,9 @@ export type Scalars = {
 
 export type City = {
   __typename?: 'City';
-  humans?: Maybe<Array<Maybe<Human>>>;
+  humans?: Maybe<Array<Human>>;
   id: Scalars['ID']['output'];
-  name: Scalars['String']['output'];
+  name?: Maybe<Scalars['String']['output']>;
 };
 
 export type CityInput = {
@@ -30,12 +30,14 @@ export type CityInput = {
 
 export type Human = {
   __typename?: 'Human';
-  age: Scalars['Int']['output'];
-  city: City;
+  age?: Maybe<Scalars['Int']['output']>;
+  city?: Maybe<City>;
   happiness: Scalars['Float']['output'];
   id: Scalars['ID']['output'];
   job?: Maybe<Scalars['String']['output']>;
-  name: Scalars['String']['output'];
+  name?: Maybe<Scalars['String']['output']>;
+  x: Scalars['Float']['output'];
+  y: Scalars['Float']['output'];
 };
 
 export type HumanInput = {
@@ -44,6 +46,8 @@ export type HumanInput = {
   happiness: Scalars['Float']['input'];
   job?: InputMaybe<Scalars['String']['input']>;
   name: Scalars['String']['input'];
+  x: Scalars['Float']['input'];
+  y: Scalars['Float']['input'];
 };
 
 export type Mutation = {
@@ -52,6 +56,9 @@ export type Mutation = {
   createHuman?: Maybe<Human>;
   deleteCity?: Maybe<Scalars['Boolean']['output']>;
   deleteHuman?: Maybe<Scalars['Boolean']['output']>;
+  isSimulationRunning: Scalars['Boolean']['output'];
+  startSimulation: Scalars['String']['output'];
+  stopSimulation: Scalars['String']['output'];
   updateCity?: Maybe<City>;
   updateHuman?: Maybe<Human>;
 };
@@ -77,6 +84,21 @@ export type MutationDeleteHumanArgs = {
 };
 
 
+export type MutationIsSimulationRunningArgs = {
+  cityId: Scalars['ID']['input'];
+};
+
+
+export type MutationStartSimulationArgs = {
+  cityId: Scalars['ID']['input'];
+};
+
+
+export type MutationStopSimulationArgs = {
+  cityId: Scalars['ID']['input'];
+};
+
+
 export type MutationUpdateCityArgs = {
   id: Scalars['ID']['input'];
   input: CityInput;
@@ -91,12 +113,12 @@ export type MutationUpdateHumanArgs = {
 export type Query = {
   __typename?: 'Query';
   cities: Array<City>;
-  citiesByName?: Maybe<Array<Maybe<City>>>;
-  city?: Maybe<City>;
-  human?: Maybe<Human>;
-  humans?: Maybe<Array<Maybe<Human>>>;
-  humansByCity?: Maybe<Array<Maybe<Human>>>;
-  humansByJob?: Maybe<Array<Maybe<Human>>>;
+  citiesByName: Array<Maybe<City>>;
+  city: City;
+  human: Human;
+  humans: Array<Human>;
+  humansByCity: Array<Human>;
+  humansByJob: Array<Human>;
 };
 
 
@@ -124,10 +146,34 @@ export type QueryHumansByJobArgs = {
   job: Scalars['String']['input'];
 };
 
+export type Subscription = {
+  __typename?: 'Subscription';
+  humansByCityPositions: Array<Human>;
+};
+
+
+export type SubscriptionHumansByCityPositionsArgs = {
+  cityId: Scalars['ID']['input'];
+};
+
 export type GetCitiesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetCitiesQuery = { __typename?: 'Query', cities: Array<{ __typename?: 'City', id: string, name: string }> };
+export type GetCitiesQuery = { __typename?: 'Query', cities: Array<{ __typename?: 'City', id: string, name?: string | null }> };
+
+export type GetCityQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type GetCityQuery = { __typename?: 'Query', city: { __typename?: 'City', id: string, name?: string | null } };
+
+export type PositionSubSubscriptionVariables = Exact<{
+  cityId: Scalars['ID']['input'];
+}>;
+
+
+export type PositionSubSubscription = { __typename?: 'Subscription', humansByCityPositions: Array<{ __typename?: 'Human', id: string, name?: string | null, x: number, y: number, happiness: number }> };
 
 export const GetCitiesDocument = gql`
     query GetCities {
@@ -143,6 +189,47 @@ export const GetCitiesDocument = gql`
   })
   export class GetCitiesGQL extends Apollo.Query<GetCitiesQuery, GetCitiesQueryVariables> {
     document = GetCitiesDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const GetCityDocument = gql`
+    query GetCity($id: ID!) {
+  city(id: $id) {
+    id
+    name
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetCityGQL extends Apollo.Query<GetCityQuery, GetCityQueryVariables> {
+    document = GetCityDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const PositionSubDocument = gql`
+    subscription PositionSub($cityId: ID!) {
+  humansByCityPositions(cityId: $cityId) {
+    id
+    name
+    x
+    y
+    happiness
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class PositionSubGQL extends Apollo.Subscription<PositionSubSubscription, PositionSubSubscriptionVariables> {
+    document = PositionSubDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

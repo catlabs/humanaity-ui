@@ -1,13 +1,10 @@
 import { Injectable, inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
-import { AuthRequest } from './models/auth-request';
-import { SignupRequest } from './models/signup-request';
-import { AuthResponse } from './models/auth-response';
-import { RefreshTokenRequest } from './models/refresh-token-request';
+import { Observable, tap, map, switchMap, of, from } from 'rxjs';
+import { AuthControllerService } from '../api/api/authController.service';
+import { AuthRequest, SignupRequest, RefreshTokenRequest } from '../api/model/models';
+import { AuthResponse } from '../api/model/authResponse';
 
-const API_URL = 'http://localhost:8080/auth';
 const ACCESS_TOKEN_KEY = 'accessToken';
 const REFRESH_TOKEN_KEY = 'refreshToken';
 
@@ -15,18 +12,66 @@ const REFRESH_TOKEN_KEY = 'refreshToken';
   providedIn: 'root'
 })
 export class AuthService {
-  private http = inject(HttpClient);
+  private authControllerService = inject(AuthControllerService);
   private platformId = inject(PLATFORM_ID);
   private isBrowser = isPlatformBrowser(this.platformId);
 
   login(request: AuthRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${API_URL}/login`, request).pipe(
-      tap(response => this.setTokens(response))
+    return this.authControllerService.login(request).pipe(
+      switchMap((response: any) => {
+        // Handle Blob response (can happen with fetch API)
+        if (response instanceof Blob) {
+          return from(new Promise<any>((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+              try {
+                const text = reader.result as string;
+                resolve(JSON.parse(text));
+              } catch (e) {
+                reject(new Error('Failed to parse JSON response: ' + e));
+              }
+            };
+            reader.onerror = () => reject(new Error('Failed to read Blob'));
+            reader.readAsText(response);
+          }));
+        }
+        return of(response);
+      }),
+      map((response: any) => {
+        // Log the raw response to debug
+        console.log('Parsed login response:', response);
+        console.log('Response type:', typeof response);
+        
+        // Extract tokens
+        const authResponse: AuthResponse = {
+          accessToken: response?.accessToken || response?.access_token,
+          refreshToken: response?.refreshToken || response?.refresh_token
+        };
+        
+        if (!authResponse.accessToken || !authResponse.refreshToken) {
+          console.error('Could not extract tokens from response:', JSON.stringify(response, null, 2));
+          throw new Error('Invalid response structure: tokens not found');
+        }
+        
+        console.log('Mapped auth response:', authResponse);
+        return authResponse;
+      }),
+      tap(response => {
+        console.log('Setting tokens:', { accessToken: response.accessToken, refreshToken: response.refreshToken });
+        this.setTokens(response);
+      })
     );
   }
 
   signup(request: SignupRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${API_URL}/signup`, request).pipe(
+    return this.authControllerService.signup(request).pipe(
+      map((response: any) => {
+        const authResponse: AuthResponse = {
+          accessToken: response.accessToken || response.access_token,
+          refreshToken: response.refreshToken || response.refresh_token
+        };
+        return authResponse;
+      }),
       tap(response => this.setTokens(response))
     );
   }
@@ -38,7 +83,14 @@ export class AuthService {
     }
 
     const request: RefreshTokenRequest = { refreshToken };
-    return this.http.post<AuthResponse>(`${API_URL}/refresh`, request).pipe(
+    return this.authControllerService.refresh(request).pipe(
+      map((response: any) => {
+        const authResponse: AuthResponse = {
+          accessToken: response.accessToken || response.access_token,
+          refreshToken: response.refreshToken || response.refresh_token
+        };
+        return authResponse;
+      }),
       tap(response => this.setTokens(response))
     );
   }
@@ -47,7 +99,7 @@ export class AuthService {
     const refreshToken = this.getRefreshToken();
     if (refreshToken) {
       const request: RefreshTokenRequest = { refreshToken };
-      this.http.post(`${API_URL}/logout`, request).subscribe();
+      this.authControllerService.logout(request).subscribe();
     }
     this.clearTokens();
   }
@@ -56,7 +108,6 @@ export class AuthService {
     if (!this.isBrowser) {
       return null;
     }
-    // Note: In production, consider using HttpOnly cookies for refresh tokens
     return localStorage.getItem(ACCESS_TOKEN_KEY);
   }
 
@@ -64,7 +115,6 @@ export class AuthService {
     if (!this.isBrowser) {
       return null;
     }
-    // Note: In production, consider using HttpOnly cookies for refresh tokens
     return localStorage.getItem(REFRESH_TOKEN_KEY);
   }
 
@@ -89,10 +139,17 @@ export class AuthService {
 
   private setTokens(response: AuthResponse): void {
     if (!this.isBrowser) {
+      console.warn('Not in browser, cannot set tokens');
       return;
     }
+    if (!response.accessToken || !response.refreshToken) {
+      console.error('Invalid response structure:', response);
+      throw new Error('Invalid authentication response: missing tokens');
+    }
+    console.log('Storing tokens in localStorage');
     localStorage.setItem(ACCESS_TOKEN_KEY, response.accessToken);
     localStorage.setItem(REFRESH_TOKEN_KEY, response.refreshToken);
+    console.log('Tokens stored. Access token exists:', !!localStorage.getItem(ACCESS_TOKEN_KEY));
   }
 
   private clearTokens(): void {
@@ -103,4 +160,3 @@ export class AuthService {
     localStorage.removeItem(REFRESH_TOKEN_KEY);
   }
 }
-

@@ -1,6 +1,6 @@
 # Humanaity Frontend
 
-Application Angular moderne avec système d'authentification complet, intégration GraphQL et architecture réactive.
+Application Angular moderne avec système d'authentification complet, API REST avec OpenAPI et architecture réactive.
 
 ## Stack Technique
 
@@ -8,10 +8,11 @@ Application Angular moderne avec système d'authentification complet, intégrati
 - **TypeScript 5.8** - Typage strict
 - **Angular Material** - Composants UI Material Design
 - **RxJS 7.8** - Programmation réactive
-- **Apollo Angular** - Client GraphQL avec WebSocket
+- **REST API** - Communication avec backend Spring Boot
+- **OpenAPI Generator** - Génération automatique de types et services TypeScript
 - **Tailwind CSS** - Utility-first CSS
 - **Angular SSR** - Server-Side Rendering
-- **GraphQL Code Generator** - Génération de types TypeScript
+- **Pixi.js** - Rendu graphique 2D pour les visualisations
 
 ## Fonctionnalités d'Authentification
 
@@ -59,11 +60,20 @@ Application Angular moderne avec système d'authentification complet, intégrati
 
 ```
 app/
+├── api/               # Modèles et services générés depuis OpenAPI
+│   ├── api/           # Services REST générés
+│   │   ├── authController.service.ts
+│   │   ├── cities.service.ts
+│   │   └── humans.service.ts
+│   ├── model/         # Modèles TypeScript générés
+│   │   ├── authRequest.ts
+│   │   ├── cityOutput.ts
+│   │   └── ...
+│   └── configuration.ts
 ├── auth/              # Module d'authentification
 │   ├── auth.service.ts
 │   ├── auth.guard.ts
 │   ├── auth.interceptor.ts
-│   ├── models/        # Interfaces TypeScript
 │   └── pages/         # Login & Signup components
 ├── city/              # Feature module
 └── core/              # Services partagés
@@ -77,9 +87,11 @@ app/
 
 ### Services Typés
 
-- Interfaces TypeScript strictes (`AuthRequest`, `AuthResponse`, etc.)
+- **Modèles générés automatiquement** depuis la spécification OpenAPI du backend
+- Services REST typés générés (`AuthControllerService`, `CitiesService`, `HumansService`, etc.)
 - Services injectables avec `inject()` (nouvelle API Angular)
 - Observable-based pour les opérations asynchrones
+- Typage strict garanti par la génération OpenAPI
 
 ### Routing
 
@@ -115,6 +127,8 @@ app/
 
 ✅ **Intégration Backend**
 - Communication REST avec HttpClient
+- **Génération automatique** de modèles et services depuis OpenAPI
+- Typage strict garanti entre frontend et backend
 - Gestion d'erreurs HTTP centralisée
 - Synchronisation tokens frontend/backend
 - Support CORS configuré
@@ -143,8 +157,35 @@ provideHttpClient(
 
 ## Démarrage
 
+### Installation
+
 ```bash
 npm install
+```
+
+### Génération des modèles API
+
+Les modèles TypeScript et services Angular sont générés automatiquement depuis la spécification OpenAPI du backend.
+
+**Prérequis :**
+1. Démarrer le backend Spring Boot sur `http://localhost:8080`
+2. Vérifier que l'OpenAPI est accessible : `http://localhost:8080/v3/api-docs`
+
+**Génération :**
+```bash
+npm run api:generate
+```
+
+Cette commande va :
+- Récupérer la spécification OpenAPI depuis le backend
+- Générer les modèles TypeScript dans `src/app/api/model/`
+- Générer les services Angular dans `src/app/api/api/`
+
+**Note :** Régénérez les modèles après chaque modification de l'API backend.
+
+### Lancement de l'application
+
+```bash
 ng serve
 ```
 

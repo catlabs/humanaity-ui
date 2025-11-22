@@ -12,13 +12,13 @@ import {
 import * as PIXI from 'pixi.js';
 import {isPlatformBrowser} from '@angular/common';
 import {ActivatedRoute} from '@angular/router';
-import {City, Human} from '../../../core/graphql/models';
+import {CityOutput, HumanOutput} from '../../../api/model/models';
 import {CityService} from '../../city.service';
 import {Subscription} from 'rxjs';
 import {MatSidenavModule} from '@angular/material/sidenav';
 
 interface HumanSprite {
-  human: Human,
+  human: HumanOutput,
   sprite: PIXI.Text,
   hasCollision?: boolean,
   targetX?: number,
@@ -36,7 +36,7 @@ export class CityDetailsPage implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('container', {static: true}) containerRef!: ElementRef<HTMLDivElement>;
   private platformId = inject(PLATFORM_ID);
   private route = inject(ActivatedRoute)
-  public city: City = this.route.snapshot.data['city'];
+  public city: CityOutput = this.route.snapshot.data['city'];
   private service: CityService = inject(CityService);
   private app!: PIXI.Application;
   private humanWithStripes = signal<HumanSprite[]>([]);
@@ -44,7 +44,7 @@ export class CityDetailsPage implements OnInit, AfterViewInit, OnDestroy {
   private subscription?: Subscription;
 
   ngOnInit() {
-    this.subscription = this.service.subscribePositions(this.city.id).subscribe({
+    this.subscription = this.service.subscribePositions(String(this.city.id!)).subscribe({
       next: humans => {
         humans.forEach(human => {
           if (!this.humanWithStripes().find(h => h.human.id === human.id)) {
@@ -127,7 +127,7 @@ export class CityDetailsPage implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  private createHuman(human: Human): void {
+  private createHuman(human: HumanOutput): void {
     // Choose face emoticon based on dominant personality trait
     const emoticon = this.getPersonalityFace(human);
 
@@ -141,8 +141,8 @@ export class CityDetailsPage implements OnInit, AfterViewInit, OnDestroy {
 
     const text = new PIXI.Text(emoticon, style);
     text.anchor.set(0.5); // Center the emoticon
-    text.x = human.x * this.app.screen.width;
-    text.y = human.y * this.app.screen.height;
+    text.x = (human.x ?? 0) * this.app.screen.width;
+    text.y = (human.y ?? 0) * this.app.screen.height;
 
     // Add interactive behavior
     text.eventMode = 'static';
@@ -166,12 +166,12 @@ export class CityDetailsPage implements OnInit, AfterViewInit, OnDestroy {
     this.humanWithStripes().push({human, sprite: text});
   }
 
-  private getPersonalityFace(human: Human): string {
+  private getPersonalityFace(human: HumanOutput): string {
     const traits = [
-      {name: 'CREATIVE', value: human.creativity, face: '🤔'},      // Thinking/creative face
-      {name: 'INTELLECTUAL', value: human.intellect, face: '🧐'},   // Monocle face - analytical
-      {name: 'SOCIABLE', value: human.sociability, face: '😊'},     // Happy/smiling face
-      {name: 'PRACTICAL', value: human.practicality, face: '😐'}    // Neutral/practical face
+      {name: 'CREATIVE', value: human.creativity ?? 0, face: '🤔'},      // Thinking/creative face
+      {name: 'INTELLECTUAL', value: human.intellect ?? 0, face: '🧐'},   // Monocle face - analytical
+      {name: 'SOCIABLE', value: human.sociability ?? 0, face: '😊'},     // Happy/smiling face
+      {name: 'PRACTICAL', value: human.practicality ?? 0, face: '😐'}    // Neutral/practical face
     ];
 
     // Find dominant trait
@@ -182,11 +182,11 @@ export class CityDetailsPage implements OnInit, AfterViewInit, OnDestroy {
     return dominant.face;
   }
 
-  private animateHuman(human: Human): void {
+  private animateHuman(human: HumanOutput): void {
     const existingHuman = this.humanWithStripes().find(h => h.human.id === human.id);
     if (existingHuman) {
-      existingHuman.targetX = human.x * this.app.screen.width;
-      existingHuman.targetY = human.y * this.app.screen.height;
+      existingHuman.targetX = (human.x ?? 0) * this.app.screen.width;
+      existingHuman.targetY = (human.y ?? 0) * this.app.screen.height;
     }
 
     this.humanWithStripes.update(humanWithSprites => {

@@ -1,7 +1,7 @@
 import {Component, input, OnInit} from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
-import {City} from '../../../core/graphql/models';
+import {CityOutput} from '../../../api/model/models';
 
 @Component({
   selector: 'app-city-card',
@@ -13,7 +13,7 @@ import {City} from '../../../core/graphql/models';
   styleUrl: './city-card.component.scss'
 })
 export class CityCardComponent implements OnInit {
-  city = input.required<City>();
+  city = input.required<CityOutput>();
 
   ngOnInit() {
 

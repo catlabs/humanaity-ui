@@ -8,7 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:humanaity-ui": "node dist/humanaity-ui/server/server.mjs",
-    "generate:graphql": "graphql-codegen --config codegen.ts"
+    "api:generate": "openapi-generator-cli generate -g typescript-angular -i http://localhost:8080/v3/api-docs -o src/app/api --additional-properties=ngVersion=20.0.0,providedInRoot=true,serviceSuffix=Service"
   },
   "prettier": {
     "overrides": [
@@ -32,12 +32,8 @@
     "@angular/platform-server": "^20.0.0",
     "@angular/router": "^20.0.0",
     "@angular/ssr": "^20.0.4",
-    "@apollo/client": "^3.0.0",
     "@ngneat/tailwind": "^7.0.3",
-    "apollo-angular": "^11.0.0",
     "express": "^5.1.0",
-    "graphql": "^16",
-    "graphql-ws": "^6.0.6",
     "pixi.js": "^8.13.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
@@ -46,10 +42,7 @@
     "@angular/build": "^20.0.4",
     "@angular/cli": "^20.0.4",
     "@angular/compiler-cli": "^20.0.0",
-    "@graphql-codegen/cli": "^5.0.7",
-    "@graphql-codegen/typescript": "^4.1.6",
-    "@graphql-codegen/typescript-apollo-angular": "^4.0.1",
-    "@graphql-codegen/typescript-operations": "^4.6.1",
+    "@openapitools/openapi-generator-cli": "^2.15.0",
     "@tailwindcss/postcss": "^4.1.11",
     "@types/express": "^5.0.1",
     "@types/jasmine": "~5.1.0",

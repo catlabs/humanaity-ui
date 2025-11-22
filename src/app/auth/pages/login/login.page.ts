@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../auth.service';
+import { AuthRequest } from '../../../api/model/models';
 
 @Component({
   selector: 'app-login',
@@ -44,7 +45,8 @@ export class LoginPage {
       this.errorMessage = '';
       const { email, password } = this.loginForm.value;
 
-      this.authService.login({ email, password }).subscribe({
+      const authRequest: AuthRequest = { email, password };
+      this.authService.login(authRequest).subscribe({
         next: () => {
           const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/cities';
           this.router.navigate([returnUrl]);

@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../auth.service';
+import { SignupRequest } from '../../../api/model/models';
 
 @Component({
   selector: 'app-signup',
@@ -55,7 +56,8 @@ export class SignupPage {
       this.errorMessage = '';
       const { email, password, confirmPassword } = this.signupForm.value;
 
-      this.authService.signup({ email, password, confirmPassword }).subscribe({
+      const signupRequest: SignupRequest = { email, password, confirmPassword };
+      this.authService.signup(signupRequest).subscribe({
         next: () => {
           this.router.navigate(['/cities']);
         },

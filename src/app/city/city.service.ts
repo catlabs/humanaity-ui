@@ -1,54 +1,60 @@
 import {inject, Injectable} from '@angular/core';
-import {Apollo} from 'apollo-angular';
-import {map, Observable} from 'rxjs';
-import {
-  City,
-  GetCitiesDocument,
-  GetCitiesQuery,
-  GetCityDocument,
-  GetCityQuery,
-  Human,
-  PositionSubDocument,
-  PositionSubSubscription
-} from '../core/graphql/models';
+import {Observable, interval, from, of} from 'rxjs';
+import {switchMap, startWith, map} from 'rxjs/operators';
+import {CitiesService} from '../api/api/cities.service';
+import {HumansService} from '../api/api/humans.service';
+import {CityOutput, HumanOutput} from '../api/model/models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CityService {
-  private apollo = inject(Apollo);
+  private citiesService = inject(CitiesService);
+  private humansService = inject(HumansService);
 
-  getCities(): Observable<City[]> {
-    return this.apollo
-      .watchQuery<GetCitiesQuery>({
-        query: GetCitiesDocument,
-      })
-      .valueChanges.pipe(map(result => result.data.cities));
+  /**
+   * Converts a Blob response to JSON object
+   * This is needed because OpenAPI generator with fetch API returns Blobs instead of parsed JSON
+   */
+  private blobToJson<T>(response: any): Observable<T> {
+    if (response instanceof Blob) {
+      return from(new Promise<T>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          try {
+            const text = reader.result as string;
+            resolve(JSON.parse(text));
+          } catch (e) {
+            reject(new Error('Failed to parse JSON response: ' + e));
+          }
+        };
+        reader.onerror = () => reject(new Error('Failed to read Blob'));
+        reader.readAsText(response);
+      }));
+    }
+    return of(response);
   }
 
-  getCity(id: string): Observable<City> {
-    return this.apollo.watchQuery<GetCityQuery>({
-      query: GetCityDocument,
-      variables: {id}
-    })
-      .valueChanges.pipe(map(result => result.data.city));
+  getCities(): Observable<CityOutput[]> {
+    return this.citiesService.getAllCities().pipe(
+      switchMap(response => this.blobToJson<CityOutput[]>(response))
+    );
   }
 
-  subscribePositions(cityId: string): Observable<Human[]> {
-    return this.apollo.subscribe<PositionSubSubscription>({
-      query: PositionSubDocument,
-      variables: {cityId}
-    }).pipe(map(resp => resp.data?.humansByCityPositions || []))
-
+  getCity(id: string): Observable<CityOutput> {
+    return this.citiesService.getCityById(id).pipe(
+      switchMap(response => this.blobToJson<CityOutput>(response))
+    );
   }
 
-  /* deleteCity(id: number): Observable<any> {
-    return this.apollo.mutate({
-      mutation: gql`
-        mutation {
-          deleteCity(id: ${id})
-        }
-      `,
-    });
-  } */
+  // Note: Subscriptions are not available in REST, using polling instead
+  subscribePositions(cityId: string): Observable<HumanOutput[]> {
+    // Poll every 100ms to simulate real-time updates
+    return interval(100).pipe(
+      startWith(0),
+      switchMap(() => this.humansService.getHumansByCity(cityId).pipe(
+        switchMap(response => this.blobToJson<HumanOutput[]>(response))
+      ))
+    );
+  }
 }

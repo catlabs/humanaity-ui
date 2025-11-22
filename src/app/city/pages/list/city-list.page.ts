@@ -1,6 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {ActivatedRoute, RouterLink} from '@angular/router';
-import {City} from '../../../core/graphql/models';
+import {CityOutput} from '../../../api/model/models';
 import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
 import {CommonModule} from '@angular/common';
@@ -14,9 +14,9 @@ import {CityCardComponent} from '../../components/card/city-card.component';
 export class CityListPage implements OnInit {
   private route = inject(ActivatedRoute)
 
-  cities: City[] = this.route.snapshot.data['cities'];
+  cities: CityOutput[] = this.route.snapshot.data['cities'];
 
   ngOnInit() {
-    //console.log(this.cities);
+    console.log('CityListPage', this.cities);
   }
 }

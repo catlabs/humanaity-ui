@@ -8,7 +8,8 @@ import {provideRouter} from '@angular/router';
 
 import {routes} from './app.routes';
 import {provideClientHydration, withEventReplay} from '@angular/platform-browser';
-import {provideHttpClient, withFetch} from '@angular/common/http';
+import {provideHttpClient, withFetch, withInterceptors} from '@angular/common/http';
+import {authInterceptor} from './auth/auth.interceptor';
 import {provideApollo} from 'apollo-angular';
 import {HttpLink} from 'apollo-angular/http';
 import {InMemoryCache, split} from '@apollo/client/core';
@@ -21,7 +22,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
-    provideRouter(routes), provideClientHydration(withEventReplay()), provideHttpClient(withFetch()), provideApollo(() => {
+    provideRouter(routes), provideClientHydration(withEventReplay()), provideHttpClient(withFetch(), withInterceptors([authInterceptor])), provideApollo(() => {
       const httpLink = inject(HttpLink);
       // Create an http link:
       const http = httpLink.create({

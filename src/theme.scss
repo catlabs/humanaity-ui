@@ -1,0 +1,23 @@
+@use '@angular/material' as mat;
+
+html {
+  color-scheme: dark;
+  @include mat.theme((
+    color: mat.$blue-palette,
+    typography: Roboto,
+    density: 0
+  ));
+}
+
+body {
+  // background: var(--mat-sys-surface);
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: var(--mat-sys-on-surface);
+}
+
+// Customize the entire app. Change :root to your selector if you want to scope the styles.
+:root {
+  @include mat.sidenav-overrides((
+    container-background-color: rgba(15, 23, 42, 0.85)
+  ));
+}

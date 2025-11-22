@@ -1,1 +1,12 @@
-<div #container class="map-container"></div>
+<mat-sidenav-container>
+  <mat-sidenav mode="side" opened position="end">
+    <div class="menu">
+      <div class="city-title">
+        {{ city.name }}
+      </div>
+    </div>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div #container class="map-container"></div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

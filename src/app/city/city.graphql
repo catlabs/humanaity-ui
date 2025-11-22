@@ -16,8 +16,13 @@ subscription PositionSub($cityId: ID!){
   humansByCityPositions(cityId: $cityId) {
     id
     name
+    busy
+    creativity
+    intellect
+    sociability
+    practicality
+    personality
     x
     y
-    happiness
   }
 }

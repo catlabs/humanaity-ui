@@ -30,21 +30,21 @@ export type CityInput = {
 
 export type Human = {
   __typename?: 'Human';
-  age?: Maybe<Scalars['Int']['output']>;
+  busy: Scalars['Boolean']['output'];
   city?: Maybe<City>;
-  happiness: Scalars['Float']['output'];
+  creativity: Scalars['Float']['output'];
   id: Scalars['ID']['output'];
-  job?: Maybe<Scalars['String']['output']>;
+  intellect: Scalars['Float']['output'];
   name?: Maybe<Scalars['String']['output']>;
+  personality: Scalars['String']['output'];
+  practicality: Scalars['Float']['output'];
+  sociability: Scalars['Float']['output'];
   x: Scalars['Float']['output'];
   y: Scalars['Float']['output'];
 };
 
 export type HumanInput = {
-  age: Scalars['Int']['input'];
   cityId: Scalars['ID']['input'];
-  happiness: Scalars['Float']['input'];
-  job?: InputMaybe<Scalars['String']['input']>;
   name: Scalars['String']['input'];
   x: Scalars['Float']['input'];
   y: Scalars['Float']['input'];
@@ -173,7 +173,7 @@ export type PositionSubSubscriptionVariables = Exact<{
 }>;
 
 
-export type PositionSubSubscription = { __typename?: 'Subscription', humansByCityPositions: Array<{ __typename?: 'Human', id: string, name?: string | null, x: number, y: number, happiness: number }> };
+export type PositionSubSubscription = { __typename?: 'Subscription', humansByCityPositions: Array<{ __typename?: 'Human', id: string, name?: string | null, busy: boolean, creativity: number, intellect: number, sociability: number, practicality: number, personality: string, x: number, y: number }> };
 
 export const GetCitiesDocument = gql`
     query GetCities {
@@ -218,9 +218,14 @@ export const PositionSubDocument = gql`
   humansByCityPositions(cityId: $cityId) {
     id
     name
+    busy
+    creativity
+    intellect
+    sociability
+    practicality
+    personality
     x
     y
-    happiness
   }
 }
     `;

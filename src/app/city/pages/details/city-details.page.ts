@@ -42,13 +42,22 @@ export class CityDetailsPage implements OnInit, AfterViewInit, OnDestroy {
   private humanWithStripes = signal<HumanSprite[]>([]);
   private isFirstSubscription = true;
   private subscription?: Subscription;
+  private pendingHumans: HumanOutput[] = []; // Queue for humans received before PixiJS is ready
 
   ngOnInit() {
     this.subscription = this.service.subscribePositions(String(this.city.id!)).subscribe({
       next: humans => {
         humans.forEach(human => {
           if (!this.humanWithStripes().find(h => h.human.id === human.id)) {
-            this.createHuman(human);
+            // Only create if app is ready, otherwise queue it
+            if (this.app && this.app.screen) {
+              this.createHuman(human);
+            } else {
+              // Queue for later creation
+              if (!this.pendingHumans.find(h => h.id === human.id)) {
+                this.pendingHumans.push(human);
+              }
+            }
           } else {
             this.animateHuman(human);
           }
@@ -71,14 +80,21 @@ export class CityDetailsPage implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscription?.unsubscribe();
     if (this.app) {
-      // Pour PixiJS v7+ - méthode simplifiée
-      this.app.destroy();
-
-      // Nettoyage supplémentaire pour éviter les memory leaks
+      // Clean up sprites before destroying the app
       this.humanWithStripes().forEach(human => {
-        human.sprite.destroy();
+        if (human.sprite && !human.sprite.destroyed) {
+          // Remove from stage first
+          if (human.sprite.parent) {
+            human.sprite.parent.removeChild(human.sprite);
+          }
+          // Then destroy
+          human.sprite.destroy({ children: true });
+        }
       });
       this.humanWithStripes.set([]);
+
+      // Destroy the PIXI application
+      this.app.destroy(true, { children: true });
     }
   }
 
@@ -100,7 +116,8 @@ export class CityDetailsPage implements OnInit, AfterViewInit, OnDestroy {
       await this.app.init({
         width: this.containerRef.nativeElement.clientWidth,
         height: this.containerRef.nativeElement.clientHeight,
-        backgroundColor: 'rgba(15, 23, 42, 0.85)',
+        backgroundColor: 0x0f172a, // RGB equivalent of rgba(15, 23, 42, 0.85)
+        backgroundAlpha: 0.85, // Enable transparency
         resolution: window.devicePixelRatio || 1,
         antialias: true,
       });
@@ -124,16 +141,29 @@ export class CityDetailsPage implements OnInit, AfterViewInit, OnDestroy {
         this.detectCollisions();
       });
 
+      // Process any pending humans that arrived before PixiJS was ready
+      this.pendingHumans.forEach(human => {
+        if (!this.humanWithStripes().find(h => h.human.id === human.id)) {
+          this.createHuman(human);
+        }
+      });
+      this.pendingHumans = [];
+
     } catch (error) {
       // Handle PIXI initialization error silently or log to error tracking service
     }
   }
 
   private createHuman(human: HumanOutput): void {
+    // Ensure app is initialized and screen is available
+    if (!this.app || !this.app.screen) {
+      return;
+    }
+
     // Choose face emoticon based on dominant personality trait
     const emoticon = this.getPersonalityFace(human);
 
-    // Create text sprite for the emoticon
+    // Create text sprite for the emoticon using PixiJS v8+ API
     const style = new PIXI.TextStyle({
       fontSize: 18,
       // fill: this.getPersonalityColor(human),
@@ -141,7 +171,7 @@ export class CityDetailsPage implements OnInit, AfterViewInit, OnDestroy {
       fontFamily: 'Arial, sans-serif' // Ensure emoji support
     });
 
-    const text = new PIXI.Text(emoticon, style);
+    const text = new PIXI.Text({ text: emoticon, style });
     text.anchor.set(0.5); // Center the emoticon
     text.x = (human.x ?? 0) * this.app.screen.width;
     text.y = (human.y ?? 0) * this.app.screen.height;
@@ -185,6 +215,11 @@ export class CityDetailsPage implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private animateHuman(human: HumanOutput): void {
+    // Ensure app is initialized and screen is available
+    if (!this.app || !this.app.screen) {
+      return;
+    }
+
     const existingHuman = this.humanWithStripes().find(h => h.human.id === human.id);
     if (existingHuman) {
       existingHuman.targetX = (human.x ?? 0) * this.app.screen.width;

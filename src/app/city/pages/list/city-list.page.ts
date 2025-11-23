@@ -17,6 +17,5 @@ export class CityListPage implements OnInit {
   cities: CityOutput[] = this.route.snapshot.data['cities'];
 
   ngOnInit() {
-    console.log('CityListPage', this.cities);
   }
 }

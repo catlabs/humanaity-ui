@@ -1,0 +1,38 @@
+<div class="my-cities-container">
+  <div class="header">
+    <h1>My Cities</h1>
+    <button mat-raised-button color="primary" routerLink="/cities/create">
+      Create New City
+    </button>
+  </div>
+
+  @if (isLoading()) {
+    <div class="loading-container">
+      <mat-spinner></mat-spinner>
+      <p>Loading your cities...</p>
+    </div>
+  } @else if (errorMessage()) {
+    <mat-card class="error-card">
+      <mat-card-content>
+        <p class="error-message">{{ errorMessage() }}</p>
+        <button mat-button color="primary" (click)="loadMyCities()">Retry</button>
+      </mat-card-content>
+    </mat-card>
+  } @else if (cities().length === 0) {
+    <mat-card class="empty-card">
+      <mat-card-content>
+        <p>You haven't created any cities yet.</p>
+        <button mat-raised-button color="primary" routerLink="/cities/create">
+          Create Your First City
+        </button>
+      </mat-card-content>
+    </mat-card>
+  } @else {
+    <div class="cities-grid">
+      @for (city of cities(); track city.id) {
+        <app-city-card [city]="city" [routerLink]="['/cities', city.id]"></app-city-card>
+      }
+    </div>
+  }
+</div>
+

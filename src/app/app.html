@@ -1,8 +1,10 @@
 @if (isAuthenticated()) {
   <mat-toolbar color="primary">
-    <span>Humanaity</span>
+    <a routerLink="/cities" class="logo-link">Humanaity</a>
     <span class="spacer"></span>
-    <button mat-button routerLink="/cities">Cities</button>
+    <button mat-button routerLink="/cities">All Cities</button>
+    <button mat-button routerLink="/cities/mine">My Cities</button>
+    <button mat-button routerLink="/cities/create">Create City</button>
     <button mat-button (click)="logout()">Logout</button>
   </mat-toolbar>
 }

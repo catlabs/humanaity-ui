@@ -38,10 +38,6 @@ export class AuthService {
         return of(response);
       }),
       map((response: any) => {
-        // Log the raw response to debug
-        console.log('Parsed login response:', response);
-        console.log('Response type:', typeof response);
-        
         // Extract tokens
         const authResponse: AuthResponse = {
           accessToken: response?.accessToken || response?.access_token,
@@ -49,15 +45,12 @@ export class AuthService {
         };
         
         if (!authResponse.accessToken || !authResponse.refreshToken) {
-          console.error('Could not extract tokens from response:', JSON.stringify(response, null, 2));
           throw new Error('Invalid response structure: tokens not found');
         }
         
-        console.log('Mapped auth response:', authResponse);
         return authResponse;
       }),
       tap(response => {
-        console.log('Setting tokens:', { accessToken: response.accessToken, refreshToken: response.refreshToken });
         this.setTokens(response);
       })
     );
@@ -139,17 +132,13 @@ export class AuthService {
 
   private setTokens(response: AuthResponse): void {
     if (!this.isBrowser) {
-      console.warn('Not in browser, cannot set tokens');
       return;
     }
     if (!response.accessToken || !response.refreshToken) {
-      console.error('Invalid response structure:', response);
       throw new Error('Invalid authentication response: missing tokens');
     }
-    console.log('Storing tokens in localStorage');
     localStorage.setItem(ACCESS_TOKEN_KEY, response.accessToken);
     localStorage.setItem(REFRESH_TOKEN_KEY, response.refreshToken);
-    console.log('Tokens stored. Access token exists:', !!localStorage.getItem(ACCESS_TOKEN_KEY));
   }
 
   private clearTokens(): void {

@@ -55,7 +55,9 @@ export class CityDetailsPage implements OnInit, AfterViewInit, OnDestroy {
         })
 
       },
-      error: (error) => console.error('Subscription error:', error)
+      error: (error) => {
+        // Handle subscription error silently or log to error tracking service
+      }
     });
 
   }
@@ -123,7 +125,7 @@ export class CityDetailsPage implements OnInit, AfterViewInit, OnDestroy {
       });
 
     } catch (error) {
-      console.error('Failed to initialize PIXI application:', error);
+      // Handle PIXI initialization error silently or log to error tracking service
     }
   }
 

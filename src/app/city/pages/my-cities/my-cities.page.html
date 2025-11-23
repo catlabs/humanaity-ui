@@ -6,19 +6,7 @@
     </button>
   </div>
 
-  @if (isLoading()) {
-    <div class="loading-container">
-      <mat-spinner></mat-spinner>
-      <p>Loading your cities...</p>
-    </div>
-  } @else if (errorMessage()) {
-    <mat-card class="error-card">
-      <mat-card-content>
-        <p class="error-message">{{ errorMessage() }}</p>
-        <button mat-button color="primary" (click)="loadMyCities()">Retry</button>
-      </mat-card-content>
-    </mat-card>
-  } @else if (cities().length === 0) {
+  @if (cities().length === 0) {
     <mat-card class="empty-card">
       <mat-card-content>
         <p>You haven't created any cities yet.</p>

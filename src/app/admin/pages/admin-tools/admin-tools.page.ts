@@ -4,7 +4,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { AppHeaderComponent } from '../../../shared/components/app-header/app-header.component';
-import { AppFooterComponent } from '../../../shared/components/app-footer/app-footer.component';
 import { TimelineNodeComponent } from '../../../shared/components/timeline-node/timeline-node.component';
 
 interface TimelineItem {
@@ -22,7 +21,6 @@ interface TimelineItem {
     MatButtonModule,
     MatIconModule,
     AppHeaderComponent,
-    AppFooterComponent,
     TimelineNodeComponent
   ],
   templateUrl: './admin-tools.page.html',

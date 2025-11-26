@@ -10,7 +10,7 @@
       </div>
       
       <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="register-form">
-        <mat-form-field appearance="outline" class="full-width">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="full-width">
           <mat-label>Username</mat-label>
           <mat-icon matPrefix>person</mat-icon>
           <input matInput type="text" formControlName="username" placeholder="Enter your username">
@@ -19,7 +19,7 @@
           }
         </mat-form-field>
         
-        <mat-form-field appearance="outline" class="full-width">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="full-width">
           <mat-label>Email Address</mat-label>
           <mat-icon matPrefix>email</mat-icon>
           <input matInput type="email" formControlName="email" placeholder="Enter your email">
@@ -31,7 +31,7 @@
           }
         </mat-form-field>
         
-        <mat-form-field appearance="outline" class="full-width">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="full-width">
           <mat-label>Password</mat-label>
           <mat-icon matPrefix>lock</mat-icon>
           <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" placeholder="Create a password">
@@ -46,7 +46,7 @@
           }
         </mat-form-field>
         
-        <mat-form-field appearance="outline" class="full-width">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="full-width">
           <mat-label>Confirm Password</mat-label>
           <mat-icon matPrefix>lock</mat-icon>
           <input matInput [type]="hideConfirmPassword ? 'password' : 'text'" formControlName="confirmPassword" placeholder="Confirm your password">

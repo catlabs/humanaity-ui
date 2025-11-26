@@ -1,40 +1,155 @@
-.login-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.login-page {
   min-height: 100vh;
-  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fb;
+  padding: 2rem 1rem;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 28rem;
 }
 
 .login-card {
-  width: 100%;
-  max-width: 400px;
+  padding: 1.5rem;
 }
 
-.full-width {
-  width: 100%;
-  margin-bottom: 16px;
+.logo-section {
+  text-align: center;
+  margin-bottom: 2rem;
 }
 
-.error-message {
-  color: #f44336;
-  margin-bottom: 16px;
-  padding: 8px;
-  background-color: #ffebee;
-  border-radius: 4px;
+.logo-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
-.signup-link {
-  margin-top: 16px;
+.logo-icon {
+  width: 40px;
+  height: 40px;
+  background-color: #2563eb;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  mat-icon {
+    color: white;
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.subtitle {
+  color: #4b5563;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.login-form {
+  .form-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 1.5rem 0;
+    text-align: center;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .full-width {
+    width: 100%;
+  }
+
+  .error-message {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #dc2626;
+    font-size: 0.875rem;
+    padding: 0.75rem;
+    background-color: #fef2f2;
+    border-radius: 8px;
+    border: 1px solid #fecaca;
+    
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  .submit-button {
+    width: 100%;
+    padding: 0.75rem;
+    font-weight: 500;
+    font-size: 1rem;
+  }
+}
+
+.additional-options {
+  margin-top: 1.5rem;
   text-align: center;
 }
 
-.signup-link a {
-  color: #1976d2;
+.forgot-password-link {
+  color: #2563eb;
   text-decoration: none;
+  font-size: 0.875rem;
+  transition: color 0.2s;
+  
+  &:hover {
+    color: #1d4ed8;
+  }
 }
 
-.signup-link a:hover {
-  text-decoration: underline;
+.signup-link {
+  text-align: center;
+  margin-top: 1.5rem;
 }
 
+.signup-text {
+  font-size: 0.875rem;
+  color: #4b5563;
+  margin: 0;
+}
+
+.signup-link-text {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+  
+  &:hover {
+    color: #1d4ed8;
+  }
+}
+
+::ng-deep {
+  .mat-mdc-form-field {
+    .mat-mdc-text-field-wrapper {
+      padding-left: 0.75rem;
+    }
+    
+    .mat-mdc-form-field-icon-prefix {
+      margin-right: 0.5rem;
+      color: #9ca3af;
+    }
+  }
+}

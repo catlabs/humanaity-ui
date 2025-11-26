@@ -6,6 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../auth.service';
 import { SignupRequest } from '../../../api/model/models';
 
@@ -19,6 +20,7 @@ import { SignupRequest } from '../../../api/model/models';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatIconModule,
     RouterLink
   ],
   templateUrl: './signup.page.html',
@@ -31,9 +33,12 @@ export class SignupPage {
 
   signupForm: FormGroup;
   errorMessage: string = '';
+  hidePassword = true;
+  hideConfirmPassword = true;
 
   constructor() {
     this.signupForm = this.fb.group({
+      username: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required]]

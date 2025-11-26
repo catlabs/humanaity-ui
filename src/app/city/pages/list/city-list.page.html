@@ -1,5 +1,70 @@
-<div class="cities-grid">
-  @for (city of cities; track city.id) {
-    <app-city-card [city]="city" [routerLink]="['/cities', city.id]"></app-city-card>
-  }
+<div class="city-list-page">
+  <app-header [showNavigation]="true"></app-header>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div class="header-left">
+        <h1 class="page-title">Your Simulations</h1>
+        <p class="page-subtitle">Manage and run your simulation projects</p>
+      </div>
+      <button mat-raised-button color="primary" (click)="onCreateNew()" class="new-simulation-btn">
+        <mat-icon>add</mat-icon>
+        <span>New Simulation</span>
+      </button>
+    </div>
+
+    <div class="filter-tabs">
+      <div class="tabs-container">
+        <button 
+          class="tab-button" 
+          [class.active]="activeFilter === 'all'"
+          (click)="onFilterChange('all')">
+          All Simulations
+        </button>
+        <button 
+          class="tab-button" 
+          [class.active]="activeFilter === 'running'"
+          (click)="onFilterChange('running')">
+          Running
+        </button>
+        <button 
+          class="tab-button" 
+          [class.active]="activeFilter === 'completed'"
+          (click)="onFilterChange('completed')">
+          Completed
+        </button>
+        <button 
+          class="tab-button" 
+          [class.active]="activeFilter === 'draft'"
+          (click)="onFilterChange('draft')">
+          Draft
+        </button>
+      </div>
+    </div>
+
+    <div class="simulations-grid">
+      @for (simulation of getPaginatedCities(); track simulation.id) {
+        <app-simulation-card 
+          [simulation]="simulation"
+          (cardClick)="onCardClick($event)">
+        </app-simulation-card>
+      } @empty {
+        <div class="empty-state">
+          <mat-icon>inbox</mat-icon>
+          <p>No simulations found</p>
+        </div>
+      }
+    </div>
+
+    @if (filteredCities().length > pageSize) {
+      <mat-paginator
+        [length]="filteredCities().length"
+        [pageSize]="pageSize"
+        [pageIndex]="currentPage"
+        [pageSizeOptions]="[9, 18, 27]"
+        (page)="onPageChange($event)"
+        class="pagination">
+      </mat-paginator>
+    }
+  </main>
 </div>

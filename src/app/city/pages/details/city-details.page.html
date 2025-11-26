@@ -1,12 +1,141 @@
-<mat-sidenav-container>
-  <mat-sidenav mode="side" opened position="end">
-    <div class="menu">
-      <div class="city-title">
-        {{ city.name }}
+<div class="city-details-page">
+  <!-- Global Header -->
+  <header class="global-header">
+    <div class="header-content">
+      <div class="header-left">
+        <div class="logo-container">
+          <div class="logo-icon">
+            <mat-icon>location_city</mat-icon>
+          </div>
+          <span class="logo-text">HumanAIty</span>
+        </div>
+      </div>
+      
+      <div class="header-right">
+        <div class="user-menu">
+          <button class="user-button">
+            <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-2.jpg" alt="User" class="user-avatar">
+            <mat-icon>keyboard_arrow_down</mat-icon>
+          </button>
+        </div>
       </div>
     </div>
-  </mat-sidenav>
-  <mat-sidenav-content>
-    <div #container class="map-container"></div>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+  </header>
+
+  <!-- City Context Header -->
+  <div class="city-context-header">
+    <div class="context-content">
+      <div class="context-left">
+        <h2 class="city-name">{{ city.name }}</h2>
+        <span class="city-cycle">Cycle {{ cycle() }}</span>
+      </div>
+      
+      <div class="context-right">
+        <div class="context-tabs">
+          <a class="tab-link active">Simulation</a>
+          <a class="tab-link">Humans</a>
+          <a class="tab-link">Places</a>
+          <a class="tab-link">Inventions</a>
+          <a class="tab-link">Logs</a>
+        </div>
+        
+        <div class="simulation-controls">
+          <button mat-raised-button color="primary" class="control-btn" (click)="onStart()" [disabled]="isRunning()">
+            <mat-icon>play_arrow</mat-icon>
+            <span>Start</span>
+          </button>
+          <button mat-raised-button class="control-btn pause-btn" (click)="onPause()" [disabled]="!isRunning()">
+            <mat-icon>pause</mat-icon>
+            <span>Pause</span>
+          </button>
+          <button mat-raised-button color="primary" class="control-btn small" (click)="onStep(1)">
+            <mat-icon>skip_next</mat-icon>
+            <span>+1</span>
+          </button>
+          <button mat-raised-button color="primary" class="control-btn small" (click)="onStep(10)">
+            <mat-icon>fast_forward</mat-icon>
+            <span>+10</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="content-layout">
+      <!-- Map Container -->
+      <div class="map-container">
+        <div class="map-wrapper">
+          <div #container class="pixi-container"></div>
+          
+          <!-- Map Stats Overlay -->
+          <div class="map-stats">
+            <div class="stat-item">
+              <div class="stat-label">Population</div>
+              <div class="stat-value">{{ population() }}</div>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <div class="stat-label">Happiness</div>
+              <div class="stat-value happiness">{{ happiness() }}%</div>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <div class="stat-label">Resources</div>
+              <div class="stat-value resources">{{ resources() }}</div>
+            </div>
+          </div>
+
+          <!-- Map Controls -->
+          <div class="map-controls">
+            <button mat-icon-button class="map-control-btn">
+              <mat-icon>add</mat-icon>
+            </button>
+            <button mat-icon-button class="map-control-btn">
+              <mat-icon>remove</mat-icon>
+            </button>
+            <button mat-icon-button class="map-control-btn">
+              <mat-icon>fullscreen</mat-icon>
+            </button>
+          </div>
+
+          <!-- Grid Info -->
+          <div class="grid-info">
+            <div class="grid-text">Grid: 100x100</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar Panels -->
+      <div class="sidebar-panels">
+        <!-- Recent Events Panel -->
+        <mat-card class="events-panel">
+          <div class="panel-header">
+            <h3 class="panel-title">Recent Events</h3>
+          </div>
+          <div class="panel-content events-list">
+            @for (event of recentEvents(); track event.id) {
+              <app-event-item
+                [title]="event.title"
+                [description]="event.description"
+                [timestamp]="event.timestamp"
+                [type]="event.type">
+              </app-event-item>
+            } @empty {
+              <div class="empty-events">No recent events</div>
+            }
+          </div>
+        </mat-card>
+
+        <!-- Selected Entity Panel -->
+        @if (selectedEntity()) {
+          <app-entity-panel
+            [entity]="selectedEntity()!"
+            (viewDetails)="onViewEntityDetails()">
+          </app-entity-panel>
+        }
+      </div>
+    </div>
+  </main>
+</div>

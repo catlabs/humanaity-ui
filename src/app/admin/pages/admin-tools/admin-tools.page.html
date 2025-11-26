@@ -1,0 +1,85 @@
+<div class="admin-tools-page">
+  <app-header [showNavigation]="false"></app-header>
+
+  <main class="main-content">
+    <div class="page-header">
+      <h2 class="page-title">Admin Tools</h2>
+      <p class="page-subtitle">Manage and configure simulation parameters</p>
+    </div>
+
+    <div class="simulators-container">
+      <!-- Invention Progression Simulator -->
+      <mat-card class="simulator-card">
+        <div class="simulator-header">
+          <h3 class="simulator-title">Invention Progression Simulator</h3>
+          <p class="simulator-description">Simulate the logical progression of human inventions throughout history</p>
+          <button mat-raised-button color="primary" (click)="onGenerateNextInvention()">
+            Generate Next Invention
+          </button>
+        </div>
+
+        <div class="timeline-container">
+          <div class="timeline-scroll">
+            @for (invention of inventions(); track invention.title) {
+              <app-timeline-node
+                [title]="invention.title"
+                [period]="invention.period"
+                [reasoning]="invention.reasoning">
+              </app-timeline-node>
+            }
+          </div>
+        </div>
+      </mat-card>
+
+      <!-- Artistic Evolution Simulator -->
+      <mat-card class="simulator-card">
+        <div class="simulator-header">
+          <h3 class="simulator-title">Artistic Evolution Simulator</h3>
+          <p class="simulator-description">Trace the evolution of artistic movements and their cultural impact</p>
+          <button mat-raised-button color="primary" (click)="onGenerateNextArtisticStage()">
+            Next Artistic Stage
+          </button>
+        </div>
+
+        <div class="timeline-container">
+          <div class="timeline-scroll">
+            @for (movement of artisticMovements(); track movement.title) {
+              <app-timeline-node
+                [title]="movement.title"
+                [period]="movement.period"
+                [reasoning]="movement.reasoning">
+              </app-timeline-node>
+            }
+          </div>
+        </div>
+      </mat-card>
+
+      <!-- Philosophical Ideas Simulator -->
+      <mat-card class="simulator-card">
+        <div class="simulator-header">
+          <h3 class="simulator-title">Philosophical Ideas Simulator</h3>
+          <p class="simulator-description">Explore the development of philosophical thought and reasoning systems</p>
+          <button mat-raised-button color="primary" (click)="onGenerateNextIdea()">
+            Generate Next Idea
+          </button>
+        </div>
+
+        <div class="timeline-container">
+          <div class="timeline-scroll">
+            @for (idea of philosophicalIdeas(); track idea.title) {
+              <app-timeline-node
+                [title]="idea.title"
+                [period]="idea.period"
+                [reasoning]="idea.reasoning">
+              </app-timeline-node>
+            }
+          </div>
+        </div>
+      </mat-card>
+    </div>
+  </main>
+
+  <app-footer></app-footer>
+</div>
+
+

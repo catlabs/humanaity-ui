@@ -1,0 +1,45 @@
+.timeline-node {
+  display: inline-block;
+  width: 256px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  border: 1px solid #f3f4f6;
+  vertical-align: top;
+}
+
+.node-title {
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.node-period {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 1rem;
+}
+
+.node-reasoning {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #e5e7eb;
+  font-size: 0.75rem;
+  color: #4b5563;
+  line-height: 1.5;
+}
+
+.reasoning-label {
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.25rem;
+}
+
+.reasoning-text {
+  margin: 0;
+  line-height: 1.5;
+}
+
+

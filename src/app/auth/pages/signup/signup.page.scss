@@ -1,40 +1,124 @@
-.signup-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.register-page {
   min-height: 100vh;
-  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fb;
+  padding: 3rem 1.5rem;
 }
 
-.signup-card {
+.register-container {
   width: 100%;
-  max-width: 400px;
+  max-width: 28rem;
 }
 
-.full-width {
-  width: 100%;
-  margin-bottom: 16px;
+.register-card {
+  padding: 2rem;
 }
 
-.error-message {
-  color: #f44336;
-  margin-bottom: 16px;
-  padding: 8px;
-  background-color: #ffebee;
-  border-radius: 4px;
+.register-header {
+  text-align: center;
+  margin-bottom: 2rem;
 }
 
-.login-link {
-  margin-top: 16px;
+.logo-icon-large {
+  width: 48px;
+  height: 48px;
+  background-color: #2563eb;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  
+  mat-icon {
+    color: white;
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.register-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 0.5rem 0;
+}
+
+.register-subtitle {
+  color: #4b5563;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  
+  .full-width {
+    width: 100%;
+  }
+
+  .error-message {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #dc2626;
+    font-size: 0.875rem;
+    padding: 0.75rem;
+    background-color: #fef2f2;
+    border-radius: 8px;
+    border: 1px solid #fecaca;
+    
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  .register-button {
+    width: 100%;
+    padding: 0.75rem;
+    font-weight: 500;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+  }
+}
+
+.signin-link {
+  margin-top: 1.5rem;
   text-align: center;
 }
 
-.login-link a {
-  color: #1976d2;
+.signin-text {
+  font-size: 0.875rem;
+  color: #4b5563;
+  margin: 0;
+}
+
+.signin-link-text {
+  color: #2563eb;
   text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+  
+  &:hover {
+    color: #1d4ed8;
+  }
 }
 
-.login-link a:hover {
-  text-decoration: underline;
+::ng-deep {
+  .mat-mdc-form-field {
+    .mat-mdc-text-field-wrapper {
+      padding-left: 0.75rem;
+    }
+    
+    .mat-mdc-form-field-icon-prefix {
+      margin-right: 0.5rem;
+      color: #9ca3af;
+    }
+  }
 }
-

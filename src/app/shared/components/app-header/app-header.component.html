@@ -1,0 +1,40 @@
+<mat-toolbar class="app-header">
+  <div class="header-content">
+    <div class="header-left">
+      <div class="logo-container">
+        <div class="logo-icon">
+          <mat-icon>science</mat-icon>
+        </div>
+        <span class="logo-text">HumanAIty</span>
+      </div>
+      
+      @if (showNavigation) {
+        <nav class="header-nav">
+          <a routerLink="/cities" class="nav-link active">Simulations</a>
+          <a href="#" class="nav-link">Templates</a>
+          <a href="#" class="nav-link">Analytics</a>
+          <a href="#" class="nav-link">Settings</a>
+        </nav>
+      }
+    </div>
+    
+    <div class="header-right">
+      @if (showUserMenu) {
+        <button mat-icon-button class="notification-btn">
+          <mat-icon>notifications</mat-icon>
+        </button>
+        <div class="user-avatar">
+          @if (userAvatar) {
+            <img [src]="userAvatar" [alt]="userName || 'User'" />
+          } @else {
+            <div class="avatar-placeholder">
+              <mat-icon>account_circle</mat-icon>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</mat-toolbar>
+
+

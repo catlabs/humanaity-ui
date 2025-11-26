@@ -1,0 +1,12 @@
+<div class="event-item">
+  <div class="event-icon" [style.background-color]="getBackgroundColor()">
+    <mat-icon [style.color]="getIconColor()">{{ getIcon() }}</mat-icon>
+  </div>
+  <div class="event-content">
+    <p class="event-title">{{ title }}</p>
+    <p class="event-description">{{ description }}</p>
+    <p class="event-timestamp">{{ timestamp }}</p>
+  </div>
+</div>
+
+

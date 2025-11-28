@@ -1,7 +1,7 @@
 <div class="my-cities-container">
   <div class="header">
     <h1>My Cities</h1>
-    <button mat-raised-button color="primary" routerLink="/cities/create">
+    <button mat-raised-button color="primary" (click)="onCreateNew()">
       Create New City
     </button>
   </div>
@@ -10,7 +10,7 @@
     <mat-card class="empty-card">
       <mat-card-content>
         <p>You haven't created any cities yet.</p>
-        <button mat-raised-button color="primary" routerLink="/cities/create">
+        <button mat-raised-button color="primary" (click)="onCreateNew()">
           Create Your First City
         </button>
       </mat-card-content>

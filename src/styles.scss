@@ -133,6 +133,14 @@ body {
   width: 100%;
 }
 
+// Dialog-specific overrides to prevent layout issues
+.mat-mdc-dialog-container {
+  .mat-mdc-form-field {
+    width: 100%;
+    margin: 0;
+  }
+}
+
 // Spacing utilities
 .mt-2 { margin-top: 0.5rem; }
 .mt-4 { margin-top: 1rem; }

@@ -1,13 +1,15 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
 import { CityOutput } from '../../../api/model/models';
 import { SimulationCardComponent, SimulationCardData, SimulationStatus } from '../../../shared/components/simulation-card/simulation-card.component';
 import { AppHeaderComponent } from '../../../shared/components/app-header/app-header.component';
+import { CreateSimulationDialogComponent } from '../../../shared/components/create-simulation-dialog/create-simulation-dialog.component';
 import { CityService } from '../../city.service';
 
 type FilterTab = 'all' | 'running' | 'completed' | 'draft';
@@ -31,6 +33,7 @@ export class CityListPage implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private cityService = inject(CityService);
+  private dialog = inject(MatDialog);
 
   cities = signal<CityOutput[]>([]);
   filteredCities = signal<SimulationCardData[]>([]);
@@ -104,7 +107,18 @@ export class CityListPage implements OnInit {
   }
 
   onCreateNew(): void {
-    this.router.navigate(['/cities/create']);
+    const dialogRef = this.dialog.open(CreateSimulationDialogComponent, {
+      width: '500px',
+      disableClose: false
+    });
+
+    dialogRef.afterClosed().subscribe((result: CityOutput | undefined) => {
+      if (result && result.id) {
+        // Reload cities list and navigate to the newly created city
+        this.loadCities();
+        this.router.navigate(['/cities', result.id]);
+      }
+    });
   }
 
   onPageChange(event: PageEvent): void {

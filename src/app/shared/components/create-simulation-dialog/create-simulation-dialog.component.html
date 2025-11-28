@@ -1,0 +1,34 @@
+<div class="create-simulation-dialog">
+  <h2 mat-dialog-title>Create New Simulation</h2>
+  
+  <mat-dialog-content>
+    <form [formGroup]="simulationForm" (ngSubmit)="onSubmit()" class="simulation-form">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="full-width">
+        <mat-label>Simulation Name</mat-label>
+        <input matInput type="text" formControlName="name" placeholder="Enter simulation name">
+        @if (simulationForm.get('name')?.invalid && simulationForm.get('name')?.touched) {
+          <mat-error>{{ getErrorMessage('name') }}</mat-error>
+        }
+      </mat-form-field>
+
+      @if (errorMessage) {
+        <div class="error-message">
+          <mat-icon>error</mat-icon>
+          <span>{{ errorMessage }}</span>
+        </div>
+      }
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()" [disabled]="isLoading">Cancel</button>
+    <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="simulationForm.invalid || isLoading">
+      @if (isLoading) {
+        Creating...
+      } @else {
+        Create Simulation
+      }
+    </button>
+  </mat-dialog-actions>
+</div>
+

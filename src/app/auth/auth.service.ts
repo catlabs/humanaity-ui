@@ -130,6 +130,31 @@ export class AuthService {
     }
   }
 
+  isAdmin(): boolean {
+    if (!this.isBrowser) {
+      return false;
+    }
+    const token = this.getAccessToken();
+    if (!token) {
+      return false;
+    }
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const roles = payload.roles || payload.role || [];
+      // Check if roles is an array or a string
+      if (Array.isArray(roles)) {
+        return roles.some((role: string) => role === 'ROLE_ADMIN' || role === 'ADMIN');
+      }
+      if (typeof roles === 'string') {
+        return roles === 'ROLE_ADMIN' || roles === 'ADMIN';
+      }
+      return false;
+    } catch {
+      return false;
+    }
+  }
+
   private setTokens(response: AuthResponse): void {
     if (!this.isBrowser) {
       return;

@@ -9,7 +9,6 @@ import {
   signal,
   ViewChild
 } from '@angular/core';
-import * as PIXI from 'pixi.js';
 import {isPlatformBrowser} from '@angular/common';
 import {ActivatedRoute} from '@angular/router';
 import {CityOutput, HumanOutput} from '../../../api/model/models';
@@ -23,9 +22,15 @@ import {EventItemComponent, EventType} from '../../../shared/components/event-it
 import {EntityPanelComponent, EntityData} from '../../../shared/components/entity-panel/entity-panel.component';
 import {SimulationsService} from '../../../api/api/simulations.service';
 
+// PixiJS types - will be dynamically imported
+type PIXI = typeof import('pixi.js');
+type PIXIApplication = import('pixi.js').Application;
+type PIXIText = import('pixi.js').Text;
+type PIXITextStyle = import('pixi.js').TextStyle;
+
 interface HumanSprite {
   human: HumanOutput,
-  sprite: PIXI.Text,
+  sprite: PIXIText,
   hasCollision?: boolean,
   targetX?: number,
   targetY?: number
@@ -52,7 +57,8 @@ export class CityDetailsPage implements OnInit, AfterViewInit, OnDestroy {
   public city: CityOutput = this.route.snapshot.data['city'];
   private service: CityService = inject(CityService);
   private simulationService = inject(SimulationsService);
-  private app!: PIXI.Application;
+  private app!: PIXIApplication;
+  private pixiLib!: PIXI;
   private humanWithStripes = signal<HumanSprite[]>([]);
   private isFirstSubscription = true;
   private subscription?: Subscription;
@@ -174,6 +180,14 @@ export class CityDetailsPage implements OnInit, AfterViewInit, OnDestroy {
 
   private async createPixiApp(): Promise<void> {
     try {
+      // Dynamically import PixiJS only in browser
+      if (!isPlatformBrowser(this.platformId)) {
+        return;
+      }
+
+      this.pixiLib = await import('pixi.js');
+      const PIXI = this.pixiLib;
+
       // Initialize PIXI Application
       this.app = new PIXI.Application();
 
@@ -221,9 +235,11 @@ export class CityDetailsPage implements OnInit, AfterViewInit, OnDestroy {
 
   private createHuman(human: HumanOutput): void {
     // Ensure app is initialized and screen is available
-    if (!this.app || !this.app.screen) {
+    if (!this.app || !this.app.screen || !this.pixiLib) {
       return;
     }
+
+    const PIXI = this.pixiLib;
 
     // Choose face emoticon based on dominant personality trait
     const emoticon = this.getPersonalityFace(human);

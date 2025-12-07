@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../auth.service';
-import { SignupRequest } from '../../../../api/model/models';
+import { SignupRequest } from '@api';
 
 @Component({
   selector: 'app-signup',

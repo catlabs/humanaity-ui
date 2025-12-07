@@ -2,10 +2,7 @@ import {inject, Injectable, Inject, Optional} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable, interval, from, of} from 'rxjs';
 import {switchMap, startWith, map} from 'rxjs/operators';
-import {CitiesService} from '../../api/api/cities.service';
-import {HumansService} from '../../api/api/humans.service';
-import {CityOutput, HumanOutput} from '../../api/model/models';
-import {BASE_PATH} from '../../api/variables';
+import {CitiesService, HumansService, CityOutput, HumanOutput, BASE_PATH} from '@api';
 
 @Injectable({
   providedIn: 'root'

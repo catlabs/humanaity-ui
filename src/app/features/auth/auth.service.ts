@@ -1,9 +1,7 @@
 import { Injectable, inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Observable, tap, map, switchMap, of, from } from 'rxjs';
-import { AuthControllerService } from '../../api/api/authController.service';
-import { AuthRequest, SignupRequest, RefreshTokenRequest } from '../../api/model/models';
-import { AuthResponse } from '../../api/model/authResponse';
+import { AuthControllerService, AuthRequest, SignupRequest, RefreshTokenRequest, AuthResponse } from '@api';
 
 const ACCESS_TOKEN_KEY = 'accessToken';
 const REFRESH_TOKEN_KEY = 'refreshToken';

@@ -69,6 +69,200 @@ src/
 - No NgModules unless required by Angular Material or 3rd-party libs
 - Do not exceed 300 lines per file → split components/services if needed
 
+## Path Aliases and Barrel Exports
+
+### Overview
+
+Use TypeScript path aliases combined with barrel exports (`index.ts` files) to create clean, maintainable import patterns. This approach eliminates deep relative paths and provides a consistent API for each module.
+
+### Setup Pattern
+
+The pattern consists of three steps:
+
+1. **Create a barrel export** (`index.ts`) that exports the module's public API
+2. **Configure path aliases** in `tsconfig.json` (and `tsconfig.app.json`) with both:
+   - A direct alias pointing to the barrel export (e.g., `@core` → `src/app/core/index.ts`)
+   - A wildcard alias for sub-paths (e.g., `@core/*` → `src/app/core/*`)
+3. **Use the aliases** in imports instead of relative paths
+
+### TypeScript Configuration
+
+Configure path aliases in both `tsconfig.json` and `tsconfig.app.json`:
+
+```json
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@features/*": ["src/app/features/*"],
+      "@core": ["src/app/core/index.ts"],
+      "@core/*": ["src/app/core/*"],
+      "@shared": ["src/app/shared/index.ts"],
+      "@shared/*": ["src/app/shared/*"],
+      "@api": ["src/app/api/index.ts"],
+      "@api/*": ["src/app/api/*"]
+    }
+  }
+}
+```
+
+**Key Points:**
+- `baseUrl: "./"` is required for path aliases to work
+- Use direct aliases (e.g., `@core`) for barrel exports
+- Use wildcard aliases (e.g., `@core/*`) for sub-path access if needed
+- Configure in both `tsconfig.json` and `tsconfig.app.json` for consistency
+
+### Barrel Export Examples
+
+#### Feature Module
+
+**Step 1: Create `index.ts`**
+```typescript
+// features/auth/index.ts
+export { AuthService } from './auth.service';
+```
+
+**Step 2: Configure alias** (already done in `tsconfig.json`)
+```json
+"@features/*": ["src/app/features/*"]
+```
+
+**Step 3: Use in imports**
+```typescript
+// ✅ CORRECT
+import { AuthService } from '@features/auth';
+
+// ❌ WRONG
+import { AuthService } from '../../../features/auth/auth.service';
+```
+
+#### Core Module
+
+**Step 1: Create `index.ts`**
+```typescript
+// core/index.ts
+export { authGuard } from './guards/auth.guard';
+export { authInterceptor } from './interceptors/auth.interceptor';
+```
+
+**Step 2: Configure aliases**
+```json
+"@core": ["src/app/core/index.ts"],
+"@core/*": ["src/app/core/*"]
+```
+
+**Step 3: Use in imports**
+```typescript
+// ✅ CORRECT
+import { authGuard, authInterceptor } from '@core';
+
+// ❌ WRONG
+import { authGuard } from '../../core/guards/auth.guard';
+```
+
+#### Shared Components
+
+**Step 1: Create `components/index.ts`**
+```typescript
+// shared/components/index.ts
+export { TimelineNodeComponent } from './timeline-node/timeline-node.component';
+export { EventItemComponent } from './event-item/event-item.component';
+export type { EventType } from './event-item/event-item.component';
+export { EntityPanelComponent } from './entity-panel/entity-panel.component';
+export type { EntityData } from './entity-panel/entity-panel.component';
+export { SimulationCardComponent } from './simulation-card/simulation-card.component';
+export type { SimulationCardData, SimulationStatus } from './simulation-card/simulation-card.component';
+```
+
+**Step 2: Create `shared/index.ts`**
+```typescript
+// shared/index.ts
+export * from './components';
+```
+
+**Step 3: Configure alias**
+```json
+"@shared": ["src/app/shared/index.ts"],
+"@shared/*": ["src/app/shared/*"]
+```
+
+**Step 4: Use in imports**
+```typescript
+// ✅ CORRECT
+import { SimulationCardComponent, SimulationCardData, SimulationStatus } from '@shared';
+
+// ❌ WRONG
+import { SimulationCardComponent } from '../../../../shared/components/simulation-card/simulation-card.component';
+```
+
+#### API Module
+
+**Step 1: Create/Update `index.ts`**
+```typescript
+// api/index.ts
+export * from './api/api';           // All services
+export * from './model/models';      // All models
+export * from './variables';        // BASE_PATH, etc.
+export * from './provide-api';      // provideApi function
+```
+
+**Step 2: Configure aliases**
+```json
+"@api": ["src/app/api/index.ts"],
+"@api/*": ["src/app/api/*"]
+```
+
+**Step 3: Use in imports**
+```typescript
+// ✅ CORRECT
+import { CitiesService, CityOutput, HumanOutput, BASE_PATH, provideApi } from '@api';
+
+// ❌ WRONG
+import { CitiesService } from '../../api/api/cities.service';
+import { CityOutput } from '../../api/model/models';
+```
+
+### Type Exports with `isolatedModules`
+
+When using `isolatedModules: true` (required for Angular), separate type exports from value exports:
+
+```typescript
+// ✅ CORRECT - Separate type exports
+export { EventItemComponent } from './event-item/event-item.component';
+export type { EventType } from './event-item/event-item.component';
+
+// ❌ WRONG - Mixed exports cause errors with isolatedModules
+export { EventItemComponent, EventType } from './event-item/event-item.component';
+```
+
+### Complete Example: Feature with Multiple Exports
+
+```typescript
+// features/city/index.ts
+export { CityService } from './city.service';
+export { cityRoutes } from './city.route';
+export { cityListResolver, cityDetailsResolver, myCitiesResolver } from './city.resolver';
+
+// Usage across the app
+import { CityService, cityRoutes } from '@features/city';
+import { cityListResolver } from '@features/city';
+```
+
+### When to Use Path Aliases
+
+- **Always** use path aliases for cross-feature imports
+- **Always** use path aliases for core, shared, and API imports
+- **Optional** for imports within the same feature (relative imports are acceptable for internal feature code)
+
+### Benefits
+
+- **Cleaner imports**: `@features/auth` instead of `../../../features/auth/auth.service`
+- **Easier refactoring**: Moving files doesn't break imports
+- **Consistent patterns**: Same import style across the entire codebase
+- **Better encapsulation**: Features control their public API via `index.ts`
+- **Type safety**: TypeScript resolves paths correctly with full IDE support
+- **Maintainability**: Changes to internal structure don't affect consumers
+
 ## Modern Angular Syntax (Mandatory)
 
 ### Standalone Components

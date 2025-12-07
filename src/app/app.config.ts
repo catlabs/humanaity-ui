@@ -10,8 +10,8 @@ import {provideAnimations} from '@angular/platform-browser/animations';
 import {routes} from './app.routes';
 import {provideClientHydration, withEventReplay} from '@angular/platform-browser';
 import {provideHttpClient, withFetch, withInterceptors} from '@angular/common/http';
-import {authInterceptor} from './core/interceptors/auth.interceptor';
-import {provideApi} from './api/provide-api';
+import {authInterceptor} from '@core';
+import {provideApi} from '@api';
 
 export const appConfig: ApplicationConfig = {
   providers: [

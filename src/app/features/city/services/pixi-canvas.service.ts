@@ -1,6 +1,6 @@
 import { Injectable, PLATFORM_ID, inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { HumanOutput } from '../../../api/model/models';
+import { HumanOutput } from '@api';
 
 // PixiJS types - will be dynamically imported
 type PIXI = typeof import('pixi.js');

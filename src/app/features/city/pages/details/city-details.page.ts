@@ -9,7 +9,7 @@ import {
   ViewChild
 } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {CityOutput, HumanOutput} from '../../../../api/model/models';
+import {CityOutput, HumanOutput, SimulationsService} from '@api';
 import {CityService} from '../../city.service';
 import {PixiCanvasService} from '../../services/pixi-canvas.service';
 import {Subscription} from 'rxjs';
@@ -17,9 +17,7 @@ import {CommonModule} from '@angular/common';
 import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
-import {EventItemComponent, EventType} from '../../../../shared/components/event-item/event-item.component';
-import {EntityPanelComponent, EntityData} from '../../../../shared/components/entity-panel/entity-panel.component';
-import {SimulationsService} from '../../../../api/api/simulations.service';
+import {EventItemComponent, EventType, EntityPanelComponent, EntityData} from '@shared';
 
 
 @Component({

@@ -1,6 +1,6 @@
 import {Routes} from '@angular/router';
-import {cityRoutes} from './features/city/city.route';
-import {authGuard} from './core/guards/auth.guard';
+import {cityRoutes} from '@features/city';
+import {authGuard} from '@core';
 
 export const routes: Routes = [
   {

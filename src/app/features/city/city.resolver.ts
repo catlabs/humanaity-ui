@@ -1,7 +1,7 @@
 import {ResolveFn} from '@angular/router';
 import {CityService} from './city.service';
 import {inject} from '@angular/core';
-import {CityOutput} from '../api/model/models';
+import {CityOutput} from '../../api/model/models';
 
 export const cityListResolver: ResolveFn<CityOutput[]> = (route, state) => {
   const service = inject(CityService);

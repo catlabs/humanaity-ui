@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -21,15 +21,15 @@ import { ReasoningDialogComponent, ReasoningDialogData } from './reasoning-dialo
 export class TimelineNodeComponent {
   private dialog = inject(MatDialog);
 
-  @Input() title!: string;
-  @Input() period!: string;
-  @Input() reasoning!: string;
+  title = input.required<string>();
+  period = input.required<string>();
+  reasoning = input.required<string>();
 
   openReasoningDialog(): void {
     const data: ReasoningDialogData = {
-      title: this.title,
-      period: this.period,
-      reasoning: this.reasoning
+      title: this.title(),
+      period: this.period(),
+      reasoning: this.reasoning()
     };
 
     this.dialog.open(ReasoningDialogComponent, {

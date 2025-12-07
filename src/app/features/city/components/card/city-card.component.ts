@@ -1,7 +1,7 @@
 import {Component, input, OnInit} from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
-import {CityOutput} from '../../../api/model/models';
+import {CityOutput} from '../../../../api/model/models';
 
 @Component({
   selector: 'app-city-card',

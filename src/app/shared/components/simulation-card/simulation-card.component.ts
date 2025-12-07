@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -35,8 +35,8 @@ export interface SimulationCardData {
   styleUrl: './simulation-card.component.scss'
 })
 export class SimulationCardComponent {
-  @Input() simulation!: SimulationCardData;
-  @Output() cardClick = new EventEmitter<number>();
+  simulation = input.required<SimulationCardData>();
+  cardClick = output<number>();
 
   getStatusClass(status: SimulationStatus): string {
     const statusMap: Record<SimulationStatus, string> = {
@@ -59,7 +59,7 @@ export class SimulationCardComponent {
   }
 
   onCardClick(): void {
-    this.cardClick.emit(this.simulation.id);
+    this.cardClick.emit(this.simulation().id);
   }
 }
 

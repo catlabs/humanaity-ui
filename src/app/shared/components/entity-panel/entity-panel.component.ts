@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -35,12 +35,13 @@ export interface EntityData {
   styleUrl: './entity-panel.component.scss'
 })
 export class EntityPanelComponent {
-  @Input() entity!: EntityData;
-  @Output() viewDetails = new EventEmitter<void>();
+  entity = input.required<EntityData>();
+  viewDetails = output<void>();
 
   getCapacityPercentage(): number {
-    if (!this.entity.capacity) return 0;
-    return (this.entity.capacity.current / this.entity.capacity.max) * 100;
+    const entityData = this.entity();
+    if (!entityData.capacity) return 0;
+    return (entityData.capacity.current / entityData.capacity.max) * 100;
   }
 }
 

@@ -3,7 +3,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { CityOutput } from '../../../api/model/models';
+import { CityOutput } from '../../../../api/model/models';
 import { CityCardComponent } from '../../components/card/city-card.component';
 
 @Component({

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -15,10 +15,10 @@ export type EventType = 'birth' | 'building' | 'invention' | 'warning' | 'marria
   styleUrl: './event-item.component.scss'
 })
 export class EventItemComponent {
-  @Input() title!: string;
-  @Input() description!: string;
-  @Input() timestamp!: string;
-  @Input() type: EventType = 'other';
+  title = input.required<string>();
+  description = input.required<string>();
+  timestamp = input.required<string>();
+  type = input<EventType>('other');
 
   getIcon(): string {
     const iconMap: Record<EventType, string> = {
@@ -29,7 +29,7 @@ export class EventItemComponent {
       'marriage': 'favorite',
       'other': 'info'
     };
-    return iconMap[this.type] || 'info';
+    return iconMap[this.type()] || 'info';
   }
 
   getIconColor(): string {
@@ -41,7 +41,7 @@ export class EventItemComponent {
       'marriage': '#a855f7',
       'other': '#6b7280'
     };
-    return colorMap[this.type] || '#6b7280';
+    return colorMap[this.type()] || '#6b7280';
   }
 
   getBackgroundColor(): string {
@@ -53,7 +53,7 @@ export class EventItemComponent {
       'marriage': '#f3e8ff',
       'other': '#f3f4f6'
     };
-    return bgMap[this.type] || '#f3f4f6';
+    return bgMap[this.type()] || '#f3f4f6';
   }
 }
 

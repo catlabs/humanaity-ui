@@ -1,11 +1,11 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../../../auth/auth.service';
+import { AuthService } from '../../../features/auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -25,10 +25,10 @@ export class AppHeaderComponent {
   private authService: AuthService = inject(AuthService);
   private router: Router = inject(Router);
 
-  @Input() showNavigation = false;
-  @Input() showUserMenu = true;
-  @Input() userAvatar?: string;
-  @Input() userName?: string;
+  showNavigation = input(false);
+  showUserMenu = input(true);
+  userAvatar = input<string | undefined>();
+  userName = input<string | undefined>();
 
   logout(): void {
     this.authService.logout();

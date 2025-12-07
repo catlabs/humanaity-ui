@@ -7,15 +7,6 @@
         </div>
         <span class="logo-text">HumanAIty</span>
       </div>
-      
-      @if (showNavigation()) {
-        <nav class="header-nav">
-          <a routerLink="/cities" class="nav-link active">Simulations</a>
-          <a href="#" class="nav-link">Templates</a>
-          <a href="#" class="nav-link">Analytics</a>
-          <a href="#" class="nav-link">Settings</a>
-        </nav>
-      }
     </div>
     
     <div class="header-right">
@@ -35,6 +26,15 @@
           </div>
         </button>
         <mat-menu #userMenu="matMenu">
+          <button mat-menu-item routerLink="/cities" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+            <mat-icon>location_city</mat-icon>
+            <span>Simulations</span>
+          </button>
+          <button mat-menu-item routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            <mat-icon>admin_panel_settings</mat-icon>
+            <span>Admin Tools</span>
+          </button>
+          <mat-divider></mat-divider>
           <button mat-menu-item (click)="logout()">
             <mat-icon>logout</mat-icon>
             <span>Logout</span>

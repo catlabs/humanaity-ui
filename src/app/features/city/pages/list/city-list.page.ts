@@ -7,7 +7,6 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { CityOutput } from '../../../../api/model/models';
 import { SimulationCardComponent, SimulationCardData, SimulationStatus } from '../../../../shared/components/simulation-card/simulation-card.component';
-import { AppHeaderComponent } from '../../../../shared/components/app-header/app-header.component';
 import { CityService } from '../../city.service';
 
 type FilterTab = 'all' | 'running' | 'completed' | 'draft';
@@ -21,8 +20,7 @@ type FilterTab = 'all' | 'running' | 'completed' | 'draft';
     MatIconModule,
     MatTabsModule,
     MatPaginatorModule,
-    SimulationCardComponent,
-    AppHeaderComponent
+    SimulationCardComponent
   ],
   templateUrl: './city-list.page.html',
   styleUrl: './city-list.page.scss'

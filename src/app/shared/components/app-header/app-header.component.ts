@@ -4,7 +4,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { Router, RouterLink } from '@angular/router';
+import { MatDividerModule } from '@angular/material/divider';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../../features/auth/auth.service';
 
 @Component({
@@ -16,7 +17,9 @@ import { AuthService } from '../../../features/auth/auth.service';
     MatButtonModule,
     MatIconModule,
     MatMenuModule,
-    RouterLink
+    MatDividerModule,
+    RouterLink,
+    RouterLinkActive
   ],
   templateUrl: './app-header.component.html',
   styleUrl: './app-header.component.scss'
@@ -25,7 +28,6 @@ export class AppHeaderComponent {
   private authService: AuthService = inject(AuthService);
   private router: Router = inject(Router);
 
-  showNavigation = input(false);
   showUserMenu = input(true);
   userAvatar = input<string | undefined>();
   userName = input<string | undefined>();

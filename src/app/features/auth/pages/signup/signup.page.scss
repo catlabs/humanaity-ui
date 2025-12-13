@@ -109,27 +109,3 @@
     color: #1d4ed8;
   }
 }
-
-::ng-deep {
-  .mat-mdc-form-field {
-    .mat-mdc-text-field-wrapper {
-      padding-left: 0.75rem;
-    }
-    
-    .mat-mdc-form-field-icon-prefix {
-      margin-right: 0.5rem;
-      color: #9ca3af;
-    }
-    
-    // Fix autofill styling
-    input:-webkit-autofill,
-    input:-webkit-autofill:hover,
-    input:-webkit-autofill:focus,
-    input:-webkit-autofill:active {
-      -webkit-box-shadow: 0 0 0 30px white inset !important;
-      -webkit-text-fill-color: #111827 !important;
-      box-shadow: 0 0 0 30px white inset !important;
-      caret-color: #111827 !important;
-    }
-  }
-}

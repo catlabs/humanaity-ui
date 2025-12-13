@@ -1,11 +1,13 @@
-<div class="app-layout">
+<div class="flex min-h-screen flex-col bg-gray-50">
   <app-header
     [showUserMenu]="showUserMenu()"
     [userAvatar]="userAvatar()"
     [userName]="userName()">
   </app-header>
   
-  <main class="main-content">
+  <main class="flex-1 py-6">
+    <app-container>
     <router-outlet />
+    </app-container>
   </main>
 </div>

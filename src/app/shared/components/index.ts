@@ -8,3 +8,4 @@ export type { SimulationCardData, SimulationStatus } from './simulation-card/sim
 export { AppHeaderComponent } from './app-header/app-header.component';
 export { AppLayoutComponent } from './app-layout/app-layout.component';
 export { AppFooterComponent } from './app-footer/app-footer.component';
+export { AppContainerComponent } from './app-container/app-container.component';

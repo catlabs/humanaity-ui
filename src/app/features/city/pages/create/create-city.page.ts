@@ -19,8 +19,7 @@ import { CityService } from '../../city.service';
     MatInputModule,
     MatButtonModule
   ],
-  templateUrl: './create-city.page.html',
-  styleUrl: './create-city.page.scss'
+  templateUrl: './create-city.page.html'
 })
 export class CreateCityPage {
   private fb = inject(FormBuilder);

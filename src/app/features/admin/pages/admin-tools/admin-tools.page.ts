@@ -21,8 +21,7 @@ interface TimelineItem {
     MatIconModule,
     TimelineNodeComponent
   ],
-  templateUrl: './admin-tools.page.html',
-  styleUrl: './admin-tools.page.scss'
+  templateUrl: './admin-tools.page.html'
 })
 export class AdminToolsPage {
   inventions = signal<TimelineItem[]>([

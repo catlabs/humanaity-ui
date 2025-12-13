@@ -17,7 +17,7 @@ import {CommonModule} from '@angular/common';
 import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
-import {EventItemComponent, EventType, EntityPanelComponent, EntityData} from '@shared';
+import {AppContainerComponent, EventItemComponent, EventType, EntityPanelComponent, EntityData} from '@shared';
 
 
 @Component({
@@ -28,10 +28,10 @@ import {EventItemComponent, EventType, EntityPanelComponent, EntityData} from '@
     MatCardModule,
     MatButtonModule,
     MatIconModule,
+    AppContainerComponent,
     EventItemComponent,
     EntityPanelComponent
-  ],
-  styleUrl: './city-details.page.scss'
+  ]
 })
 export class CityDetailsPage implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('container', {static: true}) containerRef!: ElementRef<HTMLDivElement>;
@@ -94,6 +94,11 @@ export class CityDetailsPage implements OnInit, AfterViewInit, OnDestroy {
   });
 
   ngOnInit() {
+    // No-op: defer Pixi init until view is ready
+  }
+
+  ngAfterViewInit(): void {
+    this.pixiCanvasService.initialize(this.containerRef.nativeElement).then(() => {
     this.subscription = this.cityService.subscribePositions(String(this.city.id!)).subscribe({
       next: humans => {
         humans.forEach(human => {
@@ -105,10 +110,7 @@ export class CityDetailsPage implements OnInit, AfterViewInit, OnDestroy {
         console.error('Error subscribing to positions:', error);
       }
     });
-  }
-
-  ngAfterViewInit(): void {
-    this.pixiCanvasService.initialize(this.containerRef.nativeElement);
+    });
   }
 
   ngOnDestroy(): void {

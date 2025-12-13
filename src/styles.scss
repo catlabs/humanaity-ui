@@ -1,6 +1,10 @@
 @use '@angular/material' as mat;
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 // Define custom color palette based on design
 $humanaity-primary: mat.m2-define-palette((
   50: #e0e7ff,
@@ -79,71 +83,8 @@ body {
   display: none;
 }
 
-// Utility classes
-.text-primary {
-  color: #2563eb;
-}
-
-.bg-primary {
-  background-color: #2563eb;
-}
-
-.bg-gray-50 {
-  background-color: #f8f9fb;
-}
-
-.bg-white {
-  background-color: #ffffff;
-}
-
-.border-gray-200 {
-  border-color: #e5e7eb;
-}
-
-.text-gray-600 {
-  color: #4b5563;
-}
-
-.text-gray-900 {
-  color: #111827;
-}
-
-// Card styles matching design
-.mat-mdc-card {
-  border-radius: 12px !important;
-  border: 1px solid #f3f4f6 !important;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
-}
-
-.mat-mdc-card:hover {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
-}
-
-// Button styles
-.mat-mdc-raised-button.mat-primary:not(:disabled) {
-  background-color: #2563eb !important;
-  
-  &:hover:not(:disabled) {
-    background-color: #1d4ed8 !important;
-  }
-}
-
 // Form field styles
 .mat-mdc-form-field {
   width: 100%;
 }
 
-// Spacing utilities
-.mt-2 { margin-top: 0.5rem; }
-.mt-4 { margin-top: 1rem; }
-.mt-6 { margin-top: 1.5rem; }
-.mb-2 { margin-bottom: 0.5rem; }
-.mb-4 { margin-bottom: 1rem; }
-.mb-6 { margin-bottom: 1.5rem; }
-.p-4 { padding: 1rem; }
-.p-6 { padding: 1.5rem; }
-.px-4 { padding-left: 1rem; padding-right: 1rem; }
-.px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
-.py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
-.py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
-.py-4 { padding-top: 1rem; padding-bottom: 1rem; }

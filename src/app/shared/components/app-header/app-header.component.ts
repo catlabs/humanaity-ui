@@ -7,6 +7,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '@features/auth';
+import { AppContainerComponent } from '../app-container/app-container.component';
 
 @Component({
   selector: 'app-header',
@@ -19,7 +20,8 @@ import { AuthService } from '@features/auth';
     MatMenuModule,
     MatDividerModule,
     RouterLink,
-    RouterLinkActive
+    RouterLinkActive,
+    AppContainerComponent
   ],
   templateUrl: './app-header.component.html',
   styleUrl: './app-header.component.scss'

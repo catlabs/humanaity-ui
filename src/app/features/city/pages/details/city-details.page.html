@@ -1,97 +1,117 @@
-<div class="city-details-page">
+<div class="flex min-h-screen flex-col bg-gray-50">
   <!-- City Context Header -->
-  <div class="city-context-header">
-    <div class="context-content">
-      <div class="context-left">
-        <h2 class="city-name">{{ city.name }}</h2>
-        <span class="city-cycle">Cycle {{ cycle() }}</span>
+  <div class="sticky top-16 z-40 border-b border-gray-200 bg-white">
+    <app-container class="h-12">
+      <div class="flex h-full items-center justify-between">
+        <div class="flex items-center gap-3">
+          <h2 class="text-base font-semibold text-gray-900">{{ city.name }}</h2>
+          <span class="text-xs text-gray-500">Cycle {{ cycle() }}</span>
       </div>
       
-      <div class="context-right">
-        <div class="context-tabs">
-          <a class="tab-link active">Simulation</a>
-          <a class="tab-link">Humans</a>
-          <a class="tab-link">Places</a>
-          <a class="tab-link">Inventions</a>
-          <a class="tab-link">Logs</a>
+        <div class="flex items-center gap-6">
+          <div class="flex items-center gap-2 text-sm font-medium text-gray-600">
+            <a class="rounded-md px-3 py-1.5 text-blue-600 bg-blue-50">Simulation</a>
+            <a class="rounded-md px-3 py-1.5 text-gray-600 hover:text-gray-900">Humans</a>
+            <a class="rounded-md px-3 py-1.5 text-gray-600 hover:text-gray-900">Places</a>
+            <a class="rounded-md px-3 py-1.5 text-gray-600 hover:text-gray-900">Inventions</a>
+            <a class="rounded-md px-3 py-1.5 text-gray-600 hover:text-gray-900">Logs</a>
         </div>
         
-        <div class="simulation-controls">
-          <button mat-raised-button color="primary" class="control-btn" (click)="onStart()" [disabled]="isRunning()">
+          <div class="flex items-center gap-2">
+            <button
+              mat-raised-button
+              color="primary"
+              class="flex items-center gap-1 px-4 py-2 text-sm font-semibold"
+              (click)="onStart()"
+              [disabled]="isRunning()">
             <mat-icon>play_arrow</mat-icon>
             <span>Start</span>
           </button>
-          <button mat-raised-button class="control-btn pause-btn" (click)="onPause()" [disabled]="!isRunning()">
+            <button
+              mat-raised-button
+              class="flex items-center gap-1 px-4 py-2 text-sm font-semibold bg-gray-200 text-gray-900 hover:bg-gray-300"
+              (click)="onPause()"
+              [disabled]="!isRunning()">
             <mat-icon>pause</mat-icon>
             <span>Pause</span>
           </button>
-          <button mat-raised-button color="primary" class="control-btn small" (click)="onStep(1)">
+            <button
+              mat-raised-button
+              color="primary"
+              class="flex items-center gap-1 px-3 py-2 text-sm font-semibold"
+              (click)="onStep(1)">
             <mat-icon>skip_next</mat-icon>
             <span>+1</span>
           </button>
-          <button mat-raised-button color="primary" class="control-btn small" (click)="onStep(10)">
+            <button
+              mat-raised-button
+              color="primary"
+              class="flex items-center gap-1 px-3 py-2 text-sm font-semibold"
+              (click)="onStep(10)">
             <mat-icon>fast_forward</mat-icon>
             <span>+10</span>
           </button>
         </div>
       </div>
     </div>
+    </app-container>
   </div>
 
   <!-- Main Content -->
-  <main class="main-content">
-    <div class="content-layout">
+  <main class="flex-1 py-6">
+    <app-container>
+      <div class="grid gap-6 lg:grid-cols-[2fr_1fr]">
       <!-- Map Container -->
-      <div class="map-container">
-        <div class="map-wrapper">
-          <div #container class="pixi-container"></div>
+        <div class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+          <div class="relative aspect-[16/9]">
+            <div #container class="h-full w-full"></div>
           
           <!-- Map Stats Overlay -->
-          <div class="map-stats">
-            <div class="stat-item">
-              <div class="stat-label">Population</div>
-              <div class="stat-value">{{ population() }}</div>
+            <div class="absolute inset-x-0 top-0 flex items-center gap-4 bg-gradient-to-b from-black/40 to-transparent p-4 text-white">
+              <div class="flex items-center gap-2">
+                <div class="text-xs uppercase tracking-wide text-white/80">Population</div>
+                <div class="text-lg font-semibold">{{ population() }}</div>
+              </div>
+              <div class="h-6 w-px bg-white/30"></div>
+              <div class="flex items-center gap-2">
+                <div class="text-xs uppercase tracking-wide text-white/80">Happiness</div>
+                <div class="text-lg font-semibold text-emerald-200">{{ happiness() }}%</div>
             </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-              <div class="stat-label">Happiness</div>
-              <div class="stat-value happiness">{{ happiness() }}%</div>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-              <div class="stat-label">Resources</div>
-              <div class="stat-value resources">{{ resources() }}</div>
+              <div class="h-6 w-px bg-white/30"></div>
+              <div class="flex items-center gap-2">
+                <div class="text-xs uppercase tracking-wide text-white/80">Resources</div>
+                <div class="text-lg font-semibold text-amber-200">{{ resources() }}</div>
             </div>
           </div>
 
           <!-- Map Controls -->
-          <div class="map-controls">
-            <button mat-icon-button class="map-control-btn">
+            <div class="absolute right-4 top-4 flex flex-col gap-2">
+              <button mat-icon-button class="rounded-lg bg-white/90 shadow hover:bg-white">
               <mat-icon>add</mat-icon>
             </button>
-            <button mat-icon-button class="map-control-btn">
+              <button mat-icon-button class="rounded-lg bg-white/90 shadow hover:bg-white">
               <mat-icon>remove</mat-icon>
             </button>
-            <button mat-icon-button class="map-control-btn">
+              <button mat-icon-button class="rounded-lg bg-white/90 shadow hover:bg-white">
               <mat-icon>fullscreen</mat-icon>
             </button>
           </div>
 
           <!-- Grid Info -->
-          <div class="grid-info">
-            <div class="grid-text">Grid: 100x100</div>
+            <div class="absolute left-4 bottom-4 rounded-md bg-white/90 px-3 py-1 text-sm font-medium text-gray-700 shadow">
+              Grid: 100x100
           </div>
         </div>
       </div>
 
       <!-- Sidebar Panels -->
-      <div class="sidebar-panels">
+        <div class="flex flex-col gap-4">
         <!-- Recent Events Panel -->
-        <mat-card class="events-panel">
-          <div class="panel-header">
-            <h3 class="panel-title">Recent Events</h3>
+          <mat-card class="border border-gray-200 shadow-sm">
+            <div class="border-b border-gray-100 px-4 py-3">
+              <h3 class="text-lg font-semibold text-gray-900">Recent Events</h3>
           </div>
-          <div class="panel-content events-list">
+            <div class="max-h-[480px] overflow-auto px-4 py-3">
             @for (event of recentEvents(); track event.id) {
               <app-event-item
                 [title]="event.title"
@@ -100,7 +120,7 @@
                 [type]="event.type">
               </app-event-item>
             } @empty {
-              <div class="empty-events">No recent events</div>
+                <div class="py-6 text-center text-gray-500">No recent events</div>
             }
           </div>
         </mat-card>
@@ -114,5 +134,6 @@
         }
       </div>
     </div>
+    </app-container>
   </main>
 </div>

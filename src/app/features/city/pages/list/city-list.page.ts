@@ -22,8 +22,7 @@ type FilterTab = 'all' | 'running' | 'completed' | 'draft';
     MatPaginatorModule,
     SimulationCardComponent
   ],
-  templateUrl: './city-list.page.html',
-  styleUrl: './city-list.page.scss'
+  templateUrl: './city-list.page.html'
 })
 export class CityListPage implements OnInit {
   private route = inject(ActivatedRoute);

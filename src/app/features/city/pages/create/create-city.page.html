@@ -1,11 +1,11 @@
-<div class="create-city-container">
-  <mat-card class="create-city-card">
+<div class="flex justify-center">
+  <mat-card class="w-full max-w-md border border-gray-200 shadow-sm">
     <mat-card-header>
-      <mat-card-title>Create a New City</mat-card-title>
+      <mat-card-title class="text-xl font-semibold text-gray-900">Create a New City</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <form [formGroup]="cityForm" (ngSubmit)="onSubmit()">
-        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="full-width">
+      <form class="space-y-4" [formGroup]="cityForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="w-full">
           <mat-label>City Name</mat-label>
           <input matInput type="text" formControlName="name" placeholder="Enter city name">
           @if (cityForm.get('name')?.invalid && cityForm.get('name')?.touched) {
@@ -14,10 +14,15 @@
         </mat-form-field>
 
         @if (errorMessage) {
-          <div class="error-message">{{ errorMessage }}</div>
+          <div class="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{{ errorMessage }}</div>
         }
 
-        <button mat-raised-button color="primary" type="submit" class="full-width" [disabled]="cityForm.invalid || isLoading">
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          class="w-full py-3 font-semibold"
+          [disabled]="cityForm.invalid || isLoading">
           @if (isLoading) {
             Creating...
           } @else {

@@ -24,6 +24,7 @@ export class PixiCanvasService {
   private app!: PIXIApplication;
   private humanSprites: HumanSprite[] = [];
   private pendingHumans: HumanOutput[] = [];
+  private resizeObserver?: ResizeObserver;
 
   async initialize(container: HTMLElement): Promise<void> {
     if (!isPlatformBrowser(this.platformId)) {
@@ -54,10 +55,18 @@ export class PixiCanvasService {
   }
 
   private setupResizeObserver(container: HTMLElement): void {
-    const resizeObserver = new ResizeObserver(() => {
-      this.app?.renderer?.resize(container.clientWidth, container.clientHeight);
+    // Use a single observer and rAF to avoid ResizeObserver loop errors
+    this.resizeObserver?.disconnect();
+    this.resizeObserver = new ResizeObserver(() => {
+      if (!this.app) return;
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+      if (!width || !height) return;
+      requestAnimationFrame(() => {
+        this.app?.renderer?.resize(width, height);
     });
-    resizeObserver.observe(container);
+    });
+    this.resizeObserver.observe(container);
   }
 
   private setupTicker(): void {
@@ -180,6 +189,9 @@ export class PixiCanvasService {
   }
 
   destroy(): void {
+    this.resizeObserver?.disconnect();
+    this.resizeObserver = undefined;
+
     this.humanSprites.forEach(human => {
       if (human.sprite && !human.sprite.destroyed) {
         if (human.sprite.parent) {

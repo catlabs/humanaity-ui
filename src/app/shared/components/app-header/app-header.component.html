@@ -1,48 +1,51 @@
-<mat-toolbar class="app-header">
-  <div class="header-content">
-    <div class="header-left">
-      <div class="logo-container">
-        <div class="logo-icon">
-          <mat-icon>science</mat-icon>
-        </div>
-        <span class="logo-text">HumanAIty</span>
-      </div>
-    </div>
-    
-    <div class="header-right">
-      @if (showUserMenu()) {
-        <button mat-icon-button class="notification-btn">
-          <mat-icon>notifications</mat-icon>
-        </button>
-        <button mat-icon-button [matMenuTriggerFor]="userMenu" class="user-menu-trigger">
-          <div class="user-avatar">
-            @if (userAvatar()) {
-              <img [src]="userAvatar()" [alt]="userName() || 'User'" />
-            } @else {
-              <div class="avatar-placeholder">
-                <mat-icon>account_circle</mat-icon>
-              </div>
-            }
+<div class="bg-white border-b border-gray-200 sticky top-0 z-50">
+  <app-container>
+    <mat-toolbar class="px-0 h-16">
+      <div class="flex items-center justify-between h-full w-full">
+        <div class="flex items-center gap-8">
+          <div class="flex items-center gap-3">
+            <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white">
+              <mat-icon class="text-base leading-none">science</mat-icon>
+            </div>
+            <span class="text-xl font-semibold text-gray-900">HumanAIty</span>
           </div>
-        </button>
-        <mat-menu #userMenu="matMenu">
-          <button mat-menu-item routerLink="/cities" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
-            <mat-icon>location_city</mat-icon>
-            <span>Simulations</span>
-          </button>
-          <button mat-menu-item routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-            <mat-icon>admin_panel_settings</mat-icon>
-            <span>Admin Tools</span>
-          </button>
-          <mat-divider></mat-divider>
-          <button mat-menu-item (click)="logout()">
-            <mat-icon>logout</mat-icon>
-            <span>Logout</span>
-          </button>
-        </mat-menu>
-      }
-    </div>
-  </div>
-</mat-toolbar>
+        </div>
+
+        <div class="flex items-center gap-4">
+          @if (showUserMenu()) {
+            <button mat-icon-button class="text-gray-600 hover:text-gray-900 transition">
+              <mat-icon>notifications</mat-icon>
+            </button>
+            <button
+              mat-icon-button
+              [matMenuTriggerFor]="userMenu"
+              class="hover:opacity-80 transition h-8 w-8 rounded-full overflow-hidden p-0">
+              @if (userAvatar()) {
+                <img class="h-full w-full object-cover" [src]="userAvatar()" [alt]="userName() || 'User'" />
+              } @else {
+                <mat-icon class="text-gray-500 text-xl bg-gray-300 h-full w-full flex items-center justify-center rounded-full">account_circle</mat-icon>
+              }
+            </button>
+            <mat-menu #userMenu="matMenu">
+              <button mat-menu-item routerLink="/cities" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+                <mat-icon>location_city</mat-icon>
+                <span>Simulations</span>
+              </button>
+              <button mat-menu-item routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <mat-icon>admin_panel_settings</mat-icon>
+                <span>Admin Tools</span>
+              </button>
+              <mat-divider></mat-divider>
+              <button mat-menu-item (click)="logout()">
+                <mat-icon>logout</mat-icon>
+                <span>Logout</span>
+              </button>
+            </mat-menu>
+          }
+        </div>
+      </div>
+    </mat-toolbar>
+  </app-container>
+</div>
 
 

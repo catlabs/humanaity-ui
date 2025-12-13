@@ -254,6 +254,11 @@ import { cityListResolver } from '@features/city';
 - **Always** use path aliases for core, shared, and API imports
 - **Optional** for imports within the same feature (relative imports are acceptable for internal feature code)
 
+### Angular Material Buttons & Icons
+
+- Do not wrap `mat-icon-button` content in extra `div` wrappers; place the icon/image directly inside the button to preserve Material sizing/spacing
+- Size avatars/icons with utility classes on the button or icon itself (e.g., `h-8 w-8 rounded-full overflow-hidden`)
+
 ### Benefits
 
 - **Cleaner imports**: `@features/auth` instead of `../../../features/auth/auth.service`
@@ -423,6 +428,82 @@ SCSS files are **only allowed** for:
 - Complex animations that Tailwind cannot handle
 
 **Never** write component-specific styles in `.scss` files. Use Tailwind classes in templates instead.
+
+## 🆕 Tailwind Usage Rules and Component Creation Guidelines
+
+1. When Tailwind utilities are enough
+
+Use Tailwind directly in the template when:
+
+- you only need spacing, layout, alignment, or typography utilities
+- the pattern is simple and not repeated across many components
+- the code remains understandable without abstraction
+- the utilities describe the intent clearly (e.g., flex gap-4 items-center)
+- no logic, state, or UI structure needs to be encapsulated
+
+Tailwind is ideal for:
+
+- spacing and padding
+- grids and flex layouts
+- responsive breakpoints
+- typography and colors
+- borders, shadows, backgrounds
+- hover/focus styles
+
+Do not create Angular components just to hide Tailwind utilities.
+
+2. When to create a reusable Angular component
+
+Create an Angular component only when:
+
+- the pattern is reused in multiple places
+- you would have created a component even without Tailwind
+- the element carries semantic meaning (e.g., page container, section header)
+- there is UI logic or structure to encapsulate
+- the HTML block is large or complex
+- the pattern involves multiple nested elements or repeated logic
+
+Good examples:
+
+- <app-container> for consistent page width and padding
+- <app-section-header> used across multiple feature screens
+- layout or structural wrappers that belong to the design system
+
+Avoid creating components only to hide 5–10 Tailwind classes.
+
+A component should represent structure, logic, semantics, or reusability, not cosmetic abstraction.
+
+3. When to use SCSS instead of Tailwind
+
+Use SCSS when:
+
+- the style is complex, custom, or not expressible with utilities
+- you need CSS variables, mixins, or multi-layered styling
+- the style is not meant to appear directly in the template
+- the component needs unique or domain-specific visual rules
+- you are overriding Angular Material tokens or theming rules
+
+SCSS is ideal for:
+
+- advanced animations
+- deeply customized Material components
+- theme variables
+- map visuals, markers, and custom shapes
+- non-standard UI components
+
+Do not duplicate Tailwind and SCSS for the same purpose.
+
+If Tailwind covers it, prefer Tailwind.
+
+If the style is unique or complex, prefer SCSS.
+
+4. Rule of thumb
+
+If the abstraction would exist even without Tailwind → create a component.
+
+If the abstraction exists only because Tailwind classes feel too long → keep Tailwind and do not create a component.
+
+This keeps the component tree clean, avoids over-abstraction, and ensures the project scales without accumulating unnecessary wrappers.
 
 ### Angular Material
 

@@ -1,22 +1,24 @@
-<div class="admin-tools-page">
-    <div class="page-header">
-      <h2 class="page-title">Admin Tools</h2>
-      <p class="page-subtitle">Manage and configure simulation parameters</p>
+<div class="flex flex-col gap-6">
+  <div>
+    <h2 class="text-3xl font-bold text-gray-900">Admin Tools</h2>
+    <p class="text-gray-600">Manage and configure simulation parameters</p>
     </div>
 
-    <div class="simulators-container">
+  <div class="flex flex-col gap-6">
       <!-- Invention Progression Simulator -->
-      <mat-card class="simulator-card">
-        <div class="simulator-header">
-          <h3 class="simulator-title">Invention Progression Simulator</h3>
-          <p class="simulator-description">Simulate the logical progression of human inventions throughout history</p>
-          <button mat-raised-button color="primary" (click)="onGenerateNextInvention()">
+    <mat-card class="border border-gray-200 shadow-sm">
+      <div class="flex flex-wrap items-start gap-3 border-b border-gray-100 px-4 py-3">
+        <div class="flex-1">
+          <h3 class="text-xl font-semibold text-gray-900">Invention Progression Simulator</h3>
+          <p class="text-gray-600">Simulate the logical progression of human inventions throughout history</p>
+        </div>
+        <button mat-raised-button color="primary" (click)="onGenerateNextInvention()" class="px-5 py-2.5 font-semibold">
             Generate Next Invention
           </button>
         </div>
 
-        <div class="timeline-container">
-          <div class="timeline-scroll">
+      <div class="max-h-80 overflow-auto px-4 py-3">
+        <div class="flex flex-col gap-3">
             @for (invention of inventions(); track invention.title) {
               <app-timeline-node
                 [title]="invention.title"
@@ -29,17 +31,19 @@
       </mat-card>
 
       <!-- Artistic Evolution Simulator -->
-      <mat-card class="simulator-card">
-        <div class="simulator-header">
-          <h3 class="simulator-title">Artistic Evolution Simulator</h3>
-          <p class="simulator-description">Trace the evolution of artistic movements and their cultural impact</p>
-          <button mat-raised-button color="primary" (click)="onGenerateNextArtisticStage()">
+    <mat-card class="border border-gray-200 shadow-sm">
+      <div class="flex flex-wrap items-start gap-3 border-b border-gray-100 px-4 py-3">
+        <div class="flex-1">
+          <h3 class="text-xl font-semibold text-gray-900">Artistic Evolution Simulator</h3>
+          <p class="text-gray-600">Trace the evolution of artistic movements and their cultural impact</p>
+        </div>
+        <button mat-raised-button color="primary" (click)="onGenerateNextArtisticStage()" class="px-5 py-2.5 font-semibold">
             Next Artistic Stage
           </button>
         </div>
 
-        <div class="timeline-container">
-          <div class="timeline-scroll">
+      <div class="max-h-80 overflow-auto px-4 py-3">
+        <div class="flex flex-col gap-3">
             @for (movement of artisticMovements(); track movement.title) {
               <app-timeline-node
                 [title]="movement.title"
@@ -52,17 +56,19 @@
       </mat-card>
 
       <!-- Philosophical Ideas Simulator -->
-      <mat-card class="simulator-card">
-        <div class="simulator-header">
-          <h3 class="simulator-title">Philosophical Ideas Simulator</h3>
-          <p class="simulator-description">Explore the development of philosophical thought and reasoning systems</p>
-          <button mat-raised-button color="primary" (click)="onGenerateNextIdea()">
+    <mat-card class="border border-gray-200 shadow-sm">
+      <div class="flex flex-wrap items-start gap-3 border-b border-gray-100 px-4 py-3">
+        <div class="flex-1">
+          <h3 class="text-xl font-semibold text-gray-900">Philosophical Ideas Simulator</h3>
+          <p class="text-gray-600">Explore the development of philosophical thought and reasoning systems</p>
+        </div>
+        <button mat-raised-button color="primary" (click)="onGenerateNextIdea()" class="px-5 py-2.5 font-semibold">
             Generate Next Idea
           </button>
         </div>
 
-        <div class="timeline-container">
-          <div class="timeline-scroll">
+      <div class="max-h-80 overflow-auto px-4 py-3">
+        <div class="flex flex-col gap-3">
             @for (idea of philosophicalIdeas(); track idea.title) {
               <app-timeline-node
                 [title]="idea.title"

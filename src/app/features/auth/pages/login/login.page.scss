@@ -3,7 +3,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f8f9fb;
+  background-color: var(--mat-sys-surface);
   padding: 2rem 1rem;
 }
 
@@ -31,14 +31,14 @@
 .logo-icon {
   width: 40px;
   height: 40px;
-  background-color: #2563eb;
+  background-color: var(--mat-sys-primary);
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   
   mat-icon {
-    color: white;
+    color: var(--mat-sys-on-primary);
     font-size: 24px;
     width: 24px;
     height: 24px;
@@ -48,12 +48,12 @@
 .logo-text {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #111827;
+  color: var(--mat-sys-on-surface);
   margin: 0;
 }
 
 .subtitle {
-  color: #4b5563;
+  color: var(--mat-sys-on-surface-variant);
   font-size: 0.875rem;
   margin: 0;
 }
@@ -62,7 +62,7 @@
   .form-title {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #111827;
+    color: var(--mat-sys-on-surface);
     margin: 0 0 1.5rem 0;
     text-align: center;
   }
@@ -81,12 +81,12 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    color: #dc2626;
+    color: var(--mat-sys-on-error-container);
     font-size: 0.875rem;
     padding: 0.75rem;
-    background-color: #fef2f2;
+    background-color: var(--mat-sys-error-container);
     border-radius: 8px;
-    border: 1px solid #fecaca;
+    border: 1px solid var(--mat-sys-outline-variant);
     
     mat-icon {
       font-size: 18px;
@@ -109,13 +109,13 @@
 }
 
 .forgot-password-link {
-  color: #2563eb;
+  color: var(--mat-sys-primary);
   text-decoration: none;
   font-size: 0.875rem;
   transition: color 0.2s;
   
   &:hover {
-    color: #1d4ed8;
+    color: var(--mat-sys-primary);
   }
 }
 
@@ -126,17 +126,17 @@
 
 .signup-text {
   font-size: 0.875rem;
-  color: #4b5563;
+  color: var(--mat-sys-on-surface-variant);
   margin: 0;
 }
 
 .signup-link-text {
-  color: #2563eb;
+  color: var(--mat-sys-primary);
   text-decoration: none;
   font-weight: 500;
   transition: color 0.2s;
   
   &:hover {
-    color: #1d4ed8;
+    color: var(--mat-sys-primary);
   }
 }

@@ -7,6 +7,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '@features/auth';
+import { ThemeService } from '@core';
 import { AppContainerComponent } from '../app-container/app-container.component';
 
 @Component({
@@ -29,6 +30,7 @@ import { AppContainerComponent } from '../app-container/app-container.component'
 export class AppHeaderComponent {
   private authService: AuthService = inject(AuthService);
   private router: Router = inject(Router);
+  readonly theme = inject(ThemeService);
 
   showUserMenu = input(true);
   userAvatar = input<string | undefined>();
@@ -37,6 +39,10 @@ export class AppHeaderComponent {
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);
+  }
+
+  toggleTheme(): void {
+    this.theme.toggle();
   }
 }
 

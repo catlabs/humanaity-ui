@@ -1,6 +1,7 @@
 import {
   ApplicationConfig,
   inject,
+  provideAppInitializer,
   provideBrowserGlobalErrorListeners,
   provideZonelessChangeDetection
 } from '@angular/core';
@@ -10,13 +11,16 @@ import {provideAnimations} from '@angular/platform-browser/animations';
 import {routes} from './app.routes';
 import {provideClientHydration, withEventReplay} from '@angular/platform-browser';
 import {provideHttpClient, withFetch, withInterceptors} from '@angular/common/http';
-import {authInterceptor} from '@core';
+import { authInterceptor, ThemeService } from '@core';
 import {provideApi} from '@api';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
+    provideAppInitializer(() => {
+      inject(ThemeService).init();
+    }),
     provideRouter(routes),
     provideClientHydration(withEventReplay()),
     provideHttpClient(withFetch(), withInterceptors([authInterceptor])),

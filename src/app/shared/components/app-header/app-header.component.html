@@ -1,19 +1,28 @@
-<div class="bg-white border-b border-gray-200 sticky top-0 z-50">
+<div class="bg-surface border-b border-outlineVariant sticky top-0 z-50">
   <app-container>
     <mat-toolbar class="px-0 h-16">
       <div class="flex items-center justify-between h-full w-full">
         <div class="flex items-center gap-8">
           <div class="flex items-center gap-3">
-            <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white">
+            <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-onPrimary">
               <mat-icon class="text-base leading-none">science</mat-icon>
             </div>
-            <span class="text-xl font-semibold text-gray-900">HumanAIty</span>
+            <span class="text-xl font-semibold text-onSurface">HumanAIty</span>
           </div>
         </div>
 
         <div class="flex items-center gap-4">
+          <button
+            mat-icon-button
+            type="button"
+            class="text-onSurfaceVariant hover:text-onSurface transition"
+            (click)="toggleTheme()"
+            [attr.aria-label]="theme.isDark() ? 'Switch to light theme' : 'Switch to dark theme'">
+            <mat-icon>{{ theme.isDark() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+          </button>
+
           @if (showUserMenu()) {
-            <button mat-icon-button class="text-gray-600 hover:text-gray-900 transition">
+            <button mat-icon-button class="text-onSurfaceVariant hover:text-onSurface transition">
               <mat-icon>notifications</mat-icon>
             </button>
             <button
@@ -23,7 +32,7 @@
               @if (userAvatar()) {
                 <img class="h-full w-full object-cover" [src]="userAvatar()" [alt]="userName() || 'User'" />
               } @else {
-                <mat-icon class="text-gray-500 text-xl bg-gray-300 h-full w-full flex items-center justify-center rounded-full">account_circle</mat-icon>
+                <mat-icon class="text-onSurfaceVariant text-xl bg-surfaceContainerHigh h-full w-full flex items-center justify-center rounded-full">account_circle</mat-icon>
               }
             </button>
             <mat-menu #userMenu="matMenu">

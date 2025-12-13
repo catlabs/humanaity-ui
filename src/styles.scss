@@ -3,6 +3,11 @@
 
 @import './tailwind.css'; // Import Tailwind first
 
+/* Required for Tailwind layout correctness */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 // Define custom color palette based on design
 $humanaity-primary: mat.m2-define-palette((
   50: #e0e7ff,
@@ -84,5 +89,22 @@ body {
 // Form field styles
 .mat-mdc-form-field {
   width: 100%;
+}
+
+// Chrome autofill adds an internal grey background (:-internal-autofill-selected).
+// We can't override that internal selector directly, but we *can* override the
+// painted result via :-webkit-autofill on Material inputs.
+.mat-mdc-input-element:-webkit-autofill,
+.mat-mdc-input-element:-webkit-autofill:hover,
+.mat-mdc-input-element:-webkit-autofill:focus,
+.mat-mdc-input-element:-webkit-autofill:active {
+  // Paint over the UA background with the intended surface color.
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+  box-shadow: 0 0 0 1000px #ffffff inset !important;
+  // Chrome may force `color: fieldtext !important` (UA) during autofill.
+  // Set both `color` and `-webkit-text-fill-color` explicitly so text remains visible.
+  color: #1f2937 !important;
+  -webkit-text-fill-color: #1f2937 !important;
+  caret-color: #1f2937 !important;
 }
 

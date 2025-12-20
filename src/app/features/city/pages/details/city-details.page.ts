@@ -6,39 +6,42 @@ import {
   OnDestroy,
   OnInit,
   signal,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {CityOutput, HumanOutput, SimulationsService} from '@api';
-import {CityService} from '../../city.service';
-import {PixiCanvasService} from '../../services/pixi-canvas.service';
-import {Subscription} from 'rxjs';
-import {CommonModule} from '@angular/common';
-import {MatCardModule} from '@angular/material/card';
-import {MatButtonModule} from '@angular/material/button';
-import {MatIconModule} from '@angular/material/icon';
-import {AppContainerComponent, EventItemComponent, EventType, EntityPanelComponent, EntityData} from '@shared';
-
+import { ActivatedRoute } from '@angular/router';
+import { CityOutput } from '@api';
+import { CityService } from '../../city.service';
+import { PixiCanvasService } from '../../services/pixi-canvas.service';
+import { Subscription } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import {
+  EventItemComponent,
+  EventType,
+  EntityPanelComponent,
+  EntityData,
+} from '@shared';
 
 @Component({
   selector: 'app-city-details',
+  standalone: true,
   templateUrl: './city-details.page.html',
   imports: [
     CommonModule,
     MatCardModule,
     MatButtonModule,
     MatIconModule,
-    AppContainerComponent,
     EventItemComponent,
-    EntityPanelComponent
-  ]
+  ],
 })
 export class CityDetailsPage implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('container', {static: true}) containerRef!: ElementRef<HTMLDivElement>;
+  @ViewChild('container', { static: true })
+  containerRef!: ElementRef<HTMLDivElement>;
   private route = inject(ActivatedRoute);
   public city: CityOutput = this.route.snapshot.data['city'];
   private cityService = inject(CityService);
-  private simulationService = inject(SimulationsService);
   private pixiCanvasService = inject(PixiCanvasService);
   private subscription?: Subscription;
 
@@ -48,35 +51,163 @@ export class CityDetailsPage implements OnInit, AfterViewInit, OnDestroy {
   population = signal(12847);
   happiness = signal(87);
   resources = signal('$45.2K');
-  
-  recentEvents = signal<Array<{
-    id: number;
-    title: string;
-    description: string;
-    timestamp: string;
-    type: EventType;
-  }>>([
+
+  recentEvents = signal<
+    Array<{
+      id: number;
+      title: string;
+      description: string;
+      timestamp: string;
+      type: EventType;
+    }>
+  >([
     {
       id: 1,
       title: 'New citizen born',
       description: 'Sarah Johnson arrived in the city',
       timestamp: '2 minutes ago',
-      type: 'birth'
+      type: 'birth',
     },
     {
       id: 2,
       title: 'Building completed',
       description: 'New residential complex finished',
       timestamp: '15 minutes ago',
-      type: 'building'
+      type: 'building',
     },
     {
       id: 3,
       title: 'New invention',
       description: 'Steam engine discovered by engineers',
       timestamp: '1 hour ago',
-      type: 'invention'
-    }
+      type: 'invention',
+    },
+    {
+      id: 1,
+      title: 'New citizen born',
+      description: 'Sarah Johnson arrived in the city',
+      timestamp: '2 minutes ago',
+      type: 'birth',
+    },
+    {
+      id: 2,
+      title: 'Building completed',
+      description: 'New residential complex finished',
+      timestamp: '15 minutes ago',
+      type: 'building',
+    },
+    {
+      id: 3,
+      title: 'New invention',
+      description: 'Steam engine discovered by engineers',
+      timestamp: '1 hour ago',
+      type: 'invention',
+    },
+    {
+      id: 1,
+      title: 'New citizen born',
+      description: 'Sarah Johnson arrived in the city',
+      timestamp: '2 minutes ago',
+      type: 'birth',
+    },
+    {
+      id: 2,
+      title: 'Building completed',
+      description: 'New residential complex finished',
+      timestamp: '15 minutes ago',
+      type: 'building',
+    },
+    {
+      id: 3,
+      title: 'New invention',
+      description: 'Steam engine discovered by engineers',
+      timestamp: '1 hour ago',
+      type: 'invention',
+    },
+    {
+      id: 1,
+      title: 'New citizen born',
+      description: 'Sarah Johnson arrived in the city',
+      timestamp: '2 minutes ago',
+      type: 'birth',
+    },
+    {
+      id: 2,
+      title: 'Building completed',
+      description: 'New residential complex finished',
+      timestamp: '15 minutes ago',
+      type: 'building',
+    },
+    {
+      id: 3,
+      title: 'New invention',
+      description: 'Steam engine discovered by engineers',
+      timestamp: '1 hour ago',
+      type: 'invention',
+    },
+    {
+      id: 1,
+      title: 'New citizen born',
+      description: 'Sarah Johnson arrived in the city',
+      timestamp: '2 minutes ago',
+      type: 'birth',
+    },
+    {
+      id: 2,
+      title: 'Building completed',
+      description: 'New residential complex finished',
+      timestamp: '15 minutes ago',
+      type: 'building',
+    },
+    {
+      id: 3,
+      title: 'New invention',
+      description: 'Steam engine discovered by engineers',
+      timestamp: '1 hour ago',
+      type: 'invention',
+    },
+    {
+      id: 1,
+      title: 'New citizen born',
+      description: 'Sarah Johnson arrived in the city',
+      timestamp: '2 minutes ago',
+      type: 'birth',
+    },
+    {
+      id: 2,
+      title: 'Building completed',
+      description: 'New residential complex finished',
+      timestamp: '15 minutes ago',
+      type: 'building',
+    },
+    {
+      id: 3,
+      title: 'New invention',
+      description: 'Steam engine discovered by engineers',
+      timestamp: '1 hour ago',
+      type: 'invention',
+    },
+    {
+      id: 1,
+      title: 'New citizen born',
+      description: 'Sarah Johnson arrived in the city',
+      timestamp: '2 minutes ago',
+      type: 'birth',
+    },
+    {
+      id: 2,
+      title: 'Building completed',
+      description: 'New residential complex finished',
+      timestamp: '15 minutes ago',
+      type: 'building',
+    },
+    {
+      id: 3,
+      title: 'New invention',
+      description: 'Steam engine discovered by engineers',
+      timestamp: '1 hour ago',
+      type: 'invention',
+    },
   ]);
 
   selectedEntity = signal<EntityData | null>({
@@ -90,7 +221,7 @@ export class CityDetailsPage implements OnInit, AfterViewInit, OnDestroy {
     efficiency: 82,
     workers: 12,
     maintenanceCost: '$250/cycle',
-    builtAt: 'Cycle 12'
+    builtAt: 'Cycle 12',
   });
 
   ngOnInit() {
@@ -98,19 +229,23 @@ export class CityDetailsPage implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.pixiCanvasService.initialize(this.containerRef.nativeElement).then(() => {
-    this.subscription = this.cityService.subscribePositions(String(this.city.id!)).subscribe({
-      next: humans => {
-        humans.forEach(human => {
-          this.pixiCanvasService.addHuman(human);
-          this.pixiCanvasService.updateHuman(human);
-        });
-      },
-      error: (error) => {
-        console.error('Error subscribing to positions:', error);
-      }
-    });
-    });
+    this.pixiCanvasService
+      .initialize(this.containerRef.nativeElement)
+      .then(() => {
+        this.subscription = this.cityService
+          .subscribePositions(String(this.city.id!))
+          .subscribe({
+            next: (humans) => {
+              humans.forEach((human) => {
+                this.pixiCanvasService.addHuman(human);
+                this.pixiCanvasService.updateHuman(human);
+              });
+            },
+            error: (error) => {
+              console.error('Error subscribing to positions:', error);
+            },
+          });
+      });
   }
 
   ngOnDestroy(): void {
@@ -121,27 +256,27 @@ export class CityDetailsPage implements OnInit, AfterViewInit, OnDestroy {
   // Simulation Controls
   onStart(): void {
     if (this.city.id) {
-      this.simulationService.startSimulation(this.city.id).subscribe({
+      this.cityService.startSimulation(this.city.id).subscribe({
         next: () => {
           this.isRunning.set(true);
           this.checkSimulationStatus();
         },
         error: (error) => {
           console.error('Error starting simulation:', error);
-        }
+        },
       });
     }
   }
 
   onPause(): void {
     if (this.city.id) {
-      this.simulationService.stopSimulation(this.city.id).subscribe({
+      this.cityService.stopSimulation(this.city.id).subscribe({
         next: () => {
           this.isRunning.set(false);
         },
         error: (error) => {
           console.error('Error stopping simulation:', error);
-        }
+        },
       });
     }
   }
@@ -153,13 +288,13 @@ export class CityDetailsPage implements OnInit, AfterViewInit, OnDestroy {
 
   checkSimulationStatus(): void {
     if (this.city.id) {
-      this.simulationService.isSimulationRunning(this.city.id).subscribe({
-        next: (response: any) => {
-          this.isRunning.set(response.running || false);
+      this.cityService.isSimulationRunning(this.city.id).subscribe({
+        next: (running) => {
+          this.isRunning.set(running);
         },
         error: (error) => {
           console.error('Error checking simulation status:', error);
-        }
+        },
       });
     }
   }

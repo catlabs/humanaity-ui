@@ -18,6 +18,10 @@ $tertiary: mat.$cyan-palette;
     ),
     typography: (
       use-system-variables: true,
+      // Use Inter across Material's typography tokens.
+      // (Inter is loaded globally in src/styles.scss)
+      plain-family: (Inter, Roboto, "Helvetica Neue", sans-serif),
+      brand-family: (Inter, Roboto, "Helvetica Neue", sans-serif),
     ),
     density: (
       scale: 0,
@@ -34,6 +38,15 @@ $dark-theme: create-theme(dark);
   @include mat.all-component-themes($light-theme);
   @include mat.system-level-colors($light-theme);
   @include mat.system-level-typography($light-theme);
+
+  // Typography override: make global <h2> smaller.
+  // In Material v3, mat.typography-hierarchy() uses `font: var(--mat-sys-display-medium)`.
+  // Override the shorthand token directly so the hierarchy picks it up.
+  @include mat.theme-overrides((
+    display-medium: 400 24px/32px var(--mat-sys-display-medium-font),
+    display-medium-size: 24px,
+    display-medium-line-height: 32px,
+  ));
 
   // Brand override: keep historical Humanaity primary (#2563eb).
   // These tokens are consumed by Angular Material *and* Tailwind (via tailwind.config.cjs).

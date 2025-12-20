@@ -31,24 +31,6 @@
   margin-bottom: 0.75rem;
 }
 
-.node-reasoning {
-  margin-top: 0.75rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid #e5e7eb;
-  font-size: 0.75rem;
-  color: #4b5563;
-  line-height: 1.5;
-  overflow: hidden;
-  width: 100%;
-}
-
-.reasoning-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-}
-
 .reasoning-label {
   font-weight: 500;
   color: #374151;
@@ -65,7 +47,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  
+
   ::ng-deep .mat-icon {
     font-size: 18px;
     width: 18px;
@@ -76,10 +58,8 @@
     align-items: center;
     justify-content: center;
   }
-  
+
   &:hover ::ng-deep .mat-icon {
     color: #4f46e5;
   }
 }
-
-

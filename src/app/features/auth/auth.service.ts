@@ -1,7 +1,8 @@
 import { Injectable, inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { Observable, tap, map, switchMap, of, from } from 'rxjs';
+import { Observable, tap, map, switchMap } from 'rxjs';
 import { AuthControllerService, AuthRequest, SignupRequest, RefreshTokenRequest, AuthResponse } from '@api';
+import { parseApiResponse } from '@core';
 
 const ACCESS_TOKEN_KEY = 'accessToken';
 const REFRESH_TOKEN_KEY = 'refreshToken';
@@ -16,37 +17,21 @@ export class AuthService {
 
   login(request: AuthRequest): Observable<AuthResponse> {
     return this.authControllerService.login(request).pipe(
-      switchMap((response: any) => {
-        // Handle Blob response (can happen with fetch API)
-        if (response instanceof Blob) {
-          return from(new Promise<any>((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-              try {
-                const text = reader.result as string;
-                resolve(JSON.parse(text));
-              } catch (e) {
-                reject(new Error('Failed to parse JSON response: ' + e));
-              }
-            };
-            reader.onerror = () => reject(new Error('Failed to read Blob'));
-            reader.readAsText(response);
-          }));
-        }
-        return of(response);
-      }),
-      map((response: any) => {
+      switchMap(parseApiResponse<Record<string, unknown>>),
+      map((response) => {
         // Extract tokens
-        const authResponse: AuthResponse = {
-          accessToken: response?.accessToken || response?.access_token,
-          refreshToken: response?.refreshToken || response?.refresh_token
-        };
-        
-        if (!authResponse.accessToken || !authResponse.refreshToken) {
+        const accessToken =
+          (typeof response['accessToken'] === 'string' ? response['accessToken'] : undefined) ??
+          (typeof response['access_token'] === 'string' ? response['access_token'] : undefined);
+        const refreshToken =
+          (typeof response['refreshToken'] === 'string' ? response['refreshToken'] : undefined) ??
+          (typeof response['refresh_token'] === 'string' ? response['refresh_token'] : undefined);
+
+        if (!accessToken || !refreshToken) {
           throw new Error('Invalid response structure: tokens not found');
         }
-        
-        return authResponse;
+
+        return { accessToken, refreshToken };
       }),
       tap(response => {
         this.setTokens(response);
@@ -56,12 +41,20 @@ export class AuthService {
 
   signup(request: SignupRequest): Observable<AuthResponse> {
     return this.authControllerService.signup(request).pipe(
-      map((response: any) => {
-        const authResponse: AuthResponse = {
-          accessToken: response.accessToken || response.access_token,
-          refreshToken: response.refreshToken || response.refresh_token
-        };
-        return authResponse;
+      switchMap(parseApiResponse<Record<string, unknown>>),
+      map((response) => {
+        const accessToken =
+          (typeof response['accessToken'] === 'string' ? response['accessToken'] : undefined) ??
+          (typeof response['access_token'] === 'string' ? response['access_token'] : undefined);
+        const refreshToken =
+          (typeof response['refreshToken'] === 'string' ? response['refreshToken'] : undefined) ??
+          (typeof response['refresh_token'] === 'string' ? response['refresh_token'] : undefined);
+
+        if (!accessToken || !refreshToken) {
+          throw new Error('Invalid response structure: tokens not found');
+        }
+
+        return { accessToken, refreshToken };
       }),
       tap(response => this.setTokens(response))
     );
@@ -75,12 +68,20 @@ export class AuthService {
 
     const request: RefreshTokenRequest = { refreshToken };
     return this.authControllerService.refresh(request).pipe(
-      map((response: any) => {
-        const authResponse: AuthResponse = {
-          accessToken: response.accessToken || response.access_token,
-          refreshToken: response.refreshToken || response.refresh_token
-        };
-        return authResponse;
+      switchMap(parseApiResponse<Record<string, unknown>>),
+      map((response) => {
+        const accessToken =
+          (typeof response['accessToken'] === 'string' ? response['accessToken'] : undefined) ??
+          (typeof response['access_token'] === 'string' ? response['access_token'] : undefined);
+        const refreshToken =
+          (typeof response['refreshToken'] === 'string' ? response['refreshToken'] : undefined) ??
+          (typeof response['refresh_token'] === 'string' ? response['refresh_token'] : undefined);
+
+        if (!accessToken || !refreshToken) {
+          throw new Error('Invalid response structure: tokens not found');
+        }
+
+        return { accessToken, refreshToken };
       }),
       tap(response => this.setTokens(response))
     );

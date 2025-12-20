@@ -23,6 +23,19 @@ body {
   color: var(--mat-sys-on-surface);
 }
 
+// Reusable background for sticky header bars.
+// Light mode: subtle white -> off-white gradient.
+// Dark mode: fall back to Material surface token.
+.app-header-bg {
+  background-color: #ffffff;
+  background-image: linear-gradient(rgb(255, 255, 255) 39.9%, rgb(248, 248, 248) 100%);
+}
+
+html.dark .app-header-bg {
+  background-image: none;
+  background-color: var(--mat-sys-surface);
+}
+
 // Hide scrollbar (matching design)
 ::-webkit-scrollbar {
   display: none;

@@ -1,4 +1,4 @@
-@use '@angular/material' as mat;
+@use "@angular/material" as mat;
 
 // We are fully on Material v3 token-based theming.
 // (Project rule: no Material M2 theming; this file defines v3 tokens only.)
@@ -9,24 +9,37 @@ $primary: mat.$blue-palette;
 $tertiary: mat.$cyan-palette;
 
 @function create-theme($type) {
-  @return mat.define-theme((
-    color: (
-      theme-type: $type,
-      primary: $primary,
-      tertiary: $tertiary,
-      use-system-variables: true,
-    ),
-    typography: (
-      use-system-variables: true,
-      // Use Inter across Material's typography tokens.
-      // (Inter is loaded globally in src/styles.scss)
-      plain-family: (Inter, Roboto, "Helvetica Neue", sans-serif),
-      brand-family: (Inter, Roboto, "Helvetica Neue", sans-serif),
-    ),
-    density: (
-      scale: 0,
-    ),
-  ));
+  @return mat.define-theme(
+    (
+      color: (
+        theme-type: $type,
+        primary: $primary,
+        tertiary: $tertiary,
+        use-system-variables: true,
+      ),
+      typography: (
+        use-system-variables: true,
+        // Use Inter across Material's typography tokens.
+        // (Inter is loaded globally in src/styles.scss)
+        plain-family:
+          (
+            Inter,
+            Roboto,
+            "Helvetica Neue",
+            sans-serif,
+          ),
+        brand-family: (
+          Inter,
+          Roboto,
+          "Helvetica Neue",
+          sans-serif,
+        ),
+      ),
+      density: (
+        scale: 0,
+      ),
+    )
+  );
 }
 
 $light-theme: create-theme(light);
@@ -42,11 +55,13 @@ $dark-theme: create-theme(dark);
   // Typography override: make global <h2> smaller.
   // In Material v3, mat.typography-hierarchy() uses `font: var(--mat-sys-display-medium)`.
   // Override the shorthand token directly so the hierarchy picks it up.
-  @include mat.theme-overrides((
-    display-medium: 400 24px/32px var(--mat-sys-display-medium-font),
-    display-medium-size: 24px,
-    display-medium-line-height: 32px,
-  ));
+  @include mat.theme-overrides(
+    (
+      display-medium: 400 24px/32px var(--mat-sys-display-medium-font),
+      display-medium-size: 24px,
+      display-medium-line-height: 32px,
+    )
+  );
 
   // Brand override: keep historical Humanaity primary (#2563eb).
   // These tokens are consumed by Angular Material *and* Tailwind (via tailwind.config.cjs).
@@ -63,9 +78,11 @@ $dark-theme: create-theme(dark);
   --mat-sys-primary-fixed-dim: #93c5fd;
   --mat-sys-on-primary-fixed-variant: #1e40af;
 
-  @include mat.sidenav-overrides((
-    container-background-color: var(--mat-sys-surface-container)
-  ));
+  @include mat.sidenav-overrides(
+    (
+      container-background-color: var(--mat-sys-surface-container-low),
+    )
+  );
 }
 
 // Dark theme overrides are activated by toggling `html.dark`.
@@ -86,9 +103,11 @@ html.dark {
   --mat-sys-primary-fixed-dim: #93c5fd;
   --mat-sys-on-primary-fixed-variant: #1e40af;
 
-  @include mat.sidenav-overrides((
-    container-background-color: var(--mat-sys-surface-container)
-  ));
+  @include mat.sidenav-overrides(
+    (
+      container-background-color: var(--mat-sys-surface),
+    )
+  );
 }
 
 @include mat.typography-hierarchy($light-theme);

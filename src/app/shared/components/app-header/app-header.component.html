@@ -1,10 +1,14 @@
-<div class="w-full app-header-bg border-b border-gray-200 dark:border-outlineVariant">
+<div
+  class="w-full app-surface-bar-bg border-b border-gray-200 dark:border-outlineVariant"
+>
   <app-container>
     <mat-toolbar class="px-0 h-16">
       <div class="flex items-center justify-between h-full w-full">
         <div class="flex items-center gap-8">
           <div class="flex items-center gap-3">
-            <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-onPrimary">
+            <div
+              class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-onPrimary"
+            >
               <mat-icon class="text-base leading-none">science</mat-icon>
             </div>
             <span class="text-xl font-semibold text-onSurface">HumanAIty</span>
@@ -17,44 +21,68 @@
             type="button"
             class="text-onSurfaceVariant hover:text-onSurface transition"
             (click)="toggleTheme()"
-            [attr.aria-label]="theme.isDark() ? 'Switch to light theme' : 'Switch to dark theme'">
-            <mat-icon>{{ theme.isDark() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+            [attr.aria-label]="
+              theme.isDark() ? 'Switch to light theme' : 'Switch to dark theme'
+            "
+          >
+            <mat-icon>{{
+              theme.isDark() ? "light_mode" : "dark_mode"
+            }}</mat-icon>
           </button>
 
           @if (showUserMenu()) {
-            <button mat-icon-button class="text-onSurfaceVariant hover:text-onSurface transition">
-              <mat-icon>notifications</mat-icon>
+          <button
+            mat-icon-button
+            class="text-onSurfaceVariant hover:text-onSurface transition"
+          >
+            <mat-icon>notifications</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            [matMenuTriggerFor]="userMenu"
+            class="hover:opacity-80 transition h-8 w-8 rounded-full overflow-hidden p-0"
+          >
+            @if (userAvatar()) {
+            <img
+              class="h-full w-full object-cover"
+              [src]="userAvatar()"
+              [alt]="userName() || 'User'"
+            />
+            } @else {
+            <mat-icon
+              class="text-onSurfaceVariant text-xl bg-surfaceContainerHigh h-full w-full flex items-center justify-center rounded-full"
+              >account_circle</mat-icon
+            >
+            }
+          </button>
+          <mat-menu #userMenu="matMenu">
+            <button
+              mat-menu-item
+              routerLink="/cities"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: false }"
+            >
+              <mat-icon>location_city</mat-icon>
+              <span>Simulations</span>
             </button>
             <button
-              mat-icon-button
-              [matMenuTriggerFor]="userMenu"
-              class="hover:opacity-80 transition h-8 w-8 rounded-full overflow-hidden p-0">
-              @if (userAvatar()) {
-                <img class="h-full w-full object-cover" [src]="userAvatar()" [alt]="userName() || 'User'" />
-              } @else {
-                <mat-icon class="text-onSurfaceVariant text-xl bg-surfaceContainerHigh h-full w-full flex items-center justify-center rounded-full">account_circle</mat-icon>
-              }
+              mat-menu-item
+              routerLink="/admin"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+            >
+              <mat-icon>admin_panel_settings</mat-icon>
+              <span>Admin Tools</span>
             </button>
-            <mat-menu #userMenu="matMenu">
-              <button mat-menu-item routerLink="/cities" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
-                <mat-icon>location_city</mat-icon>
-                <span>Simulations</span>
-              </button>
-              <button mat-menu-item routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-                <mat-icon>admin_panel_settings</mat-icon>
-                <span>Admin Tools</span>
-              </button>
-              <mat-divider></mat-divider>
-              <button mat-menu-item (click)="logout()">
-                <mat-icon>logout</mat-icon>
-                <span>Logout</span>
-              </button>
-            </mat-menu>
+            <mat-divider></mat-divider>
+            <button mat-menu-item (click)="logout()">
+              <mat-icon>logout</mat-icon>
+              <span>Logout</span>
+            </button>
+          </mat-menu>
           }
         </div>
       </div>
     </mat-toolbar>
   </app-container>
 </div>
-
-

@@ -1,28 +1,40 @@
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import {
   AfterViewInit,
   Component,
+  computed,
   ElementRef,
   inject,
   OnDestroy,
   OnInit,
+  PLATFORM_ID,
   signal,
   ViewChild,
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { CityOutput } from '@api';
-import { CityService } from '../../city.service';
-import { PixiCanvasService } from '../../services/pixi-canvas.service';
-import { Subscription } from 'rxjs';
-import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import {
-  EventItemComponent,
-  EventType,
-  EntityPanelComponent,
-  EntityData,
-} from '@shared';
+  MatSidenavModule,
+  type MatDrawerMode,
+} from '@angular/material/sidenav';
+import { ActivatedRoute } from '@angular/router';
+import { CityOutput } from '@api';
+import { EventItemComponent, EventType } from '@shared';
+import { of, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { CityService } from '../../city.service';
+import { PixiCanvasService } from '../../services/pixi-canvas.service';
+
+type RecentEvent = {
+  id: number;
+  title: string;
+  description: string;
+  timestamp: string;
+  type: EventType;
+};
 
 @Component({
   selector: 'app-city-details',
@@ -30,9 +42,10 @@ import {
   templateUrl: './city-details.page.html',
   imports: [
     CommonModule,
-    MatCardModule,
     MatButtonModule,
+    MatCardModule,
     MatIconModule,
+    MatSidenavModule,
     EventItemComponent,
   ],
 })
@@ -45,6 +58,23 @@ export class CityDetailsPage implements OnInit, AfterViewInit, OnDestroy {
   private pixiCanvasService = inject(PixiCanvasService);
   private subscription?: Subscription;
 
+  private platformId = inject(PLATFORM_ID);
+  private breakpointObserver = inject(BreakpointObserver);
+  private isBrowser = isPlatformBrowser(this.platformId);
+
+  drawerOpen = signal(false);
+  isMobile = toSignal(
+    this.isBrowser
+      ? this.breakpointObserver
+          .observe('(max-width: 1023.98px)')
+          .pipe(map((result) => result.matches))
+      : of(false),
+    { initialValue: false }
+  );
+  drawerMode = computed<MatDrawerMode>(() =>
+    this.isMobile() ? 'over' : 'side'
+  );
+
   // UI State
   isRunning = signal(false);
   cycle = signal(247);
@@ -52,15 +82,7 @@ export class CityDetailsPage implements OnInit, AfterViewInit, OnDestroy {
   happiness = signal(87);
   resources = signal('$45.2K');
 
-  recentEvents = signal<
-    Array<{
-      id: number;
-      title: string;
-      description: string;
-      timestamp: string;
-      type: EventType;
-    }>
-  >([
+  private recentEventSeed: RecentEvent[] = [
     {
       id: 1,
       title: 'New citizen born',
@@ -82,147 +104,16 @@ export class CityDetailsPage implements OnInit, AfterViewInit, OnDestroy {
       timestamp: '1 hour ago',
       type: 'invention',
     },
-    {
-      id: 1,
-      title: 'New citizen born',
-      description: 'Sarah Johnson arrived in the city',
-      timestamp: '2 minutes ago',
-      type: 'birth',
-    },
-    {
-      id: 2,
-      title: 'Building completed',
-      description: 'New residential complex finished',
-      timestamp: '15 minutes ago',
-      type: 'building',
-    },
-    {
-      id: 3,
-      title: 'New invention',
-      description: 'Steam engine discovered by engineers',
-      timestamp: '1 hour ago',
-      type: 'invention',
-    },
-    {
-      id: 1,
-      title: 'New citizen born',
-      description: 'Sarah Johnson arrived in the city',
-      timestamp: '2 minutes ago',
-      type: 'birth',
-    },
-    {
-      id: 2,
-      title: 'Building completed',
-      description: 'New residential complex finished',
-      timestamp: '15 minutes ago',
-      type: 'building',
-    },
-    {
-      id: 3,
-      title: 'New invention',
-      description: 'Steam engine discovered by engineers',
-      timestamp: '1 hour ago',
-      type: 'invention',
-    },
-    {
-      id: 1,
-      title: 'New citizen born',
-      description: 'Sarah Johnson arrived in the city',
-      timestamp: '2 minutes ago',
-      type: 'birth',
-    },
-    {
-      id: 2,
-      title: 'Building completed',
-      description: 'New residential complex finished',
-      timestamp: '15 minutes ago',
-      type: 'building',
-    },
-    {
-      id: 3,
-      title: 'New invention',
-      description: 'Steam engine discovered by engineers',
-      timestamp: '1 hour ago',
-      type: 'invention',
-    },
-    {
-      id: 1,
-      title: 'New citizen born',
-      description: 'Sarah Johnson arrived in the city',
-      timestamp: '2 minutes ago',
-      type: 'birth',
-    },
-    {
-      id: 2,
-      title: 'Building completed',
-      description: 'New residential complex finished',
-      timestamp: '15 minutes ago',
-      type: 'building',
-    },
-    {
-      id: 3,
-      title: 'New invention',
-      description: 'Steam engine discovered by engineers',
-      timestamp: '1 hour ago',
-      type: 'invention',
-    },
-    {
-      id: 1,
-      title: 'New citizen born',
-      description: 'Sarah Johnson arrived in the city',
-      timestamp: '2 minutes ago',
-      type: 'birth',
-    },
-    {
-      id: 2,
-      title: 'Building completed',
-      description: 'New residential complex finished',
-      timestamp: '15 minutes ago',
-      type: 'building',
-    },
-    {
-      id: 3,
-      title: 'New invention',
-      description: 'Steam engine discovered by engineers',
-      timestamp: '1 hour ago',
-      type: 'invention',
-    },
-    {
-      id: 1,
-      title: 'New citizen born',
-      description: 'Sarah Johnson arrived in the city',
-      timestamp: '2 minutes ago',
-      type: 'birth',
-    },
-    {
-      id: 2,
-      title: 'Building completed',
-      description: 'New residential complex finished',
-      timestamp: '15 minutes ago',
-      type: 'building',
-    },
-    {
-      id: 3,
-      title: 'New invention',
-      description: 'Steam engine discovered by engineers',
-      timestamp: '1 hour ago',
-      type: 'invention',
-    },
-  ]);
+  ];
 
-  selectedEntity = signal<EntityData | null>({
-    name: 'City Hall',
-    type: 'Government Building',
-    icon: 'business',
-    iconColor: '#3b82f6',
-    status: 'Active',
-    level: 3,
-    capacity: { current: 45, max: 50 },
-    efficiency: 82,
-    workers: 12,
-    maintenanceCost: '$250/cycle',
-    builtAt: 'Cycle 12',
-  });
+  recentEvents = signal<RecentEvent[]>(
+    Array.from({ length: 6 }).flatMap((_, batch) =>
+      this.recentEventSeed.map((event, idx) => ({
+        ...event,
+        id: batch * this.recentEventSeed.length + idx + 1,
+      }))
+    )
+  );
 
   ngOnInit() {
     // No-op: defer Pixi init until view is ready
@@ -299,8 +190,11 @@ export class CityDetailsPage implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  onViewEntityDetails(): void {
-    // TODO: Navigate to entity details or open dialog
-    console.log('View entity details');
+  openDrawer(): void {
+    this.drawerOpen.set(true);
+  }
+
+  closeDrawer(): void {
+    this.drawerOpen.set(false);
   }
 }

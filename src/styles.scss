@@ -1,14 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
 
-@import './tailwind.css'; // Import Tailwind first
+@import "./tailwind.css"; // Import Tailwind first
 
 /* Required for Tailwind layout correctness */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 // Global styles
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
   padding: 0;
@@ -18,22 +21,61 @@ html, body {
 }
 
 body {
-  font-family: 'Inter', Roboto, "Helvetica Neue", sans-serif;
+  font-family: "Inter", Roboto, "Helvetica Neue", sans-serif;
   background-color: var(--mat-sys-surface);
   color: var(--mat-sys-on-surface);
 }
 
 // Reusable background for sticky header bars.
-// Light mode: subtle white -> off-white gradient.
+// Light mode: solid white (ends white).
 // Dark mode: fall back to Material surface token.
+.app-surface-bar-bg,
 .app-header-bg {
   background-color: #ffffff;
-  background-image: linear-gradient(rgb(255, 255, 255) 39.9%, rgb(248, 248, 248) 100%);
+  background-image: none;
 }
 
+html.dark .app-surface-bar-bg,
 html.dark .app-header-bg {
   background-image: none;
   background-color: var(--mat-sys-surface);
+}
+
+// Shared app background for main content areas (greyish in light mode).
+// Uses Material design tokens so it stays consistent with theming.
+.app-main-bg {
+  background-color: var(--mat-sys-surface-container-low);
+}
+
+html.dark .app-main-bg {
+  background-color: var(--mat-sys-surface);
+}
+
+// Utility: ensure Material drawers are visually "flat" (no rounding),
+// including the internal container element.
+.app-drawer-flat {
+  border-radius: 0 !important;
+}
+
+.app-drawer-flat .mat-drawer-inner-container {
+  border-radius: 0 !important;
+}
+
+// Utility: make Angular Material drawer containers/content transparent.
+// Material may apply a surface background on the container/content; this keeps
+// the page background visible behind drawer-content.
+.app-drawer-content-transparent {
+  background-color: transparent !important;
+}
+
+.app-drawer-content-transparent .mat-drawer-content {
+  background-color: transparent !important;
+}
+
+// Utility: grey background for drawers using Material design tokens (no hardcoded colors).
+// Uses surface container tokens which are intended for elevated/panel surfaces.
+.app-drawer-grey-bg {
+  background-color: var(--mat-sys-surface-container) !important;
 }
 
 // Hide scrollbar (matching design)
@@ -62,4 +104,3 @@ html.dark .app-header-bg {
   -webkit-text-fill-color: var(--mat-sys-on-surface) !important;
   caret-color: var(--mat-sys-on-surface) !important;
 }
-

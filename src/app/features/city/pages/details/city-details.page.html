@@ -1,163 +1,189 @@
 <!-- Fill the visible viewport area (app header is 4rem, layout main has py-6 => 3rem). -->
-<div class="h-[calc(100vh-7rem)] min-h-0 overflow-hidden">
-  <div
-    class="grid h-full min-h-0 gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]"
+<div class="h-[calc(100vh-7rem)] min-h-0">
+  <mat-drawer-container
+    class="h-full min-h-0 app-drawer-content-transparent"
+    autosize
   >
-    <!-- Left: context + map (non-scrollable) -->
-    <div class="flex min-h-0 flex-col gap-4">
-      <!-- City Context Header -->
-      <div class="flex h-12 flex-none items-center justify-between">
-        <div class="flex min-w-0 items-center gap-3">
-          <h2 class="truncate text-base font-semibold text-onSurface">
-            {{ city.name }}
-          </h2>
-          <span class="whitespace-nowrap text-xs text-onSurfaceVariant"
-            >Cycle {{ cycle() }}</span
-          >
-        </div>
-
-        <div class="flex items-center gap-2">
-          <button
-            mat-raised-button
-            color="primary"
-            class="flex items-center gap-1 px-4 py-2 text-sm font-semibold"
-            (click)="onStart()"
-            [disabled]="isRunning()"
-          >
-            <mat-icon>play_arrow</mat-icon>
-            <span>Start</span>
-          </button>
-          <button
-            mat-raised-button
-            class="flex items-center gap-1 px-4 py-2 text-sm font-semibold bg-surfaceContainerHigh text-onSurface hover:bg-surfaceContainerHighest"
-            (click)="onPause()"
-            [disabled]="!isRunning()"
-          >
-            <mat-icon>pause</mat-icon>
-            <span>Pause</span>
-          </button>
-          <button
-            mat-raised-button
-            color="primary"
-            class="flex items-center gap-1 px-3 py-2 text-sm font-semibold"
-            (click)="onStep(1)"
-          >
-            <mat-icon>skip_next</mat-icon>
-            <span>+1</span>
-          </button>
-          <button
-            mat-raised-button
-            color="primary"
-            class="flex items-center gap-1 px-3 py-2 text-sm font-semibold"
-            (click)="onStep(10)"
-          >
-            <mat-icon>fast_forward</mat-icon>
-            <span>+10</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Map Container (fills remaining height) -->
-      <div
-        class="min-h-0 flex-1 overflow-hidden rounded-xl border border-outlineVariant bg-surfaceContainerLowest shadow-sm"
-      >
-        <div class="relative h-full">
-          <div #container class="h-full w-full"></div>
-
-          <!-- Map Stats Overlay -->
+    <mat-drawer
+      position="end"
+      [mode]="drawerMode()"
+      [opened]="drawerOpen()"
+      (openedChange)="drawerOpen.set($event)"
+      class="w-96 max-w-[90vw] p-4 app-main-bg app-drawer-flat"
+    >
+      <div class="flex h-full min-h-0 flex-col">
+        <mat-card
+          class="flex min-h-0 flex-1 flex-col border border-outlineVariant bg-[var(--mat-sys-surface)] shadow-sm"
+        >
           <div
-            class="absolute inset-x-0 top-0 flex items-center gap-4 bg-gradient-to-b from-black/40 to-transparent p-4 text-white"
+            class="flex flex-none items-center justify-between border-b border-outlineVariant px-5 py-4"
           >
-            <div class="flex items-center gap-2">
-              <div class="text-xs uppercase tracking-wide text-white/80">
-                Population
-              </div>
-              <div class="text-lg font-semibold">{{ population() }}</div>
-            </div>
-            <div class="h-6 w-px bg-white/30"></div>
-            <div class="flex items-center gap-2">
-              <div class="text-xs uppercase tracking-wide text-white/80">
-                Happiness
-              </div>
-              <div class="text-lg font-semibold text-emerald-200">
-                {{ happiness() }}%
-              </div>
-            </div>
-            <div class="h-6 w-px bg-white/30"></div>
-            <div class="flex items-center gap-2">
-              <div class="text-xs uppercase tracking-wide text-white/80">
-                Resources
-              </div>
-              <div class="text-lg font-semibold text-amber-200">
-                {{ resources() }}
-              </div>
-            </div>
-          </div>
-
-          <!-- Map Controls -->
-          <div class="absolute right-4 top-4 flex flex-col gap-2">
+            <h3 class="text-sm font-semibold text-onSurface">Recent Events</h3>
             <button
               mat-icon-button
-              class="rounded-lg bg-surface/90 shadow hover:bg-surface"
+              type="button"
+              class="text-onSurfaceVariant hover:text-onSurface transition"
+              (click)="closeDrawer()"
+              aria-label="Collapse sidebar"
             >
-              <mat-icon>add</mat-icon>
-            </button>
-            <button
-              mat-icon-button
-              class="rounded-lg bg-surface/90 shadow hover:bg-surface"
-            >
-              <mat-icon>remove</mat-icon>
-            </button>
-            <button
-              mat-icon-button
-              class="rounded-lg bg-surface/90 shadow hover:bg-surface"
-            >
-              <mat-icon>fullscreen</mat-icon>
+              <mat-icon>chevron_right</mat-icon>
             </button>
           </div>
 
-          <!-- Grid Info -->
-          <div
-            class="absolute bottom-4 left-4 rounded-md bg-surface/90 px-3 py-1 text-sm font-medium text-onSurfaceVariant shadow"
-          >
-            Grid: 100x100
+          <div class="min-h-0 flex-1 overflow-y-auto p-5">
+            @for (event of recentEvents(); track event.id) {
+            <app-event-item
+              [title]="event.title"
+              [description]="event.description"
+              [timestamp]="event.timestamp"
+              [type]="event.type"
+            >
+            </app-event-item>
+            } @empty {
+            <div class="py-6 text-center text-onSurfaceVariant">
+              No recent events
+            </div>
+            }
+          </div>
+        </mat-card>
+      </div>
+    </mat-drawer>
+
+    <mat-drawer-content class="h-full min-h-0 p-4">
+      <!-- Left: context + map (non-scrollable) -->
+      <div class="flex h-full min-h-0 flex-col gap-4">
+        <!-- City Context Header -->
+        <div class="flex h-12 flex-none items-center justify-between">
+          <div class="flex min-w-0 items-center gap-3">
+            <h2 class="truncate text-base font-semibold text-onSurface">
+              {{ city.name }}
+            </h2>
+            <span class="whitespace-nowrap text-xs text-onSurfaceVariant">
+              Cycle {{ cycle() }}
+            </span>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button
+              mat-raised-button
+              color="primary"
+              class="flex items-center gap-1 px-4 py-2 text-sm font-semibold"
+              (click)="onStart()"
+              [disabled]="isRunning()"
+            >
+              <mat-icon>play_arrow</mat-icon>
+              <span>Start</span>
+            </button>
+            <button
+              mat-raised-button
+              class="flex items-center gap-1 bg-surfaceContainerHigh px-4 py-2 text-sm font-semibold text-onSurface hover:bg-surfaceContainerHighest"
+              (click)="onPause()"
+              [disabled]="!isRunning()"
+            >
+              <mat-icon>pause</mat-icon>
+              <span>Pause</span>
+            </button>
+            <button
+              mat-raised-button
+              color="primary"
+              class="flex items-center gap-1 px-3 py-2 text-sm font-semibold"
+              (click)="onStep(1)"
+            >
+              <mat-icon>skip_next</mat-icon>
+              <span>+1</span>
+            </button>
+            <button
+              mat-raised-button
+              color="primary"
+              class="flex items-center gap-1 px-3 py-2 text-sm font-semibold"
+              (click)="onStep(10)"
+            >
+              <mat-icon>fast_forward</mat-icon>
+              <span>+10</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Map Container (fills remaining height) -->
+        <div
+          class="min-h-0 flex-1 overflow-hidden rounded-xl border border-outlineVariant bg-surfaceContainerLowest"
+        >
+          <div class="relative h-full">
+            <div #container class="h-full w-full"></div>
+
+            <!-- Map Stats Overlay -->
+            <div
+              class="absolute inset-x-0 top-0 flex items-center gap-4 bg-gradient-to-b from-black/40 to-transparent p-4 text-white"
+            >
+              <div class="flex items-center gap-2">
+                <div class="text-xs uppercase tracking-wide text-white/80">
+                  Population
+                </div>
+                <div class="text-lg font-semibold">{{ population() }}</div>
+              </div>
+              <div class="h-6 w-px bg-white/30"></div>
+              <div class="flex items-center gap-2">
+                <div class="text-xs uppercase tracking-wide text-white/80">
+                  Happiness
+                </div>
+                <div class="text-lg font-semibold text-emerald-200">
+                  {{ happiness() }}%
+                </div>
+              </div>
+              <div class="h-6 w-px bg-white/30"></div>
+              <div class="flex items-center gap-2">
+                <div class="text-xs uppercase tracking-wide text-white/80">
+                  Resources
+                </div>
+                <div class="text-lg font-semibold text-amber-200">
+                  {{ resources() }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Map Controls -->
+            <div class="absolute right-4 top-4 flex flex-col gap-2">
+              @if (!drawerOpen()) {
+              <button
+                mat-icon-button
+                type="button"
+                class="rounded-lg bg-surface/90 shadow hover:bg-surface"
+                (click)="openDrawer()"
+                aria-label="Open sidebar"
+              >
+                <mat-icon>chevron_left</mat-icon>
+              </button>
+              }
+
+              <button
+                mat-icon-button
+                class="rounded-lg bg-surface/90 shadow hover:bg-surface"
+              >
+                <mat-icon>add</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                class="rounded-lg bg-surface/90 shadow hover:bg-surface"
+              >
+                <mat-icon>remove</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                class="rounded-lg bg-surface/90 shadow hover:bg-surface"
+              >
+                <mat-icon>fullscreen</mat-icon>
+              </button>
+            </div>
+
+            <!-- Grid Info -->
+            <div
+              class="absolute bottom-4 left-4 rounded-md bg-surface/90 px-3 py-1 text-sm font-medium text-onSurfaceVariant shadow"
+            >
+              Grid: 100x100
+            </div>
           </div>
         </div>
       </div>
-    </div>
-
-    <!-- Right: sidebar (only scrollable area) -->
-    <aside class="min-h-0 overflow-y-auto pr-1">
-      <div class="flex min-h-0 flex-col gap-4">
-        <!-- Recent Events Panel -->
-
-        <div class="border-b border-outlineVariant px-4 py-3">
-          <h3 class="text-lg font-semibold text-onSurface">Recent Events</h3>
-        </div>
-        <div class="px-4 py-3">
-          @for (event of recentEvents(); track event.id) {
-          <app-event-item
-            [title]="event.title"
-            [description]="event.description"
-            [timestamp]="event.timestamp"
-            [type]="event.type"
-          >
-          </app-event-item>
-          } @empty {
-          <div class="py-6 text-center text-onSurfaceVariant">
-            No recent events
-          </div>
-          }
-        </div>
-
-        <!-- Selected Entity Panel -->
-        <!-- @if (selectedEntity()) {
-          <app-entity-panel
-            [entity]="selectedEntity()!"
-            (viewDetails)="onViewEntityDetails()">
-          </app-entity-panel>
-        } -->
-      </div>
-    </aside>
-  </div>
+    </mat-drawer-content>
+  </mat-drawer-container>
 </div>

@@ -1,85 +1,145 @@
 <div class="flex flex-col gap-6">
   <div>
     <h2 class="text-3xl font-bold text-onSurface">Admin Tools</h2>
-    <p class="text-onSurfaceVariant">Manage and configure simulation parameters</p>
-    </div>
+    <p class="text-onSurfaceVariant">
+      Manage and configure simulation parameters
+    </p>
+  </div>
+
+  <div class="flex flex-col gap-2">
+    <mat-form-field appearance="outline" class="w-full sm:w-80">
+      <mat-label>Section</mat-label>
+      <mat-select
+        [value]="activeSection()"
+        (selectionChange)="activeSection.set($event.value)"
+      >
+        <mat-option value="invention">Invention</mat-option>
+        <mat-option value="artistic">Artistic</mat-option>
+        <mat-option value="philosophy">Philosophy</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
 
   <div class="flex flex-col gap-6">
-      <!-- Invention Progression Simulator -->
+    @switch (activeSection()) { @case ('invention') {
+    <!-- Invention Progression Simulator -->
     <mat-card class="border border-outlineVariant shadow-sm">
-      <div class="flex flex-wrap items-start gap-3 border-b border-outlineVariant px-4 py-3">
+      <div
+        class="flex flex-wrap items-start gap-3 border-b border-outlineVariant px-4 py-3"
+      >
         <div class="flex-1">
-          <h3 class="text-xl font-semibold text-onSurface">Invention Progression Simulator</h3>
-          <p class="text-onSurfaceVariant">Simulate the logical progression of human inventions throughout history</p>
+          <h3 class="text-xl font-semibold text-onSurface">
+            Invention Progression Simulator
+          </h3>
+          <p class="text-onSurfaceVariant">
+            Simulate the logical progression of human inventions throughout
+            history
+          </p>
         </div>
-        <button mat-raised-button color="primary" (click)="onGenerateNextInvention()" class="px-5 py-2.5 font-semibold">
-            Generate Next Invention
-          </button>
-        </div>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="onGenerateNextInvention()"
+          class="px-5 py-2.5 font-semibold"
+        >
+          Generate Next Invention
+        </button>
+      </div>
 
       <div class="max-h-80 overflow-auto px-4 py-3">
-        <div class="flex flex-col gap-3">
-            @for (invention of inventions(); track invention.title) {
-              <app-timeline-node
-                [title]="invention.title"
-                [period]="invention.period"
-                [reasoning]="invention.reasoning">
-              </app-timeline-node>
-            }
-          </div>
+        <div
+          class="grid items-start gap-3 grid-cols-[repeat(auto-fit,minmax(240px,1fr))]"
+        >
+          @for (invention of inventions(); track invention.title) {
+          <app-timeline-node
+            [title]="invention.title"
+            [period]="invention.period"
+            [reasoning]="invention.reasoning"
+          >
+          </app-timeline-node>
+          }
         </div>
-      </mat-card>
-
-      <!-- Artistic Evolution Simulator -->
+      </div>
+    </mat-card>
+    } @case ('artistic') {
+    <!-- Artistic Evolution Simulator -->
     <mat-card class="border border-outlineVariant shadow-sm">
-      <div class="flex flex-wrap items-start gap-3 border-b border-outlineVariant px-4 py-3">
+      <div
+        class="flex flex-wrap items-start gap-3 border-b border-outlineVariant px-4 py-3"
+      >
         <div class="flex-1">
-          <h3 class="text-xl font-semibold text-onSurface">Artistic Evolution Simulator</h3>
-          <p class="text-onSurfaceVariant">Trace the evolution of artistic movements and their cultural impact</p>
+          <h3 class="text-xl font-semibold text-onSurface">
+            Artistic Evolution Simulator
+          </h3>
+          <p class="text-onSurfaceVariant">
+            Trace the evolution of artistic movements and their cultural impact
+          </p>
         </div>
-        <button mat-raised-button color="primary" (click)="onGenerateNextArtisticStage()" class="px-5 py-2.5 font-semibold">
-            Next Artistic Stage
-          </button>
-        </div>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="onGenerateNextArtisticStage()"
+          class="px-5 py-2.5 font-semibold"
+        >
+          Next Artistic Stage
+        </button>
+      </div>
 
       <div class="max-h-80 overflow-auto px-4 py-3">
-        <div class="flex flex-col gap-3">
-            @for (movement of artisticMovements(); track movement.title) {
-              <app-timeline-node
-                [title]="movement.title"
-                [period]="movement.period"
-                [reasoning]="movement.reasoning">
-              </app-timeline-node>
-            }
-          </div>
+        <div
+          class="grid items-start gap-3 grid-cols-[repeat(auto-fit,minmax(240px,1fr))]"
+        >
+          @for (movement of artisticMovements(); track movement.title) {
+          <app-timeline-node
+            [title]="movement.title"
+            [period]="movement.period"
+            [reasoning]="movement.reasoning"
+          >
+          </app-timeline-node>
+          }
         </div>
-      </mat-card>
-
-      <!-- Philosophical Ideas Simulator -->
+      </div>
+    </mat-card>
+    } @case ('philosophy') {
+    <!-- Philosophical Ideas Simulator -->
     <mat-card class="border border-outlineVariant shadow-sm">
-      <div class="flex flex-wrap items-start gap-3 border-b border-outlineVariant px-4 py-3">
+      <div
+        class="flex flex-wrap items-start gap-3 border-b border-outlineVariant px-4 py-3"
+      >
         <div class="flex-1">
-          <h3 class="text-xl font-semibold text-onSurface">Philosophical Ideas Simulator</h3>
-          <p class="text-onSurfaceVariant">Explore the development of philosophical thought and reasoning systems</p>
+          <h3 class="text-xl font-semibold text-onSurface">
+            Philosophical Ideas Simulator
+          </h3>
+          <p class="text-onSurfaceVariant">
+            Explore the development of philosophical thought and reasoning
+            systems
+          </p>
         </div>
-        <button mat-raised-button color="primary" (click)="onGenerateNextIdea()" class="px-5 py-2.5 font-semibold">
-            Generate Next Idea
-          </button>
-        </div>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="onGenerateNextIdea()"
+          class="px-5 py-2.5 font-semibold"
+        >
+          Generate Next Idea
+        </button>
+      </div>
 
       <div class="max-h-80 overflow-auto px-4 py-3">
-        <div class="flex flex-col gap-3">
-            @for (idea of philosophicalIdeas(); track idea.title) {
-              <app-timeline-node
-                [title]="idea.title"
-                [period]="idea.period"
-                [reasoning]="idea.reasoning">
-              </app-timeline-node>
-            }
-          </div>
+        <div
+          class="grid items-start gap-3 grid-cols-[repeat(auto-fit,minmax(240px,1fr))]"
+        >
+          @for (idea of philosophicalIdeas(); track idea.title) {
+          <app-timeline-node
+            [title]="idea.title"
+            [period]="idea.period"
+            [reasoning]="idea.reasoning"
+          >
+          </app-timeline-node>
+          }
         </div>
-      </mat-card>
-    </div>
+      </div>
+    </mat-card>
+    } }
+  </div>
 </div>
-
-

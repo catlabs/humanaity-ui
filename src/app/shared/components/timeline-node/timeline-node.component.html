@@ -1,15 +1,22 @@
-<div class="timeline-node">
-  <div class="node-content">
-    <div class="node-title">{{ title() }}</div>
-    <div class="node-period">{{ period() }}</div>
+<div
+  class="flex w-full items-start justify-between gap-3 rounded-xl border border-outlineVariant bg-surfaceContainerLowest p-3 shadow-sm"
+>
+  <div class="min-w-0 flex-1">
+    <div class="text-sm font-semibold leading-snug text-onSurface">
+      {{ title() }}
+    </div>
+    <div class="mt-1 text-xs text-onSurfaceVariant">
+      {{ period() }}
+    </div>
   </div>
-  <button 
-    mat-icon-button 
-    class="reasoning-icon-button"
+
+  <button
+    mat-icon-button
+    color="primary"
+    class="h-8 w-8 shrink-0"
     (click)="openReasoningDialog()"
-    aria-label="View full AI reasoning">
+    aria-label="View full AI reasoning"
+  >
     <mat-icon>info</mat-icon>
   </button>
 </div>
-
-

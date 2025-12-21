@@ -22,6 +22,7 @@ src/
 ```
 
 **Key Principles:**
+
 - Standalone components everywhere (no NgModules for features)
 - Feature-based organization with self-contained modules
 - Signals for state management (no BehaviorSubject)
@@ -46,24 +47,28 @@ src/
 ### Directory Responsibilities
 
 **Core** (`core/`)
+
 - Global services (auth, config, etc.)
 - Guards and interceptors
 - Global utilities
 - **Never** put feature-specific code here
 
 **Shared** (`shared/`)
+
 - Reusable UI components (`shared/ui/`)
 - Shared pipes and directives
 - Shared types/interfaces
 - **Never** put services here unless truly global
 
 **Features** (`features/`)
+
 - Self-contained feature modules
 - Each feature has its own pages, components, services, routes
 - Features can import from `shared/` and `core/`
 - Features should not depend on other features directly
 
 **Rules:**
+
 - Every feature folder must contain standalone components + services + routes
 - Services never live in "shared/" unless they are truly global
 - No NgModules unless required by Angular Material or 3rd-party libs
@@ -107,6 +112,7 @@ Configure path aliases in both `tsconfig.json` and `tsconfig.app.json`:
 ```
 
 **Key Points:**
+
 - `baseUrl: "./"` is required for path aliases to work
 - Use direct aliases (e.g., `@core`) for barrel exports
 - Use wildcard aliases (e.g., `@core/*`) for sub-path access if needed
@@ -117,109 +123,122 @@ Configure path aliases in both `tsconfig.json` and `tsconfig.app.json`:
 #### Feature Module
 
 **Step 1: Create `index.ts`**
+
 ```typescript
 // features/auth/index.ts
-export { AuthService } from './auth.service';
+export { AuthService } from "./auth.service";
 ```
 
 **Step 2: Configure alias** (already done in `tsconfig.json`)
+
 ```json
 "@features/*": ["src/app/features/*"]
 ```
 
 **Step 3: Use in imports**
+
 ```typescript
 // ✅ CORRECT
-import { AuthService } from '@features/auth';
+import { AuthService } from "@features/auth";
 
 // ❌ WRONG
-import { AuthService } from '../../../features/auth/auth.service';
+import { AuthService } from "../../../features/auth/auth.service";
 ```
 
 #### Core Module
 
 **Step 1: Create `index.ts`**
+
 ```typescript
 // core/index.ts
-export { authGuard } from './guards/auth.guard';
-export { authInterceptor } from './interceptors/auth.interceptor';
+export { authGuard } from "./guards/auth.guard";
+export { authInterceptor } from "./interceptors/auth.interceptor";
 ```
 
 **Step 2: Configure aliases**
+
 ```json
 "@core": ["src/app/core/index.ts"],
 "@core/*": ["src/app/core/*"]
 ```
 
 **Step 3: Use in imports**
+
 ```typescript
 // ✅ CORRECT
-import { authGuard, authInterceptor } from '@core';
+import { authGuard, authInterceptor } from "@core";
 
 // ❌ WRONG
-import { authGuard } from '../../core/guards/auth.guard';
+import { authGuard } from "../../core/guards/auth.guard";
 ```
 
 #### Shared Components
 
 **Step 1: Create `components/index.ts`**
+
 ```typescript
 // shared/components/index.ts
-export { TimelineNodeComponent } from './timeline-node/timeline-node.component';
-export { EventItemComponent } from './event-item/event-item.component';
-export type { EventType } from './event-item/event-item.component';
-export { EntityPanelComponent } from './entity-panel/entity-panel.component';
-export type { EntityData } from './entity-panel/entity-panel.component';
-export { SimulationCardComponent } from './simulation-card/simulation-card.component';
-export type { SimulationCardData, SimulationStatus } from './simulation-card/simulation-card.component';
+export { TimelineNodeComponent } from "./timeline-node/timeline-node.component";
+export { EventItemComponent } from "./event-item/event-item.component";
+export type { EventType } from "./event-item/event-item.component";
+export { EntityPanelComponent } from "./entity-panel/entity-panel.component";
+export type { EntityData } from "./entity-panel/entity-panel.component";
+export { SimulationCardComponent } from "./simulation-card/simulation-card.component";
+export type { SimulationCardData, SimulationStatus } from "./simulation-card/simulation-card.component";
 ```
 
 **Step 2: Create `shared/index.ts`**
+
 ```typescript
 // shared/index.ts
-export * from './components';
+export * from "./components";
 ```
 
 **Step 3: Configure alias**
+
 ```json
 "@shared": ["src/app/shared/index.ts"],
 "@shared/*": ["src/app/shared/*"]
 ```
 
 **Step 4: Use in imports**
+
 ```typescript
 // ✅ CORRECT
-import { SimulationCardComponent, SimulationCardData, SimulationStatus } from '@shared';
+import { SimulationCardComponent, SimulationCardData, SimulationStatus } from "@shared";
 
 // ❌ WRONG
-import { SimulationCardComponent } from '../../../../shared/components/simulation-card/simulation-card.component';
+import { SimulationCardComponent } from "../../../../shared/components/simulation-card/simulation-card.component";
 ```
 
 #### API Module
 
 **Step 1: Create/Update `index.ts`**
+
 ```typescript
 // api/index.ts
-export * from './api/api';           // All services
-export * from './model/models';      // All models
-export * from './variables';        // BASE_PATH, etc.
-export * from './provide-api';      // provideApi function
+export * from "./api/api"; // All services
+export * from "./model/models"; // All models
+export * from "./variables"; // BASE_PATH, etc.
+export * from "./provide-api"; // provideApi function
 ```
 
 **Step 2: Configure aliases**
+
 ```json
 "@api": ["src/app/api/index.ts"],
 "@api/*": ["src/app/api/*"]
 ```
 
 **Step 3: Use in imports**
+
 ```typescript
 // ✅ CORRECT
-import { CitiesService, CityOutput, HumanOutput, BASE_PATH, provideApi } from '@api';
+import { CitiesService, CityOutput, HumanOutput, BASE_PATH, provideApi } from "@api";
 
 // ❌ WRONG
-import { CitiesService } from '../../api/api/cities.service';
-import { CityOutput } from '../../api/model/models';
+import { CitiesService } from "../../api/api/cities.service";
+import { CityOutput } from "../../api/model/models";
 ```
 
 ### Type Exports with `isolatedModules`
@@ -228,24 +247,24 @@ When using `isolatedModules: true` (required for Angular), separate type exports
 
 ```typescript
 // ✅ CORRECT - Separate type exports
-export { EventItemComponent } from './event-item/event-item.component';
-export type { EventType } from './event-item/event-item.component';
+export { EventItemComponent } from "./event-item/event-item.component";
+export type { EventType } from "./event-item/event-item.component";
 
 // ❌ WRONG - Mixed exports cause errors with isolatedModules
-export { EventItemComponent, EventType } from './event-item/event-item.component';
+export { EventItemComponent, EventType } from "./event-item/event-item.component";
 ```
 
 ### Complete Example: Feature with Multiple Exports
 
 ```typescript
 // features/city/index.ts
-export { CityService } from './city.service';
-export { cityRoutes } from './city.route';
-export { cityListResolver, cityDetailsResolver, myCitiesResolver } from './city.resolver';
+export { CityService } from "./city.service";
+export { cityRoutes } from "./city.route";
+export { cityListResolver, cityDetailsResolver, myCitiesResolver } from "./city.resolver";
 
 // Usage across the app
-import { CityService, cityRoutes } from '@features/city';
-import { cityListResolver } from '@features/city';
+import { CityService, cityRoutes } from "@features/city";
+import { cityListResolver } from "@features/city";
 ```
 
 ### When to Use Path Aliases
@@ -277,9 +296,9 @@ import { cityListResolver } from '@features/city';
 ```typescript
 @Component({
   standalone: true,
-  selector: 'app-example',
-  templateUrl: './example.component.html',
-  imports: [CommonModule]
+  selector: "app-example",
+  templateUrl: "./example.component.html",
+  imports: [CommonModule],
 })
 export class ExampleComponent {}
 ```
@@ -302,11 +321,13 @@ items$ = new BehaviorSubject<Item[]>([]);
 ```
 
 **When to use signals:**
+
 - Component state
 - Derived/computed values
 - Reactive UI updates
 
 **When to use Observables:**
+
 - HTTP requests (services return Observables)
 - Event streams
 - Router events
@@ -325,10 +346,7 @@ export class FeatureListPage {
 
 // ❌ WRONG
 export class FeatureListPage {
-  constructor(
-    private featureService: FeatureService,
-    private router: Router
-  ) {}
+  constructor(private featureService: FeatureService, private router: Router) {}
 }
 ```
 
@@ -377,7 +395,7 @@ export class FeatureListPage {
 export class ItemCardComponent {
   item = input.required<Item>();
   selected = output<Item>();
-  
+
   onClick() {
     this.selected.emit(this.item());
   }
@@ -395,6 +413,7 @@ export class ItemCardComponent {
 ### TailwindCSS First
 
 **TailwindCSS is the primary styling system.** Use Tailwind for:
+
 - Spacing (`p-4`, `m-2`, `gap-4`)
 - Layout (`flex`, `grid`, `container`)
 - Responsive behavior (`md:`, `lg:`, `xl:`)
@@ -422,6 +441,7 @@ export class ItemCardComponent {
 ### SCSS Files
 
 SCSS files are **only allowed** for:
+
 - Global styles (`styles.scss`, `theme.scss`)
 - Reusable mixins
 - Theme-related helpers
@@ -507,23 +527,34 @@ This keeps the component tree clean, avoids over-abstraction, and ensures the pr
 
 ### Angular Material
 
-**Always** customize Material via design tokens, NOT CSS overrides:
+This project uses **Angular Material v3 token-based theming**.
+
+**Always** customize Material via **the Material v3 token override API**, not ad-hoc CSS overrides.
+
+- Prefer **theme-level overrides** in `src/theme.scss` using:
+  - `@include mat.theme-overrides(( ... ))` for system tokens (typography, color roles, etc.)
+  - `@include mat.<component>-overrides(( ... ))` for component tokens (e.g. `mat.sidenav-overrides`)
+- Avoid overriding internal component CSS classes (e.g. `.mat-...`, `.mdc-...`) and avoid “random” `!important` overrides.
+- Avoid setting Material component CSS variables manually in `styles.scss` unless the theming API cannot express the requirement.
+
+**Examples**
 
 ```typescript
-// ✅ CORRECT - in app.config.ts
-import { provideMaterialDesignConfig } from '@angular/material/core';
+// ✅ CORRECT - in src/theme.scss (Material v3 tokens + overrides)
+@use "@angular/material" as mat;
 
-export const appConfig: ApplicationConfig = {
-  providers: [
-    // ... other providers
-    provideMaterialDesignConfig({
-      colorScheme: {
-        primary: '#4F46E5',
-        surface: '#1F2937',
-      }
-    })
-  ]
-};
+// Theme definition uses `use-system-variables: true`
+// so tokens are exposed as CSS variables (e.g. --mat-sys-surface).
+
+// Override a global token (example)
+@include mat.theme-overrides((
+  display-medium-size: 24px,
+));
+
+// Override a component token (example)
+@include mat.sidenav-overrides((
+  container-background-color: var(--mat-sys-surface-container-low),
+));
 
 // ❌ WRONG - in component.scss
 .mat-button {
@@ -531,18 +562,23 @@ export const appConfig: ApplicationConfig = {
 }
 ```
 
-Only use SCSS for Material customization when tokens cannot control the behavior.
+Only use SCSS for Material customization when tokens cannot control the behavior, and even then:
+
+- Prefer **scoped** overrides (component-local) over global overrides
+- Document why the override is needed and why token overrides are insufficient
 
 ## Shared UI Components
 
 ### Location
 
 Put reusable UI components under:
+
 ```
 src/app/shared/ui/
 ```
 
 Examples:
+
 - `button/`
 - `card/`
 - `panel/`
@@ -553,6 +589,7 @@ Examples:
 ### Requirements
 
 Each shared UI component must be:
+
 - **Standalone**
 - **Fully typed** (strict TypeScript)
 - **Tailwind-first styling**
@@ -565,33 +602,30 @@ Each shared UI component must be:
 // shared/ui/button/button.component.ts
 @Component({
   standalone: true,
-  selector: 'app-button',
+  selector: "app-button",
   template: `
-    <button 
-      [class]="buttonClasses()"
-      [disabled]="disabled()"
-      (click)="clicked.emit()">
+    <button [class]="buttonClasses()" [disabled]="disabled()" (click)="clicked.emit()">
       <ng-content />
     </button>
   `,
-  imports: [CommonModule]
+  imports: [CommonModule],
 })
 export class ButtonComponent {
-  variant = input<'primary' | 'secondary'>('primary');
-  size = input<'sm' | 'md' | 'lg'>('md');
+  variant = input<"primary" | "secondary">("primary");
+  size = input<"sm" | "md" | "lg">("md");
   disabled = input(false);
   clicked = output<void>();
 
   buttonClasses = computed(() => {
-    const base = 'font-semibold rounded-lg transition-colors';
+    const base = "font-semibold rounded-lg transition-colors";
     const variants = {
-      primary: 'bg-indigo-600 text-white hover:bg-indigo-700',
-      secondary: 'bg-gray-200 text-gray-900 hover:bg-gray-300'
+      primary: "bg-indigo-600 text-white hover:bg-indigo-700",
+      secondary: "bg-gray-200 text-gray-900 hover:bg-gray-300",
     };
     const sizes = {
-      sm: 'px-3 py-1 text-sm',
-      md: 'px-4 py-2 text-base',
-      lg: 'px-6 py-3 text-lg'
+      sm: "px-3 py-1 text-sm",
+      md: "px-4 py-2 text-base",
+      lg: "px-6 py-3 text-lg",
     };
     return `${base} ${variants[this.variant()]} ${sizes[this.size()]}`;
   });
@@ -605,6 +639,7 @@ export class ButtonComponent {
 #### Step-by-Step: Example "notification" Feature
 
 1. **Create feature directory structure**
+
    ```
    features/notification/
    ├── pages/
@@ -615,34 +650,42 @@ export class ButtonComponent {
    ```
 
 2. **Create service** (if needed)
+
    ```
    features/notification/services/notification.service.ts
    ```
+
    - Wrap generated OpenAPI services (see [API Communication Rules](#api-communication-rules))
    - Use `inject()` for dependency injection
    - Return typed Observables
    - No UI logic
 
 3. **Create pages**
+
    ```
    features/notification/pages/list/notification-list.page.ts
    features/notification/pages/details/notification-details.page.ts
    ```
+
    - Standalone components
    - Use signals for state
    - Use new control flow syntax
 
 4. **Create feature components** (if needed)
+
    ```
    features/notification/components/notification-item/notification-item.component.ts
    ```
+
    - Reusable within the feature
    - If reusable across features, move to `shared/ui/`
 
 5. **Create routes**
+
    ```
    features/notification/notification.routes.ts
    ```
+
    - Lazy-loaded routes
    - Use `loadComponent` for standalone components
 
@@ -658,29 +701,30 @@ export class ButtonComponent {
 
 ```typescript
 // ✅ CORRECT
-import { Routes } from '@angular/router';
+import { Routes } from "@angular/router";
 
 export default [
   {
-    path: '',
-    loadComponent: () => import('./pages/list/list.page').then(m => m.ListPage)
+    path: "",
+    loadComponent: () => import("./pages/list/list.page").then((m) => m.ListPage),
   },
   {
-    path: ':id',
-    loadComponent: () => import('./pages/details/details.page').then(m => m.DetailsPage)
-  }
+    path: ":id",
+    loadComponent: () => import("./pages/details/details.page").then((m) => m.DetailsPage),
+  },
 ] satisfies Routes;
 
 // ❌ WRONG
 export const featureRoutes: Routes = [
-  { path: '', component: ListPage },
-  { path: ':id', component: DetailsPage }
+  { path: "", component: ListPage },
+  { path: ":id", component: DetailsPage },
 ];
 ```
 
 ### Services
 
 Services must:
+
 - **Wrap generated OpenAPI services** from `api/api/` (see [API Communication Rules](#api-communication-rules))
 - Use `inject()` for dependency injection (not constructor injection)
 - Return typed Observables (never `any`)
@@ -690,54 +734,53 @@ Services must:
 
 ```typescript
 // ✅ CORRECT - Wraps generated service
-import { ItemsService } from '../../api/api/items.service';
-import { ItemOutput, ItemInput } from '../../api/model/models';
-import { Observable, from, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { ItemsService } from "../../api/api/items.service";
+import { ItemOutput, ItemInput } from "../../api/model/models";
+import { Observable, from, of } from "rxjs";
+import { switchMap } from "rxjs/operators";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class FeatureService {
   private itemsService = inject(ItemsService);
 
   getItems(): Observable<ItemOutput[]> {
-    return this.itemsService.getAllItems().pipe(
-      switchMap(response => this.blobToJson<ItemOutput[]>(response))
-    );
+    return this.itemsService.getAllItems().pipe(switchMap((response) => this.blobToJson<ItemOutput[]>(response)));
   }
 
   getItem(id: string): Observable<ItemOutput> {
-    return this.itemsService.getItemById(id).pipe(
-      switchMap(response => this.blobToJson<ItemOutput>(response))
-    );
+    return this.itemsService.getItemById(id).pipe(switchMap((response) => this.blobToJson<ItemOutput>(response)));
   }
 
   private blobToJson<T>(response: any): Observable<T> {
     // Handle Blob responses (see API Communication Rules)
     if (response instanceof Blob) {
-      return from(new Promise<T>((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          try {
-            resolve(JSON.parse(reader.result as string));
-          } catch (e) {
-            reject(new Error('Failed to parse JSON: ' + e));
-          }
-        };
-        reader.onerror = () => reject(new Error('Failed to read Blob'));
-        reader.readAsText(response);
-      }));
+      return from(
+        new Promise<T>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            try {
+              resolve(JSON.parse(reader.result as string));
+            } catch (e) {
+              reject(new Error("Failed to parse JSON: " + e));
+            }
+          };
+          reader.onerror = () => reject(new Error("Failed to read Blob"));
+          reader.readAsText(response);
+        })
+      );
     }
     return of(response);
   }
 }
 
 // ❌ WRONG - Direct HttpClient calls
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class FeatureService {
   private http = inject(HttpClient);
-  
-  getItems(): Observable<any> {  // Never return any, use generated types
-    return this.http.get('/api/items');  // Don't call API directly
+
+  getItems(): Observable<any> {
+    // Never return any, use generated types
+    return this.http.get("/api/items"); // Don't call API directly
   }
 }
 ```
@@ -749,11 +792,13 @@ export class FeatureService {
 This project uses **OpenAPI Generator** to automatically generate typed API services and models from the backend OpenAPI specification.
 
 **Generated Code Location:**
+
 - Services: `src/app/api/api/` (e.g., `ItemsService`, `AuthControllerService`)
 - Models: `src/app/api/model/` (e.g., `ItemOutput`, `ItemInput`)
 - Configuration: `src/app/api/configuration.ts`, `src/app/api/variables.ts`
 
 **Key Principles:**
+
 - **Always use generated services** - Never make direct `HttpClient` calls to API endpoints
 - **Use generated types** - Import and use types from `api/model/models`
 - **Never edit generated files** - All files in `src/app/api/` are auto-generated
@@ -765,34 +810,32 @@ This project uses **OpenAPI Generator** to automatically generate typed API serv
 
 ```typescript
 // ✅ CORRECT - Use generated service
-import { ItemsService } from '../api/api/items.service';
-import { ItemOutput, ItemInput } from '../api/model/models';
+import { ItemsService } from "../api/api/items.service";
+import { ItemOutput, ItemInput } from "../api/model/models";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class FeatureService {
   private itemsService = inject(ItemsService);
 
   getItems(): Observable<ItemOutput[]> {
     return this.itemsService.getAllItems().pipe(
       // Handle Blob responses if using fetch API (see below)
-      switchMap(response => this.blobToJson<ItemOutput[]>(response))
+      switchMap((response) => this.blobToJson<ItemOutput[]>(response))
     );
   }
 
   createItem(input: ItemInput): Observable<ItemOutput> {
-    return this.itemsService.createItem(input).pipe(
-      switchMap(response => this.blobToJson<ItemOutput>(response))
-    );
+    return this.itemsService.createItem(input).pipe(switchMap((response) => this.blobToJson<ItemOutput>(response)));
   }
 }
 
 // ❌ WRONG - Direct HttpClient calls
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class FeatureService {
   private http = inject(HttpClient);
-  
+
   getItems(): Observable<any> {
-    return this.http.get('/api/items');  // Don't do this!
+    return this.http.get("/api/items"); // Don't do this!
   }
 }
 ```
@@ -803,11 +846,11 @@ export class FeatureService {
 
 ```typescript
 // ✅ CORRECT
-import { ItemOutput, ItemInput } from '../api/model/models';
+import { ItemOutput, ItemInput } from "../api/model/models";
 
 export class FeatureListPage {
   items = signal<ItemOutput[]>([]);
-  
+
   createItem(input: ItemInput) {
     // Use typed input
   }
@@ -815,9 +858,10 @@ export class FeatureListPage {
 
 // ❌ WRONG
 export class FeatureListPage {
-  items = signal<any[]>([]);  // Don't use any
-  
-  createItem(input: { name: string }) {  // Don't define types manually
+  items = signal<any[]>([]); // Don't use any
+
+  createItem(input: { name: string }) {
+    // Don't define types manually
     // ...
   }
 }
@@ -826,6 +870,7 @@ export class FeatureListPage {
 ### Feature Service Pattern
 
 Create feature-specific services that wrap generated services. This allows you to:
+
 - Use `inject()` instead of constructor injection
 - Handle Blob responses (see below)
 - Add feature-specific logic
@@ -833,38 +878,36 @@ Create feature-specific services that wrap generated services. This allows you t
 
 ```typescript
 // ✅ CORRECT - Feature service wrapping generated service
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class FeatureService {
   private itemsService = inject(ItemsService);
 
   getItems(): Observable<ItemOutput[]> {
-    return this.itemsService.getAllItems().pipe(
-      switchMap(response => this.blobToJson<ItemOutput[]>(response))
-    );
+    return this.itemsService.getAllItems().pipe(switchMap((response) => this.blobToJson<ItemOutput[]>(response)));
   }
 
   getItem(id: string): Observable<ItemOutput> {
-    return this.itemsService.getItemById(id).pipe(
-      switchMap(response => this.blobToJson<ItemOutput>(response))
-    );
+    return this.itemsService.getItemById(id).pipe(switchMap((response) => this.blobToJson<ItemOutput>(response)));
   }
 
   // Handle Blob responses when using fetch API
   private blobToJson<T>(response: any): Observable<T> {
     if (response instanceof Blob) {
-      return from(new Promise<T>((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          try {
-            const text = reader.result as string;
-            resolve(JSON.parse(text));
-          } catch (e) {
-            reject(new Error('Failed to parse JSON response: ' + e));
-          }
-        };
-        reader.onerror = () => reject(new Error('Failed to read Blob'));
-        reader.readAsText(response);
-      }));
+      return from(
+        new Promise<T>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            try {
+              const text = reader.result as string;
+              resolve(JSON.parse(text));
+            } catch (e) {
+              reject(new Error("Failed to parse JSON response: " + e));
+            }
+          };
+          reader.onerror = () => reject(new Error("Failed to read Blob"));
+          reader.readAsText(response);
+        })
+      );
     }
     return of(response);
   }
@@ -906,30 +949,30 @@ The base path is configured via `provideApi()` in `app.config.ts`:
 
 ```typescript
 // ✅ CORRECT - In app.config.ts
-import { provideApi } from './api/provide-api';
+import { provideApi } from "./api/provide-api";
 
 export const appConfig: ApplicationConfig = {
   providers: [
     // ... other providers
-    provideApi('http://localhost:8080'),  // Base path for API
+    provideApi("http://localhost:8080"), // Base path for API
     // Or use Configuration object for more options
     provideApi({
-      basePath: 'http://localhost:8080',
+      basePath: "http://localhost:8080",
       // other configuration options
-    })
-  ]
+    }),
+  ],
 };
 ```
 
 To access the base path in services, inject `BASE_PATH`:
 
 ```typescript
-import { BASE_PATH } from '../api/variables';
+import { BASE_PATH } from "../api/variables";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class FeatureService {
   @Optional() @Inject(BASE_PATH) private basePath?: string;
-  
+
   // Use basePath when needed
 }
 ```
@@ -950,6 +993,7 @@ When the backend API changes, regenerate the API code:
 5. **Test thoroughly** - Ensure all API calls still work
 
 **Configuration:** The generator config is in `openapi-generator-config.json`:
+
 - Input spec: `http://localhost:8080/v3/api-docs`
 - Output directory: `src/app/api`
 - Generator: `typescript-angular`
@@ -960,15 +1004,15 @@ When the backend API changes, regenerate the API code:
 
 ```typescript
 // ✅ CORRECT
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class FeatureService {
   private itemsService = inject(ItemsService);
 
-  getItems(): Observable<ItemOutput[]> { }
-  getItem(id: string): Observable<ItemOutput> { }
-  createItem(input: ItemInput): Observable<ItemOutput> { }
-  updateItem(id: string, input: ItemInput): Observable<ItemOutput> { }
-  deleteItem(id: string): Observable<void> { }
+  getItems(): Observable<ItemOutput[]> {}
+  getItem(id: string): Observable<ItemOutput> {}
+  createItem(input: ItemInput): Observable<ItemOutput> {}
+  updateItem(id: string, input: ItemInput): Observable<ItemOutput> {}
+  deleteItem(id: string): Observable<void> {}
 }
 ```
 
@@ -1021,6 +1065,7 @@ getMyItems(): Observable<ItemOutput[]> {
 **Maximum 300 lines per file.**
 
 If a file exceeds 300 lines:
+
 - Split components into smaller sub-components
 - Extract logic into services
 - Extract complex computed values into separate functions
@@ -1033,26 +1078,24 @@ If a file exceeds 300 lines:
 ```typescript
 @Component({
   standalone: true,
-  selector: 'app-feature-name',
-  templateUrl: './feature-name.component.html',
-  imports: [CommonModule, /* other imports */]
+  selector: "app-feature-name",
+  templateUrl: "./feature-name.component.html",
+  imports: [CommonModule /* other imports */],
 })
 export class FeatureNameComponent {
   // Use inject() for DI
   private service = inject(FeatureService);
-  
+
   // Use signals for state
   items = signal<ItemOutput[]>([]);
   loading = signal(false);
-  
+
   // Use new input/output API
   item = input.required<ItemOutput>();
   selected = output<ItemOutput>();
-  
+
   // Use computed for derived state
-  filteredItems = computed(() => 
-    this.items().filter(item => item.active)
-  );
+  filteredItems = computed(() => this.items().filter((item) => item.active));
 }
 ```
 
@@ -1060,48 +1103,44 @@ export class FeatureNameComponent {
 
 ```typescript
 // ✅ CORRECT - Feature service wrapping generated service
-import { ItemsService } from '../../api/api/items.service';
-import { ItemOutput, ItemInput } from '../../api/model/models';
-import { Observable, from, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { ItemsService } from "../../api/api/items.service";
+import { ItemOutput, ItemInput } from "../../api/model/models";
+import { Observable, from, of } from "rxjs";
+import { switchMap } from "rxjs/operators";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class FeatureService {
   private itemsService = inject(ItemsService);
 
   getItems(): Observable<ItemOutput[]> {
-    return this.itemsService.getAllItems().pipe(
-      switchMap(response => this.blobToJson<ItemOutput[]>(response))
-    );
+    return this.itemsService.getAllItems().pipe(switchMap((response) => this.blobToJson<ItemOutput[]>(response)));
   }
 
   getItem(id: string): Observable<ItemOutput> {
-    return this.itemsService.getItemById(id).pipe(
-      switchMap(response => this.blobToJson<ItemOutput>(response))
-    );
+    return this.itemsService.getItemById(id).pipe(switchMap((response) => this.blobToJson<ItemOutput>(response)));
   }
 
   createItem(input: ItemInput): Observable<ItemOutput> {
-    return this.itemsService.createItem(input).pipe(
-      switchMap(response => this.blobToJson<ItemOutput>(response))
-    );
+    return this.itemsService.createItem(input).pipe(switchMap((response) => this.blobToJson<ItemOutput>(response)));
   }
 
   // Handle Blob responses when using fetch API
   private blobToJson<T>(response: any): Observable<T> {
     if (response instanceof Blob) {
-      return from(new Promise<T>((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          try {
-            resolve(JSON.parse(reader.result as string));
-          } catch (e) {
-            reject(new Error('Failed to parse JSON: ' + e));
-          }
-        };
-        reader.onerror = () => reject(new Error('Failed to read Blob'));
-        reader.readAsText(response);
-      }));
+      return from(
+        new Promise<T>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            try {
+              resolve(JSON.parse(reader.result as string));
+            } catch (e) {
+              reject(new Error("Failed to parse JSON: " + e));
+            }
+          };
+          reader.onerror = () => reject(new Error("Failed to read Blob"));
+          reader.readAsText(response);
+        })
+      );
     }
     return of(response);
   }
@@ -1111,36 +1150,34 @@ export class FeatureService {
 ### Route Template
 
 ```typescript
-import { Routes } from '@angular/router';
+import { Routes } from "@angular/router";
 
 export default [
   {
-    path: '',
-    loadComponent: () => 
-      import('./pages/list/list.page').then(m => m.ListPage)
+    path: "",
+    loadComponent: () => import("./pages/list/list.page").then((m) => m.ListPage),
   },
   {
-    path: ':id',
-    loadComponent: () => 
-      import('./pages/details/details.page').then(m => m.DetailsPage)
-  }
+    path: ":id",
+    loadComponent: () => import("./pages/details/details.page").then((m) => m.DetailsPage),
+  },
 ] satisfies Routes;
 ```
 
 ### File Locations
 
-| Component | Location |
-|-----------|----------|
-| Feature Page | `features/{feature}/pages/{page-name}/{page-name}.page.ts` |
-| Feature Component | `features/{feature}/components/{component-name}/{component-name}.component.ts` |
-| Feature Service | `features/{feature}/services/{feature}.service.ts` |
-| Feature Routes | `features/{feature}/{feature}.routes.ts` |
-| Shared UI Component | `shared/ui/{component-name}/{component-name}.component.ts` |
-| Global Service | `core/services/{service-name}.service.ts` |
-| Guard | `core/guards/{guard-name}.guard.ts` |
-| Interceptor | `core/interceptors/{interceptor-name}.interceptor.ts` |
-| Generated API Service | `api/api/{service-name}.service.ts` |
-| Generated API Model | `api/model/{model-name}.ts` |
+| Component             | Location                                                                       |
+| --------------------- | ------------------------------------------------------------------------------ |
+| Feature Page          | `features/{feature}/pages/{page-name}/{page-name}.page.ts`                     |
+| Feature Component     | `features/{feature}/components/{component-name}/{component-name}.component.ts` |
+| Feature Service       | `features/{feature}/services/{feature}.service.ts`                             |
+| Feature Routes        | `features/{feature}/{feature}.routes.ts`                                       |
+| Shared UI Component   | `shared/ui/{component-name}/{component-name}.component.ts`                     |
+| Global Service        | `core/services/{service-name}.service.ts`                                      |
+| Guard                 | `core/guards/{guard-name}.guard.ts`                                            |
+| Interceptor           | `core/interceptors/{interceptor-name}.interceptor.ts`                          |
+| Generated API Service | `api/api/{service-name}.service.ts`                                            |
+| Generated API Model   | `api/model/{model-name}.ts`                                                    |
 
 ## Common Mistakes to Avoid
 
@@ -1184,6 +1221,7 @@ When refactoring existing code:
 ### Complete Feature Example
 
 **Feature Structure:**
+
 - **Service**: `features/items/services/items.service.ts` - Wraps generated API service
 - **Pages**: `features/items/pages/list/list.page.ts`, `features/items/pages/details/details.page.ts`
 - **Components**: `features/items/components/item-card/item-card.component.ts` (if feature-specific)
@@ -1195,29 +1233,29 @@ When refactoring existing code:
 ```typescript
 @Component({
   standalone: true,
-  selector: 'app-item-list',
+  selector: "app-item-list",
   template: `
     <div class="flex flex-col gap-4 p-6">
       <h1 class="text-3xl font-bold">Items</h1>
-      
+
       @if (loading()) {
-        <p>Loading...</p>
+      <p>Loading...</p>
       } @else if (items().length === 0) {
-        <p>No items found</p>
+      <p>No items found</p>
       } @else {
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          @for (item of items(); track item.id) {
-            <app-item-card [item]="item" (selected)="onItemSelected($event)" />
-          }
-        </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        @for (item of items(); track item.id) {
+        <app-item-card [item]="item" (selected)="onItemSelected($event)" />
+        }
+      </div>
       }
     </div>
   `,
-  imports: [CommonModule, ItemCardComponent]
+  imports: [CommonModule, ItemCardComponent],
 })
 export class ItemListPage {
   private itemService = inject(ItemService);
-  
+
   items = signal<ItemOutput[]>([]);
   loading = signal(false);
 
@@ -1233,9 +1271,9 @@ export class ItemListPage {
         this.loading.set(false);
       },
       error: (error) => {
-        console.error('Error loading items:', error);
+        console.error("Error loading items:", error);
         this.loading.set(false);
-      }
+      },
     });
   }
 
@@ -1248,49 +1286,45 @@ export class ItemListPage {
 ### Service Example
 
 ```typescript
-import { inject, Injectable } from '@angular/core';
-import { Observable, from, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
-import { ItemsService } from '../../api/api/items.service';
-import { ItemOutput, ItemInput } from '../../api/model/models';
+import { inject, Injectable } from "@angular/core";
+import { Observable, from, of } from "rxjs";
+import { switchMap } from "rxjs/operators";
+import { ItemsService } from "../../api/api/items.service";
+import { ItemOutput, ItemInput } from "../../api/model/models";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class ItemService {
   private itemsService = inject(ItemsService);
 
   getItems(): Observable<ItemOutput[]> {
-    return this.itemsService.getAllItems().pipe(
-      switchMap(response => this.blobToJson<ItemOutput[]>(response))
-    );
+    return this.itemsService.getAllItems().pipe(switchMap((response) => this.blobToJson<ItemOutput[]>(response)));
   }
 
   getItem(id: string): Observable<ItemOutput> {
-    return this.itemsService.getItemById(id).pipe(
-      switchMap(response => this.blobToJson<ItemOutput>(response))
-    );
+    return this.itemsService.getItemById(id).pipe(switchMap((response) => this.blobToJson<ItemOutput>(response)));
   }
 
   createItem(input: ItemInput): Observable<ItemOutput> {
-    return this.itemsService.createItem(input).pipe(
-      switchMap(response => this.blobToJson<ItemOutput>(response))
-    );
+    return this.itemsService.createItem(input).pipe(switchMap((response) => this.blobToJson<ItemOutput>(response)));
   }
 
   // Handle Blob responses when using fetch API
   private blobToJson<T>(response: any): Observable<T> {
     if (response instanceof Blob) {
-      return from(new Promise<T>((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          try {
-            resolve(JSON.parse(reader.result as string));
-          } catch (e) {
-            reject(new Error('Failed to parse JSON: ' + e));
-          }
-        };
-        reader.onerror = () => reject(new Error('Failed to read Blob'));
-        reader.readAsText(response);
-      }));
+      return from(
+        new Promise<T>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            try {
+              resolve(JSON.parse(reader.result as string));
+            } catch (e) {
+              reject(new Error("Failed to parse JSON: " + e));
+            }
+          };
+          reader.onerror = () => reject(new Error("Failed to read Blob"));
+          reader.readAsText(response);
+        })
+      );
     }
     return of(response);
   }

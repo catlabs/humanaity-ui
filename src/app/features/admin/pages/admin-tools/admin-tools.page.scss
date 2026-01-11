@@ -1,0 +1,90 @@
+@use "sass:map";
+@use "../../../../../styles/tokens" as *;
+@use "../../../../../styles/breakpoints" as *;
+
+.admin-tools-page {
+  display: flex;
+  flex-direction: column;
+  gap: map.get($spacing-scale, 6);
+}
+
+.admin-tools-page__header {
+  display: flex;
+  flex-direction: column;
+  gap: map.get($spacing-scale, 1);
+}
+
+.admin-tools-page__title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--mat-sys-on-surface);
+  margin: 0;
+}
+
+.admin-tools-page__subtitle {
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.admin-tools-page__section-select {
+  display: flex;
+  flex-direction: column;
+  gap: map.get($spacing-scale, 2);
+
+  mat-form-field {
+    width: 100%;
+    max-width: 20rem; // sm:w-80
+  }
+}
+
+.admin-tools-page__section {
+  display: flex;
+  flex-direction: column;
+  gap: map.get($spacing-scale, 6);
+}
+
+.admin-tools-page__card {
+  border: 1px solid var(--mat-sys-outline-variant);
+  box-shadow: $shadow-sm;
+}
+
+.admin-tools-page__card-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: map.get($spacing-scale, 3);
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+  padding: map.get($spacing-scale, 3) map.get($spacing-scale, 4);
+}
+
+.admin-tools-page__card-header-content {
+  flex: 1 1 0%;
+}
+
+.admin-tools-page__card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--mat-sys-on-surface);
+  margin: 0 0 map.get($spacing-scale, 1) 0;
+}
+
+.admin-tools-page__card-description {
+  color: var(--mat-sys-on-surface-variant);
+  margin: 0;
+}
+
+.admin-tools-page__card-button {
+  padding: map.get($spacing-scale, 2.5) map.get($spacing-scale, 5);
+}
+
+.admin-tools-page__card-content {
+  max-height: 20rem;
+  overflow: auto;
+  padding: map.get($spacing-scale, 3) map.get($spacing-scale, 4);
+}
+
+.admin-tools-page__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  align-items: start;
+  gap: map.get($spacing-scale, 3);
+}

@@ -1,10 +1,108 @@
+@use "sass:map";
+@use "../../../../styles/tokens" as *;
+@use "../../../../styles/breakpoints" as *;
+
+.app-header {
+  width: 100%;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+
+html.dark .app-header {
+  border-bottom-color: var(--mat-sys-outline-variant);
+}
+
 // Remove toolbar background
 .mat-toolbar {
   background: transparent !important;
-}
-
-// Remove toolbar padding
-.mat-toolbar {
   padding-left: 0;
   padding-right: 0;
+  height: 4rem; // h-16
+}
+
+.app-header__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+}
+
+.app-header__left {
+  display: flex;
+  align-items: center;
+  gap: map.get($spacing-scale, 8);
+}
+
+.app-header__brand {
+  display: flex;
+  align-items: center;
+  gap: map.get($spacing-scale, 3);
+}
+
+.app-header__logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2rem;
+  width: 2rem;
+  border-radius: $radius-lg;
+  background-color: var(--mat-sys-primary);
+  color: var(--mat-sys-on-primary);
+
+  mat-icon {
+    font-size: 1rem;
+    line-height: 1;
+  }
+}
+
+.app-header__title {
+  font-size: 1.25rem; // text-xl
+  font-weight: 600; // font-semibold
+  color: var(--mat-sys-on-surface);
+}
+
+.app-header__actions {
+  display: flex;
+  align-items: center;
+  gap: map.get($spacing-scale, 4);
+}
+
+.app-header__icon-button {
+  color: var(--mat-sys-on-surface-variant);
+  transition: color 0.2s;
+
+  &:hover {
+    color: var(--mat-sys-on-surface);
+  }
+}
+
+.app-header__avatar-button {
+  height: 2rem;
+  width: 2rem;
+  border-radius: 50%;
+  overflow: hidden;
+  padding: 0;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.app-header__avatar-image {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.app-header__avatar-icon {
+  font-size: 1.25rem;
+  color: var(--mat-sys-on-surface-variant);
+  background-color: var(--mat-sys-surface-container-high);
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
 }

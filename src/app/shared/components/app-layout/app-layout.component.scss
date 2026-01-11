@@ -1,0 +1,20 @@
+@use "sass:map";
+@use "../../../../styles/tokens" as *;
+@use "../../../../styles/breakpoints" as *;
+
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-layout__header-container {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.app-layout__main {
+  flex: 1 1 0%;
+  padding: map.get($spacing-scale, 6) 0;
+}

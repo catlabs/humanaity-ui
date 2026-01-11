@@ -13,6 +13,7 @@ import {
   standalone: true,
   imports: [CommonModule, MatButtonModule, MatIconModule],
   templateUrl: './timeline-node.component.html',
+  styleUrl: './timeline-node.component.scss',
 })
 export class TimelineNodeComponent {
   private dialog = inject(MatDialog);

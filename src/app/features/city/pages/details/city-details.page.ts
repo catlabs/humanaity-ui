@@ -40,6 +40,7 @@ type RecentEvent = {
   selector: 'app-city-details',
   standalone: true,
   templateUrl: './city-details.page.html',
+  styleUrl: './city-details.page.scss',
   imports: [
     CommonModule,
     MatButtonModule,

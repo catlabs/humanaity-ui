@@ -1,5 +1,5 @@
-<div class="flex min-h-screen flex-col app-main-bg">
-  <div class="sticky top-0 z-50">
+<div class="app-layout app-main-bg">
+  <div class="app-layout__header-container">
     <app-header
       [showUserMenu]="showUserMenu()"
       [userAvatar]="userAvatar()"
@@ -8,7 +8,7 @@
     </app-header>
   </div>
 
-  <main class="flex-1 py-6 app-main-bg">
+  <main class="app-layout__main app-main-bg">
     <app-container>
       <router-outlet />
     </app-container>

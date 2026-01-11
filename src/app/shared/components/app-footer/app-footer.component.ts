@@ -13,7 +13,8 @@ import { AppContainerComponent } from '../app-container/app-container.component'
     MatIconModule,
     AppContainerComponent
   ],
-  templateUrl: './app-footer.component.html'
+  templateUrl: './app-footer.component.html',
+  styleUrl: './app-footer.component.scss'
 })
 export class AppFooterComponent {
   currentYear = new Date().getFullYear();

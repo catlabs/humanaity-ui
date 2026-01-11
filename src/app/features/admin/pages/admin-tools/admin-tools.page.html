@@ -1,13 +1,13 @@
-<div class="flex flex-col gap-6">
-  <div>
-    <h2 class="text-3xl font-bold text-onSurface">Admin Tools</h2>
-    <p class="text-onSurfaceVariant">
+<div class="admin-tools-page">
+  <div class="admin-tools-page__header">
+    <h2 class="admin-tools-page__title">Admin Tools</h2>
+    <p class="admin-tools-page__subtitle">
       Manage and configure simulation parameters
     </p>
   </div>
 
-  <div class="flex flex-col gap-2">
-    <mat-form-field appearance="outline" class="w-full sm:w-80">
+  <div class="admin-tools-page__section-select">
+    <mat-form-field appearance="outline">
       <mat-label>Section</mat-label>
       <mat-select
         [value]="activeSection()"
@@ -20,18 +20,16 @@
     </mat-form-field>
   </div>
 
-  <div class="flex flex-col gap-6">
+  <div class="admin-tools-page__section">
     @switch (activeSection()) { @case ('invention') {
     <!-- Invention Progression Simulator -->
-    <mat-card class="border border-outlineVariant shadow-sm">
-      <div
-        class="flex flex-wrap items-start gap-3 border-b border-outlineVariant px-4 py-3"
-      >
-        <div class="flex-1">
-          <h3 class="text-xl font-semibold text-onSurface">
+    <mat-card class="admin-tools-page__card">
+      <div class="admin-tools-page__card-header">
+        <div class="admin-tools-page__card-header-content">
+          <h3 class="admin-tools-page__card-title">
             Invention Progression Simulator
           </h3>
-          <p class="text-onSurfaceVariant">
+          <p class="admin-tools-page__card-description">
             Simulate the logical progression of human inventions throughout
             history
           </p>
@@ -40,16 +38,14 @@
           mat-raised-button
           color="primary"
           (click)="onGenerateNextInvention()"
-          class="px-5 py-2.5 font-semibold"
+          class="admin-tools-page__card-button"
         >
           Generate Next Invention
         </button>
       </div>
 
-      <div class="max-h-80 overflow-auto px-4 py-3">
-        <div
-          class="grid items-start gap-3 grid-cols-[repeat(auto-fit,minmax(240px,1fr))]"
-        >
+      <div class="admin-tools-page__card-content">
+        <div class="admin-tools-page__grid">
           @for (invention of inventions(); track invention.title) {
           <app-timeline-node
             [title]="invention.title"
@@ -63,15 +59,13 @@
     </mat-card>
     } @case ('artistic') {
     <!-- Artistic Evolution Simulator -->
-    <mat-card class="border border-outlineVariant shadow-sm">
-      <div
-        class="flex flex-wrap items-start gap-3 border-b border-outlineVariant px-4 py-3"
-      >
-        <div class="flex-1">
-          <h3 class="text-xl font-semibold text-onSurface">
+    <mat-card class="admin-tools-page__card">
+      <div class="admin-tools-page__card-header">
+        <div class="admin-tools-page__card-header-content">
+          <h3 class="admin-tools-page__card-title">
             Artistic Evolution Simulator
           </h3>
-          <p class="text-onSurfaceVariant">
+          <p class="admin-tools-page__card-description">
             Trace the evolution of artistic movements and their cultural impact
           </p>
         </div>
@@ -79,16 +73,14 @@
           mat-raised-button
           color="primary"
           (click)="onGenerateNextArtisticStage()"
-          class="px-5 py-2.5 font-semibold"
+          class="admin-tools-page__card-button"
         >
           Next Artistic Stage
         </button>
       </div>
 
-      <div class="max-h-80 overflow-auto px-4 py-3">
-        <div
-          class="grid items-start gap-3 grid-cols-[repeat(auto-fit,minmax(240px,1fr))]"
-        >
+      <div class="admin-tools-page__card-content">
+        <div class="admin-tools-page__grid">
           @for (movement of artisticMovements(); track movement.title) {
           <app-timeline-node
             [title]="movement.title"
@@ -102,15 +94,13 @@
     </mat-card>
     } @case ('philosophy') {
     <!-- Philosophical Ideas Simulator -->
-    <mat-card class="border border-outlineVariant shadow-sm">
-      <div
-        class="flex flex-wrap items-start gap-3 border-b border-outlineVariant px-4 py-3"
-      >
-        <div class="flex-1">
-          <h3 class="text-xl font-semibold text-onSurface">
+    <mat-card class="admin-tools-page__card">
+      <div class="admin-tools-page__card-header">
+        <div class="admin-tools-page__card-header-content">
+          <h3 class="admin-tools-page__card-title">
             Philosophical Ideas Simulator
           </h3>
-          <p class="text-onSurfaceVariant">
+          <p class="admin-tools-page__card-description">
             Explore the development of philosophical thought and reasoning
             systems
           </p>
@@ -119,16 +109,14 @@
           mat-raised-button
           color="primary"
           (click)="onGenerateNextIdea()"
-          class="px-5 py-2.5 font-semibold"
+          class="admin-tools-page__card-button"
         >
           Generate Next Idea
         </button>
       </div>
 
-      <div class="max-h-80 overflow-auto px-4 py-3">
-        <div
-          class="grid items-start gap-3 grid-cols-[repeat(auto-fit,minmax(240px,1fr))]"
-        >
+      <div class="admin-tools-page__card-content">
+        <div class="admin-tools-page__grid">
           @for (idea of philosophicalIdeas(); track idea.title) {
           <app-timeline-node
             [title]="idea.title"

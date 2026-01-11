@@ -1,7 +1,6 @@
-<!-- Fill the visible viewport area (app header is 4rem, layout main has py-6 => 3rem). -->
-<div class="h-[calc(100vh-7rem)] min-h-0">
+<div class="city-details-page">
   <mat-drawer-container
-    class="h-full min-h-0 app-drawer-content-transparent"
+    class="city-details-page__drawer-container app-drawer-content-transparent"
     autosize
   >
     <mat-drawer
@@ -9,20 +8,16 @@
       [mode]="drawerMode()"
       [opened]="drawerOpen()"
       (openedChange)="drawerOpen.set($event)"
-      class="w-96 max-w-[90vw] p-4 app-main-bg app-drawer-flat"
+      class="city-details-page__drawer app-main-bg app-drawer-flat"
     >
-      <div class="flex h-full min-h-0 flex-col">
-        <mat-card
-          class="flex min-h-0 flex-1 flex-col border border-outlineVariant bg-[var(--mat-sys-surface)] shadow-sm"
-        >
-          <div
-            class="flex flex-none items-center justify-between border-b border-outlineVariant px-5 py-4"
-          >
-            <h3 class="text-sm font-semibold text-onSurface">Recent Events</h3>
+      <div class="city-details-page__drawer-content">
+        <mat-card class="city-details-page__drawer-card">
+          <div class="city-details-page__drawer-header">
+            <h3 class="city-details-page__drawer-title">Recent Events</h3>
             <button
               mat-icon-button
               type="button"
-              class="text-onSurfaceVariant hover:text-onSurface transition"
+              class="city-details-page__drawer-close-button"
               (click)="closeDrawer()"
               aria-label="Collapse sidebar"
             >
@@ -30,7 +25,7 @@
             </button>
           </div>
 
-          <div class="min-h-0 flex-1 overflow-y-auto p-5">
+          <div class="city-details-page__drawer-body">
             @for (event of recentEvents(); track event.id) {
             <app-event-item
               [title]="event.title"
@@ -40,34 +35,29 @@
             >
             </app-event-item>
             } @empty {
-            <div class="py-6 text-center text-onSurfaceVariant">
-              No recent events
-            </div>
+            <div class="city-details-page__drawer-empty">No recent events</div>
             }
           </div>
         </mat-card>
       </div>
     </mat-drawer>
 
-    <mat-drawer-content class="h-full min-h-0 p-4">
-      <!-- Left: context + map (non-scrollable) -->
-      <div class="flex h-full min-h-0 flex-col gap-4">
+    <mat-drawer-content class="city-details-page__content">
+      <div class="city-details-page__main">
         <!-- City Context Header -->
-        <div class="flex h-12 flex-none items-center justify-between">
-          <div class="flex min-w-0 items-center gap-3">
-            <h2 class="truncate text-base font-semibold text-onSurface">
+        <div class="city-details-page__header">
+          <div class="city-details-page__title-section">
+            <h2 class="city-details-page__title">
               {{ city.name }}
             </h2>
-            <span class="whitespace-nowrap text-xs text-onSurfaceVariant">
-              Cycle {{ cycle() }}
-            </span>
+            <span class="city-details-page__cycle"> Cycle {{ cycle() }} </span>
           </div>
 
-          <div class="flex items-center gap-2">
+          <div class="city-details-page__actions">
             <button
               mat-raised-button
               color="primary"
-              class="flex items-center gap-1 px-4 py-2 text-sm font-semibold"
+              class="city-details-page__action-button"
               (click)="onStart()"
               [disabled]="isRunning()"
             >
@@ -76,7 +66,7 @@
             </button>
             <button
               mat-raised-button
-              class="flex items-center gap-1 bg-surfaceContainerHigh px-4 py-2 text-sm font-semibold text-onSurface hover:bg-surfaceContainerHighest"
+              class="city-details-page__action-button surface-button"
               (click)="onPause()"
               [disabled]="!isRunning()"
             >
@@ -86,7 +76,7 @@
             <button
               mat-raised-button
               color="primary"
-              class="flex items-center gap-1 px-3 py-2 text-sm font-semibold"
+              class="city-details-page__action-button"
               (click)="onStep(1)"
             >
               <mat-icon>skip_next</mat-icon>
@@ -95,7 +85,7 @@
             <button
               mat-raised-button
               color="primary"
-              class="flex items-center gap-1 px-3 py-2 text-sm font-semibold"
+              class="city-details-page__action-button"
               (click)="onStep(10)"
             >
               <mat-icon>fast_forward</mat-icon>
@@ -104,50 +94,48 @@
           </div>
         </div>
 
-        <!-- Map Container (fills remaining height) -->
-        <div
-          class="min-h-0 flex-1 overflow-hidden rounded-xl border border-outlineVariant bg-surfaceContainerLowest"
-        >
-          <div class="relative h-full">
-            <div #container class="h-full w-full"></div>
+        <!-- Map Container -->
+        <div class="city-details-page__map-container">
+          <div class="city-details-page__map-wrapper">
+            <div #container class="city-details-page__map"></div>
 
             <!-- Map Stats Overlay -->
-            <div
-              class="absolute inset-x-0 top-0 flex items-center gap-4 bg-gradient-to-b from-black/40 to-transparent p-4 text-white"
-            >
-              <div class="flex items-center gap-2">
-                <div class="text-xs uppercase tracking-wide text-white/80">
-                  Population
+            <div class="city-details-page__map-overlay">
+              <div class="city-details-page__map-stat">
+                <div class="city-details-page__map-stat-label">Population</div>
+                <div class="city-details-page__map-stat-value">
+                  {{ population() }}
                 </div>
-                <div class="text-lg font-semibold">{{ population() }}</div>
               </div>
-              <div class="h-6 w-px bg-white/30"></div>
-              <div class="flex items-center gap-2">
-                <div class="text-xs uppercase tracking-wide text-white/80">
-                  Happiness
-                </div>
-                <div class="text-lg font-semibold text-emerald-200">
+              <div class="city-details-page__map-divider"></div>
+              <div class="city-details-page__map-stat">
+                <div class="city-details-page__map-stat-label">Happiness</div>
+                <div
+                  class="city-details-page__map-stat-value"
+                  style="color: #a7f3d0"
+                >
                   {{ happiness() }}%
                 </div>
               </div>
-              <div class="h-6 w-px bg-white/30"></div>
-              <div class="flex items-center gap-2">
-                <div class="text-xs uppercase tracking-wide text-white/80">
-                  Resources
-                </div>
-                <div class="text-lg font-semibold text-amber-200">
+              <div class="city-details-page__map-divider"></div>
+              <div class="city-details-page__map-stat">
+                <div class="city-details-page__map-stat-label">Resources</div>
+                <div
+                  class="city-details-page__map-stat-value"
+                  style="color: #fde68a"
+                >
                   {{ resources() }}
                 </div>
               </div>
             </div>
 
             <!-- Map Controls -->
-            <div class="absolute right-4 top-4 flex flex-col gap-2">
+            <div class="city-details-page__map-controls">
               @if (!drawerOpen()) {
               <button
                 mat-icon-button
                 type="button"
-                class="rounded-lg bg-surface/90 shadow hover:bg-surface"
+                class="city-details-page__map-control-button"
                 (click)="openDrawer()"
                 aria-label="Open sidebar"
               >
@@ -157,30 +145,26 @@
 
               <button
                 mat-icon-button
-                class="rounded-lg bg-surface/90 shadow hover:bg-surface"
+                class="city-details-page__map-control-button"
               >
                 <mat-icon>add</mat-icon>
               </button>
               <button
                 mat-icon-button
-                class="rounded-lg bg-surface/90 shadow hover:bg-surface"
+                class="city-details-page__map-control-button"
               >
                 <mat-icon>remove</mat-icon>
               </button>
               <button
                 mat-icon-button
-                class="rounded-lg bg-surface/90 shadow hover:bg-surface"
+                class="city-details-page__map-control-button"
               >
                 <mat-icon>fullscreen</mat-icon>
               </button>
             </div>
 
             <!-- Grid Info -->
-            <div
-              class="absolute bottom-4 left-4 rounded-md bg-surface/90 px-3 py-1 text-sm font-medium text-onSurfaceVariant shadow"
-            >
-              Grid: 100x100
-            </div>
+            <div class="city-details-page__map-info">Grid: 100x100</div>
           </div>
         </div>
       </div>

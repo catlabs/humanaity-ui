@@ -1,83 +1,75 @@
-<div class="flex min-h-screen flex-col gap-6">
-  <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-    <div class="space-y-1">
-      <h1 class="text-3xl font-bold text-onSurface">Your Simulations</h1>
-      <p class="text-onSurfaceVariant">Manage and run your simulation projects</p>
-      </div>
+<div class="city-list-page">
+  <div class="city-list-page__header">
+    <div class="city-list-page__title-section">
+      <h1 class="city-list-page__title">Your Simulations</h1>
+      <p class="city-list-page__subtitle">Manage and run your simulation projects</p>
+    </div>
     <button
       mat-raised-button
       color="primary"
       (click)="onCreateNew()"
-      class="flex items-center gap-2 px-6 py-3 font-medium"
+      class="city-list-page__new-button"
     >
-        <mat-icon>add</mat-icon>
-        <span>New Simulation</span>
-      </button>
-    </div>
+      <mat-icon>add</mat-icon>
+      <span>New Simulation</span>
+    </button>
+  </div>
 
-  <div class="w-full">
-    <div class="flex w-full flex-wrap items-center gap-2 rounded-lg bg-surfaceContainerLow p-2">
-        <button 
-        class="rounded-md px-4 py-2 text-sm font-medium text-onSurfaceVariant transition hover:text-onSurface"
-        [class.bg-surfaceContainerHighest]="activeFilter === 'all'"
-        [class.text-primary]="activeFilter === 'all'"
-        [class.shadow-sm]="activeFilter === 'all'"
+  <div class="city-list-page__filters">
+    <div class="city-list-page__filter-bar">
+      <button 
+        class="city-list-page__filter-button"
+        [class.is-active]="activeFilter === 'all'"
         (click)="onFilterChange('all')"
       >
-          All Simulations
-        </button>
-        <button 
-        class="rounded-md px-4 py-2 text-sm font-medium text-onSurfaceVariant transition hover:text-onSurface"
-        [class.bg-surfaceContainerHighest]="activeFilter === 'running'"
-        [class.text-primary]="activeFilter === 'running'"
-        [class.shadow-sm]="activeFilter === 'running'"
+        All Simulations
+      </button>
+      <button 
+        class="city-list-page__filter-button"
+        [class.is-active]="activeFilter === 'running'"
         (click)="onFilterChange('running')"
       >
-          Running
-        </button>
-        <button 
-        class="rounded-md px-4 py-2 text-sm font-medium text-onSurfaceVariant transition hover:text-onSurface"
-        [class.bg-surfaceContainerHighest]="activeFilter === 'completed'"
-        [class.text-primary]="activeFilter === 'completed'"
-        [class.shadow-sm]="activeFilter === 'completed'"
+        Running
+      </button>
+      <button 
+        class="city-list-page__filter-button"
+        [class.is-active]="activeFilter === 'completed'"
         (click)="onFilterChange('completed')"
       >
-          Completed
-        </button>
-        <button 
-        class="rounded-md px-4 py-2 text-sm font-medium text-onSurfaceVariant transition hover:text-onSurface"
-        [class.bg-surfaceContainerHighest]="activeFilter === 'draft'"
-        [class.text-primary]="activeFilter === 'draft'"
-        [class.shadow-sm]="activeFilter === 'draft'"
+        Completed
+      </button>
+      <button 
+        class="city-list-page__filter-button"
+        [class.is-active]="activeFilter === 'draft'"
         (click)="onFilterChange('draft')"
       >
-          Draft
-        </button>
+        Draft
+      </button>
+    </div>
+  </div>
+
+  <div class="city-list-page__grid">
+    @for (simulation of getPaginatedCities(); track simulation.id) {
+      <app-simulation-card 
+        [simulation]="simulation"
+        (cardClick)="onCardClick($event)">
+      </app-simulation-card>
+    } @empty {
+      <div class="city-list-page__empty">
+        <mat-icon>inbox</mat-icon>
+        <p>No simulations found</p>
       </div>
-    </div>
-
-  <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-      @for (simulation of getPaginatedCities(); track simulation.id) {
-        <app-simulation-card 
-          [simulation]="simulation"
-          (cardClick)="onCardClick($event)">
-        </app-simulation-card>
-      } @empty {
-      <div class="col-span-full flex flex-col items-center rounded-xl border border-outlineVariant bg-surfaceContainerLowest p-10 text-center text-onSurfaceVariant shadow-sm">
-        <mat-icon class="mb-3 text-5xl opacity-60">inbox</mat-icon>
-        <p class="text-lg font-medium">No simulations found</p>
-        </div>
-      }
-    </div>
-
-    @if (filteredCities().length > pageSize) {
-      <mat-paginator
-        [length]="filteredCities().length"
-        [pageSize]="pageSize"
-        [pageIndex]="currentPage"
-        [pageSizeOptions]="[9, 18, 27]"
-        (page)="onPageChange($event)"
-      class="flex justify-center">
-      </mat-paginator>
     }
+  </div>
+
+  @if (filteredCities().length > pageSize) {
+    <mat-paginator
+      [length]="filteredCities().length"
+      [pageSize]="pageSize"
+      [pageIndex]="currentPage"
+      [pageSizeOptions]="[9, 18, 27]"
+      (page)="onPageChange($event)"
+      class="city-list-page__paginator">
+    </mat-paginator>
+  }
 </div>

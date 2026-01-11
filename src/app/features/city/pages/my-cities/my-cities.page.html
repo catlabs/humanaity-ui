@@ -1,22 +1,22 @@
-<div class="flex flex-col gap-6">
-  <div class="flex items-center justify-between">
-    <h1 class="text-3xl font-bold text-onSurface">My Cities</h1>
-    <button mat-raised-button color="primary" routerLink="/cities/create" class="px-6 py-3 font-semibold">
+<div class="my-cities-page">
+  <div class="my-cities-page__header">
+    <h1 class="my-cities-page__title">My Cities</h1>
+    <button mat-raised-button color="primary" routerLink="/cities/create" class="my-cities-page__new-button">
       Create New City
     </button>
   </div>
 
   @if (cities().length === 0) {
-    <mat-card class="border border-outlineVariant shadow-sm">
-      <mat-card-content class="flex flex-col items-start gap-3">
-        <p class="text-onSurfaceVariant">You haven't created any cities yet.</p>
-        <button mat-raised-button color="primary" routerLink="/cities/create" class="px-5 py-2.5 font-semibold">
+    <mat-card class="my-cities-page__empty-card">
+      <mat-card-content class="my-cities-page__empty-content">
+        <p class="my-cities-page__empty-text">You haven't created any cities yet.</p>
+        <button mat-raised-button color="primary" routerLink="/cities/create" class="my-cities-page__empty-button">
           Create Your First City
         </button>
       </mat-card-content>
     </mat-card>
   } @else {
-    <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <div class="my-cities-page__grid">
       @for (city of cities(); track city.id) {
         <app-city-card [city]="city" [routerLink]="['/cities', city.id]"></app-city-card>
       }

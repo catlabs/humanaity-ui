@@ -1,8 +1,12 @@
+// SCSS foundation
+@use "./styles/tokens";
+@use "./styles/breakpoints";
+@use "./styles/layout";
+@use "./styles/utilities";
+
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
 
-@import "./tailwind.css"; // Import Tailwind first
-
-/* Required for Tailwind layout correctness */
+/* Box-sizing for consistent layout */
 *,
 *::before,
 *::after {

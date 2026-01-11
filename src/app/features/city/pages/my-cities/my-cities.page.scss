@@ -1,0 +1,60 @@
+@use "sass:map";
+@use "../../../../../styles/tokens" as *;
+@use "../../../../../styles/breakpoints" as *;
+
+.my-cities-page {
+  display: flex;
+  flex-direction: column;
+  gap: map.get($spacing-scale, 6);
+}
+
+.my-cities-page__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.my-cities-page__title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--mat-sys-on-surface);
+  margin: 0;
+}
+
+.my-cities-page__new-button {
+  padding: map.get($spacing-scale, 3) map.get($spacing-scale, 6);
+}
+
+.my-cities-page__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: map.get($spacing-scale, 4);
+
+  @include md {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include lg {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.my-cities-page__empty-card {
+  border: 1px solid var(--mat-sys-outline-variant);
+  box-shadow: $shadow-sm;
+}
+
+.my-cities-page__empty-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: map.get($spacing-scale, 3);
+}
+
+.my-cities-page__empty-text {
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.my-cities-page__empty-button {
+  padding: map.get($spacing-scale, 2.5) map.get($spacing-scale, 5);
+}

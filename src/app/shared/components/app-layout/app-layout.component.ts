@@ -19,7 +19,8 @@ interface HeaderRouteData {
     AppHeaderComponent,
     AppContainerComponent
   ],
-  templateUrl: './app-layout.component.html'
+  templateUrl: './app-layout.component.html',
+  styleUrl: './app-layout.component.scss'
 })
 export class AppLayoutComponent {
   private route = inject(ActivatedRoute);

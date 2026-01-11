@@ -28,6 +28,7 @@ type AdminToolsSection = 'invention' | 'artistic' | 'philosophy';
     TimelineNodeComponent,
   ],
   templateUrl: './admin-tools.page.html',
+  styleUrl: './admin-tools.page.scss',
 })
 export class AdminToolsPage {
   activeSection = signal<AdminToolsSection>('invention');

@@ -1,0 +1,235 @@
+@use "sass:map";
+@use "../../../../../styles/tokens" as *;
+@use "../../../../../styles/breakpoints" as *;
+
+.city-details-page {
+  // Fill the visible viewport area (app header is 4rem, layout main has py-6 => 3rem).
+  height: calc(100vh - 7rem);
+  min-height: 0;
+}
+
+.city-details-page__drawer-container {
+  height: 100%;
+  min-height: 0;
+}
+
+.city-details-page__drawer {
+  width: 24rem; // w-96
+  max-width: 90vw;
+  padding: map.get($spacing-scale, 4);
+}
+
+.city-details-page__drawer-content {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  flex-direction: column;
+}
+
+.city-details-page__drawer-card {
+  display: flex;
+  min-height: 0;
+  flex: 1 1 0%;
+  flex-direction: column;
+  border: 1px solid var(--mat-sys-outline-variant);
+  background-color: var(--mat-sys-surface);
+  box-shadow: $shadow-sm;
+}
+
+.city-details-page__drawer-header {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+  padding: map.get($spacing-scale, 4) map.get($spacing-scale, 5);
+}
+
+.city-details-page__drawer-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--mat-sys-on-surface);
+  margin: 0;
+}
+
+.city-details-page__drawer-close-button {
+  color: var(--mat-sys-on-surface-variant);
+  transition: color 0.2s;
+
+  &:hover {
+    color: var(--mat-sys-on-surface);
+  }
+}
+
+.city-details-page__drawer-body {
+  min-height: 0;
+  flex: 1 1 0%;
+  overflow-y: auto;
+  padding: map.get($spacing-scale, 5);
+}
+
+.city-details-page__drawer-empty {
+  padding: map.get($spacing-scale, 6) 0;
+  text-align: center;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.city-details-page__content {
+  height: 100%;
+  min-height: 0;
+  padding: map.get($spacing-scale, 4);
+}
+
+.city-details-page__main {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  flex-direction: column;
+  gap: map.get($spacing-scale, 4);
+}
+
+.city-details-page__header {
+  display: flex;
+  height: 3rem; // h-12
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.city-details-page__title-section {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: map.get($spacing-scale, 3);
+}
+
+.city-details-page__title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--mat-sys-on-surface);
+  margin: 0;
+}
+
+.city-details-page__cycle {
+  white-space: nowrap;
+  font-size: 0.75rem;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.city-details-page__actions {
+  display: flex;
+  align-items: center;
+  gap: map.get($spacing-scale, 2);
+}
+
+.city-details-page__action-button {
+  display: flex;
+  align-items: center;
+  gap: map.get($spacing-scale, 1);
+  padding: map.get($spacing-scale, 2) map.get($spacing-scale, 4);
+  font-size: 0.875rem;
+  font-weight: 600;
+
+  &.surface-button {
+    background-color: var(--mat-sys-surface-container-high);
+    color: var(--mat-sys-on-surface);
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: var(--mat-sys-surface-container-highest);
+    }
+  }
+}
+
+.city-details-page__map-container {
+  min-height: 0;
+  flex: 1 1 0%;
+  overflow: hidden;
+  border-radius: $radius-xl;
+  border: 1px solid var(--mat-sys-outline-variant);
+  background-color: var(--mat-sys-surface-container-lowest);
+}
+
+.city-details-page__map-wrapper {
+  position: relative;
+  height: 100%;
+}
+
+.city-details-page__map {
+  height: 100%;
+  width: 100%;
+}
+
+.city-details-page__map-overlay {
+  position: absolute;
+  inset-x: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  gap: map.get($spacing-scale, 4);
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), transparent);
+  padding: map.get($spacing-scale, 4);
+  color: white;
+}
+
+.city-details-page__map-stat {
+  display: flex;
+  align-items: center;
+  gap: map.get($spacing-scale, 2);
+}
+
+.city-details-page__map-stat-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.city-details-page__map-stat-value {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.city-details-page__map-divider {
+  height: 1.5rem;
+  width: 1px;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.city-details-page__map-controls {
+  position: absolute;
+  right: map.get($spacing-scale, 4);
+  top: map.get($spacing-scale, 4);
+  display: flex;
+  flex-direction: column;
+  gap: map.get($spacing-scale, 2);
+}
+
+.city-details-page__map-control-button {
+  border-radius: $radius-lg;
+  background-color: var(--mat-sys-surface);
+  opacity: 0.9;
+  box-shadow: $shadow-sm;
+  transition: background-color 0.2s, opacity 0.2s;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.city-details-page__map-info {
+  position: absolute;
+  bottom: map.get($spacing-scale, 4);
+  left: map.get($spacing-scale, 4);
+  border-radius: $radius-md;
+  background-color: var(--mat-sys-surface);
+  opacity: 0.9;
+  padding: map.get($spacing-scale, 1) map.get($spacing-scale, 3);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--mat-sys-on-surface-variant);
+  box-shadow: $shadow-sm;
+}

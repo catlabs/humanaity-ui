@@ -16,7 +16,8 @@ import { CityCardComponent } from '../../components/card/city-card.component';
     MatCardModule,
     RouterLink
   ],
-  templateUrl: './my-cities.page.html'
+  templateUrl: './my-cities.page.html',
+  styleUrl: './my-cities.page.scss'
 })
 export class MyCitiesPage {
   private route = inject(ActivatedRoute);

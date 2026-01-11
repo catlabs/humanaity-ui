@@ -11,7 +11,8 @@ export type EventType = 'birth' | 'building' | 'invention' | 'warning' | 'marria
     CommonModule,
     MatIconModule
   ],
-  templateUrl: './event-item.component.html'
+  templateUrl: './event-item.component.html',
+  styleUrl: './event-item.component.scss'
 })
 export class EventItemComponent {
   title = input.required<string>();

@@ -6,6 +6,20 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
 
+// Global layout tokens
+:root {
+  --app-max-width: 80rem;
+  --app-gutter: clamp(16px, 3vw, 32px);
+}
+
+// Generic app container wrapper
+.app-container {
+  width: 100%;
+  max-width: var(--app-max-width);
+  margin-inline: auto;
+  padding-inline: var(--app-gutter);
+}
+
 /* Box-sizing for consistent layout */
 *,
 *::before,

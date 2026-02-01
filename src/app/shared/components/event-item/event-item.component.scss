@@ -1,5 +1,6 @@
 @use "sass:map";
 @use "../../../../styles/tokens" as *;
+@use "../../../../styles/typography" as *;
 
 .event-item {
   display: flex;
@@ -21,21 +22,18 @@
 }
 
 .event-item__title {
-  font-size: 0.875rem;
+  @include hai-body-small;
   font-weight: 500;
-  color: var(--mat-sys-on-surface);
   margin: 0;
 }
 
 .event-item__description {
-  font-size: 0.75rem;
-  color: var(--mat-sys-on-surface-variant);
+  @include hai-meta;
   margin: map.get($spacing-scale, 0.5) 0 0 0;
 }
 
 .event-item__timestamp {
-  font-size: 0.75rem;
-  color: var(--mat-sys-on-surface-variant);
+  @include hai-meta;
   opacity: 0.7;
   margin: map.get($spacing-scale, 1) 0 0 0;
 }

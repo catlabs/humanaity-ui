@@ -1,3 +1,5 @@
+@use "../../../../styles/typography" as *;
+
 .simulation-card {
   cursor: pointer;
   transition: box-shadow 0.2s;
@@ -48,16 +50,15 @@
 }
 
 .card-title {
-  font-size: 1rem;
+  @include hai-body;
   font-weight: 600;
-  color: #111827;
   margin: 0;
 }
 
 .status-badge {
+  @include hai-label-small;
   display: inline-block;
   padding: 0.25rem 0.5rem;
-  font-size: 0.75rem;
   font-weight: 500;
   border-radius: 9999px;
   
@@ -91,18 +92,16 @@
 }
 
 .card-description {
-  color: #4b5563;
-  font-size: 0.875rem;
+  @include hai-body-small-muted;
   margin: 0 0 1rem 0;
   line-height: 1.5;
 }
 
 .card-footer {
+  @include hai-body-small-muted;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.875rem;
-  color: #6b7280;
 }
 
 

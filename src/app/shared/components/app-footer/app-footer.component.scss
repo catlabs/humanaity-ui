@@ -1,6 +1,7 @@
 @use "sass:map";
 @use "../../../../styles/tokens" as *;
 @use "../../../../styles/breakpoints" as *;
+@use "../../../../styles/typography" as *;
 
 .app-footer {
   margin-top: auto;
@@ -45,16 +46,14 @@
 }
 
 .app-footer__copyright {
-  font-size: 0.875rem;
-  color: var(--mat-sys-on-surface-variant);
+  @include hai-body-small-muted;
 }
 
 .app-footer__links {
+  @include hai-body-small-muted;
   display: flex;
   align-items: center;
   gap: map.get($spacing-scale, 6);
-  font-size: 0.875rem;
-  color: var(--mat-sys-on-surface-variant);
 
   a {
     color: var(--mat-sys-on-surface-variant);

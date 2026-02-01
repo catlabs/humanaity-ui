@@ -1,6 +1,7 @@
 @use "sass:map";
 @use "../../../../styles/tokens" as *;
 @use "../../../../styles/breakpoints" as *;
+@use "../../../../styles/typography" as *;
 
 .app-header {
   width: 100%;
@@ -56,9 +57,8 @@ html.dark .app-header {
 }
 
 .app-header__title {
-  font-size: 1.25rem; // text-xl
-  font-weight: 600; // font-semibold
-  color: var(--mat-sys-on-surface);
+  @include hai-section-title;
+  font-weight: 600;
 }
 
 .app-header__actions {

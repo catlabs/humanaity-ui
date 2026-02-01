@@ -1,5 +1,6 @@
 @use "sass:map";
 @use "../../../../styles/tokens" as *;
+@use "../../../../styles/typography" as *;
 
 .timeline-node {
   display: flex;
@@ -20,16 +21,14 @@
 }
 
 .timeline-node__title {
-  font-size: 0.875rem;
+  @include hai-body-small;
   font-weight: 600;
   line-height: 1.375;
-  color: var(--mat-sys-on-surface);
   margin: 0;
 }
 
 .timeline-node__period {
-  font-size: 0.75rem;
-  color: var(--mat-sys-on-surface-variant);
+  @include hai-meta;
   margin: map.get($spacing-scale, 1) 0 0 0;
 }
 

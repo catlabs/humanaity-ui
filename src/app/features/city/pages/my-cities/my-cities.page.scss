@@ -1,6 +1,7 @@
 @use "sass:map";
 @use "../../../../../styles/tokens" as *;
 @use "../../../../../styles/breakpoints" as *;
+@use "../../../../../styles/typography" as *;
 
 .my-cities-page {
   display: flex;
@@ -15,9 +16,8 @@
 }
 
 .my-cities-page__title {
-  font-size: 1.875rem;
+  @include hai-page-title;
   font-weight: 700;
-  color: var(--mat-sys-on-surface);
   margin: 0;
 }
 

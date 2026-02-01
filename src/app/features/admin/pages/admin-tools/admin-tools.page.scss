@@ -1,6 +1,7 @@
 @use "sass:map";
 @use "../../../../../styles/tokens" as *;
 @use "../../../../../styles/breakpoints" as *;
+@use "../../../../../styles/typography" as *;
 
 .admin-tools-page {
   display: flex;
@@ -32,14 +33,12 @@
 }
 
 .admin-tools-page__title {
-  font-size: 0.9375rem;
+  @include hai-subsection-title;
   font-weight: 700;
-  color: var(--mat-sys-on-surface);
 }
 
 .admin-tools-page__subtitle {
-  font-size: 0.875rem;
-  color: var(--mat-sys-on-surface-variant);
+  @include hai-body-small-muted;
 }
 
 .admin-tools-page__columns {
@@ -68,20 +67,18 @@
 }
 
 .admin-tools-page__column-title {
+  @include hai-meta;
   display: flex;
   align-items: center;
   gap: map.get($spacing-scale, 1);
-  font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--mat-sys-on-surface-variant);
 }
 
 .admin-tools-page__column-count {
+  @include hai-body-small;
   margin-top: map.get($spacing-scale, 1);
-  font-size: 0.875rem;
-  color: var(--mat-sys-on-surface);
 }
 
 .admin-tools-page__column-body {
@@ -95,9 +92,8 @@
 }
 
 .admin-tools-page__inv-title {
-  font-size: 0.875rem;
+  @include hai-body-small;
   font-weight: 600;
-  color: var(--mat-sys-on-surface);
 }
 
 .admin-tools-page__inv-meta {

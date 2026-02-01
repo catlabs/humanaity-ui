@@ -1,3 +1,5 @@
+@use "../../../../styles/typography" as *;
+
 .entity-panel {
   .panel-header {
     padding: 1.25rem 1.25rem 1rem;
@@ -5,9 +7,8 @@
   }
 
   .panel-title {
-    font-size: 0.875rem;
+    @include hai-body-small;
     font-weight: 600;
-    color: #111827;
     margin: 0;
   }
 
@@ -46,15 +47,13 @@
 }
 
 .entity-name {
-  font-size: 1rem;
+  @include hai-body;
   font-weight: 600;
-  color: #111827;
   margin: 0 0 0.25rem 0;
 }
 
 .entity-type {
-  font-size: 0.875rem;
-  color: #6b7280;
+  @include hai-body-small-muted;
   margin: 0.25rem 0 0.5rem 0;
 }
 
@@ -66,19 +65,18 @@
 }
 
 .status-badge {
+  @include hai-label-small;
   display: inline-flex;
   align-items: center;
   padding: 0.125rem 0.5rem;
   border-radius: 9999px;
-  font-size: 0.75rem;
   font-weight: 500;
   background-color: #d1fae5;
   color: #166534;
 }
 
 .level-badge {
-  font-size: 0.75rem;
-  color: #9ca3af;
+  @include hai-meta;
 }
 
 .stats-section {
@@ -90,20 +88,20 @@
 
 .stat-item {
   .stat-header {
+    @include hai-label-small;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 0.75rem;
     margin-bottom: 0.25rem;
   }
 
   .stat-label {
-    color: #4b5563;
+    color: var(--mat-sys-on-surface-variant);
   }
 
   .stat-value {
     font-weight: 500;
-    color: #111827;
+    color: var(--mat-sys-on-surface);
   }
 }
 
@@ -143,19 +141,19 @@
 }
 
 .detail-row {
+  @include hai-body-small;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.875rem;
 }
 
 .detail-label {
-  color: #4b5563;
+  color: var(--mat-sys-on-surface-variant);
 }
 
 .detail-value {
   font-weight: 500;
-  color: #111827;
+  color: var(--mat-sys-on-surface);
 }
 
 .action-section {

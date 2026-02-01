@@ -1,3 +1,5 @@
+@use "../../../../../styles/typography" as *;
+
 .login-page {
   min-height: 100vh;
   display: flex;
@@ -46,23 +48,20 @@
 }
 
 .logo-text {
-  font-size: 1.5rem;
+  @include hai-headline-small;
   font-weight: 600;
-  color: var(--mat-sys-on-surface);
   margin: 0;
 }
 
 .subtitle {
-  color: var(--mat-sys-on-surface-variant);
-  font-size: 0.875rem;
+  @include hai-body-small-muted;
   margin: 0;
 }
 
 .login-form {
   .form-title {
-    font-size: 1.5rem;
+    @include hai-headline-small;
     font-weight: 700;
-    color: var(--mat-sys-on-surface);
     margin: 0 0 1.5rem 0;
     text-align: center;
   }
@@ -78,11 +77,11 @@
   }
 
   .error-message {
+    @include hai-body-small;
     display: flex;
     align-items: center;
     gap: 0.5rem;
     color: var(--mat-sys-on-error-container);
-    font-size: 0.875rem;
     padding: 0.75rem;
     background-color: var(--mat-sys-error-container);
     border-radius: 8px;
@@ -96,10 +95,10 @@
   }
 
   .submit-button {
+    @include hai-body;
     width: 100%;
     padding: 0.75rem;
     font-weight: 500;
-    font-size: 1rem;
   }
 }
 
@@ -109,9 +108,9 @@
 }
 
 .forgot-password-link {
+  @include hai-body-small;
   color: var(--mat-sys-primary);
   text-decoration: none;
-  font-size: 0.875rem;
   transition: color 0.2s;
   
   &:hover {
@@ -125,8 +124,7 @@
 }
 
 .signup-text {
-  font-size: 0.875rem;
-  color: var(--mat-sys-on-surface-variant);
+  @include hai-body-small-muted;
   margin: 0;
 }
 

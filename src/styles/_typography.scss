@@ -1,0 +1,71 @@
+// HAI Typography Mixins
+// All typography should use these mixins or Material token variables directly.
+// Do not define custom font-size/font-weight in component styles.
+
+// Private generic mixin for typography
+// @param $font-token - Material typography token (e.g., var(--mat-sys-body-medium))
+// @param $font-weight - Optional font-weight override
+// @param $color - Optional color override
+@mixin _hai-typography($font-token, $font-weight: null, $color: null) {
+  font: $font-token;
+  
+  @if $font-weight {
+    font-weight: $font-weight;
+  }
+  
+  @if $color {
+    color: $color;
+  }
+}
+
+// Public preset mixins (fixed font-weight and color, not overridable)
+
+// Page-level titles (large headings, ~30px)
+@mixin hai-page-title {
+  @include _hai-typography(var(--mat-sys-headline-large), null, var(--mat-sys-on-surface));
+}
+
+// Large section titles (~24px)
+@mixin hai-headline-small {
+  @include _hai-typography(var(--mat-sys-headline-small), null, var(--mat-sys-on-surface));
+}
+
+// Section titles (medium headings, ~20px)
+@mixin hai-section-title {
+  @include _hai-typography(var(--mat-sys-title-large), null, var(--mat-sys-on-surface));
+}
+
+// Subsection titles (smaller headings)
+@mixin hai-subsection-title {
+  @include _hai-typography(var(--mat-sys-title-medium), null, var(--mat-sys-on-surface));
+}
+
+// Default body text (~16px)
+@mixin hai-body {
+  @include _hai-typography(var(--mat-sys-body-medium), null, var(--mat-sys-on-surface));
+}
+
+// Small body text (~14px)
+@mixin hai-body-small {
+  @include _hai-typography(var(--mat-sys-body-small), null, var(--mat-sys-on-surface));
+}
+
+// Small body text with muted color (~14px)
+@mixin hai-body-small-muted {
+  @include _hai-typography(var(--mat-sys-body-small), null, var(--mat-sys-on-surface-variant));
+}
+
+// Meta text / labels with muted color (small, ~12px)
+@mixin hai-meta {
+  @include _hai-typography(var(--mat-sys-label-small), null, var(--mat-sys-on-surface-variant));
+}
+
+// Medium labels
+@mixin hai-label {
+  @include _hai-typography(var(--mat-sys-label-medium), null, var(--mat-sys-on-surface));
+}
+
+// Small labels (same as meta but without color override)
+@mixin hai-label-small {
+  @include _hai-typography(var(--mat-sys-label-small), null, var(--mat-sys-on-surface));
+}

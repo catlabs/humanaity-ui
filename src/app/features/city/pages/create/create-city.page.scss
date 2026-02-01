@@ -1,5 +1,6 @@
 @use "sass:map";
 @use "../../../../../styles/tokens" as *;
+@use "../../../../../styles/typography" as *;
 
 .create-city-page {
   display: flex;
@@ -14,9 +15,8 @@
 }
 
 .create-city-page__title {
-  font-size: 1.25rem;
+  @include hai-section-title;
   font-weight: 600;
-  color: var(--mat-sys-on-surface);
 }
 
 .create-city-page__form {
@@ -26,10 +26,10 @@
 }
 
 .create-city-page__error {
+  @include hai-body-small;
   border-radius: $radius-md;
   background-color: var(--mat-sys-error-container);
   padding: map.get($spacing-scale, 2) map.get($spacing-scale, 3);
-  font-size: 0.875rem;
   color: var(--mat-sys-on-error-container);
 }
 

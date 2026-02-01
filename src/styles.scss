@@ -3,6 +3,7 @@
 @use "./styles/breakpoints";
 @use "./styles/layout";
 @use "./styles/utilities";
+@use "./styles/typography";
 
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
 
@@ -40,6 +41,7 @@ body {
 
 body {
   font-family: "Inter", Roboto, "Helvetica Neue", sans-serif;
+  font: var(--mat-sys-body-medium);
   background-color: var(--mat-sys-surface);
   color: var(--mat-sys-on-surface);
 }

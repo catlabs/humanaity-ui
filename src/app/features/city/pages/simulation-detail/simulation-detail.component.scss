@@ -1,5 +1,6 @@
 @use "sass:map";
 @use "../../../../../styles/tokens" as *;
+@use "../../../../../styles/typography" as *;
 
 .simulation-detail {
   display: flex;
@@ -29,17 +30,14 @@
 }
 
 .simulation-detail__title-main {
-  font-size: 0.9375rem;
-  font-weight: 600;
-  color: var(--mat-sys-on-surface);
+  @include hai-subsection-title;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .simulation-detail__title-sub {
-  font-size: 0.75rem;
-  color: var(--mat-sys-on-surface-variant);
+  @include hai-meta;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -105,12 +103,11 @@
 }
 
 .simulation-detail__panel-title {
+  @include hai-body-small;
   display: inline-flex;
   align-items: center;
   gap: map.get($spacing-scale, 1);
-  font-size: 0.875rem;
   font-weight: 600;
-  color: var(--mat-sys-on-surface);
 }
 
 .simulation-detail__panel-section {
@@ -118,18 +115,17 @@
 }
 
 .simulation-detail__section-title {
-  font-size: 0.75rem;
+  @include hai-meta;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--mat-sys-on-surface-variant);
   margin-bottom: map.get($spacing-scale, 2);
 }
 
 .simulation-detail__stats {
+  @include hai-body-small;
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.875rem;
 
   td {
     padding: map.get($spacing-scale, 1.5) 0;
@@ -174,14 +170,12 @@
 }
 
 .simulation-detail__invention-stat-label {
-  font-size: 0.75rem;
-  color: var(--mat-sys-on-surface-variant);
+  @include hai-meta;
 }
 
 .simulation-detail__invention-stat-value {
-  font-size: 1rem;
+  @include hai-body;
   font-weight: 700;
-  color: var(--mat-sys-on-surface);
   margin-top: map.get($spacing-scale, 0.5);
 }
 
@@ -202,15 +196,13 @@
 }
 
 .simulation-detail__world-title {
-  font-size: 0.875rem;
+  @include hai-body-small;
   font-weight: 600;
-  color: var(--mat-sys-on-surface);
 }
 
 .simulation-detail__world-hint {
+  @include hai-body-small-muted;
   margin-top: map.get($spacing-scale, 1);
-  font-size: 0.875rem;
-  color: var(--mat-sys-on-surface-variant);
 }
 
 .simulation-detail__world-body {
@@ -237,7 +229,7 @@
 }
 
 .simulation-detail__placeholder-text {
-  font-size: 0.875rem;
+  @include hai-body-small;
   font-weight: 600;
 }
 

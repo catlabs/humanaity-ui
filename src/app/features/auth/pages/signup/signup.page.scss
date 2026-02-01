@@ -1,3 +1,5 @@
+@use "../../../../../styles/typography" as *;
+
 .register-page {
   min-height: 100vh;
   display: flex;
@@ -40,15 +42,13 @@
 }
 
 .register-title {
-  font-size: 1.5rem;
+  @include hai-headline-small;
   font-weight: 700;
-  color: var(--mat-sys-on-surface);
   margin: 0 0 0.5rem 0;
 }
 
 .register-subtitle {
-  color: var(--mat-sys-on-surface-variant);
-  font-size: 0.875rem;
+  @include hai-body-small-muted;
   margin: 0;
 }
 
@@ -62,11 +62,11 @@
   }
 
   .error-message {
+    @include hai-body-small;
     display: flex;
     align-items: center;
     gap: 0.5rem;
     color: var(--mat-sys-on-error-container);
-    font-size: 0.875rem;
     padding: 0.75rem;
     background-color: var(--mat-sys-error-container);
     border-radius: 8px;
@@ -80,10 +80,10 @@
   }
 
   .register-button {
+    @include hai-body;
     width: 100%;
     padding: 0.75rem;
     font-weight: 500;
-    font-size: 1rem;
     margin-top: 0.5rem;
   }
 }
@@ -94,8 +94,7 @@
 }
 
 .signin-text {
-  font-size: 0.875rem;
-  color: var(--mat-sys-on-surface-variant);
+  @include hai-body-small-muted;
   margin: 0;
 }
 

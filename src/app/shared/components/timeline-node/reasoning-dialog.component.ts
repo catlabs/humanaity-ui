@@ -43,8 +43,8 @@ export interface ReasoningDialogData {
     }
 
     .period {
-      color: #6b7280;
-      font-size: 0.875rem;
+      color: var(--mat-sys-on-surface-variant);
+      font: var(--mat-sys-body-small);
       margin: 0 0 1.5rem 0;
     }
 
@@ -54,16 +54,16 @@ export interface ReasoningDialogData {
 
     .reasoning-label {
       font-weight: 500;
-      color: #374151;
+      color: var(--mat-sys-on-surface);
       margin: 0 0 0.75rem 0;
-      font-size: 0.875rem;
+      font: var(--mat-sys-body-small);
     }
 
     .reasoning-text {
-      color: #4b5563;
+      color: var(--mat-sys-on-surface-variant);
       line-height: 1.6;
       margin: 0;
-      font-size: 0.875rem;
+      font: var(--mat-sys-body-small);
     }
 
     mat-dialog-actions {

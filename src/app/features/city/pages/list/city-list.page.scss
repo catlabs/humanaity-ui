@@ -1,6 +1,7 @@
 @use "sass:map";
 @use "../../../../../styles/tokens" as *;
 @use "../../../../../styles/breakpoints" as *;
+@use "../../../../../styles/typography" as *;
 
 .city-list-page {
   display: flex;
@@ -28,9 +29,8 @@
 }
 
 .city-list-page__title {
-  font-size: 1.875rem;
+  @include hai-page-title;
   font-weight: 700;
-  color: var(--mat-sys-on-surface);
   margin: 0;
 }
 
@@ -61,11 +61,10 @@
 }
 
 .city-list-page__filter-button {
+  @include hai-body-small-muted;
   border-radius: $radius-md;
   padding: map.get($spacing-scale, 2) map.get($spacing-scale, 4);
-  font-size: 0.875rem;
   font-weight: 500;
-  color: var(--mat-sys-on-surface-variant);
   transition: color 0.2s, background-color 0.2s, box-shadow 0.2s;
   background-color: transparent;
   border: none;
@@ -116,7 +115,7 @@
   }
 
   p {
-    font-size: 1.125rem;
+    @include hai-subsection-title;
     font-weight: 500;
     margin: 0;
   }

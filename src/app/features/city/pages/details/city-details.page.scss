@@ -1,6 +1,7 @@
 @use "sass:map";
 @use "../../../../../styles/tokens" as *;
 @use "../../../../../styles/breakpoints" as *;
+@use "../../../../../styles/typography" as *;
 
 .city-details-page {
   // Fill the visible viewport area (app header is 4rem, layout main has py-6 => 3rem).
@@ -46,9 +47,8 @@
 }
 
 .city-details-page__drawer-title {
-  font-size: 0.875rem;
+  @include hai-body-small;
   font-weight: 600;
-  color: var(--mat-sys-on-surface);
   margin: 0;
 }
 
@@ -104,19 +104,17 @@
 }
 
 .city-details-page__title {
+  @include hai-body;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 1rem;
   font-weight: 600;
-  color: var(--mat-sys-on-surface);
   margin: 0;
 }
 
 .city-details-page__cycle {
+  @include hai-meta;
   white-space: nowrap;
-  font-size: 0.75rem;
-  color: var(--mat-sys-on-surface-variant);
 }
 
 .city-details-page__actions {
@@ -126,11 +124,11 @@
 }
 
 .city-details-page__action-button {
+  @include hai-body-small;
   display: flex;
   align-items: center;
   gap: map.get($spacing-scale, 1);
   padding: map.get($spacing-scale, 2) map.get($spacing-scale, 4);
-  font-size: 0.875rem;
   font-weight: 600;
 
   &.surface-button {
@@ -182,14 +180,14 @@
 }
 
 .city-details-page__map-stat-label {
-  font-size: 0.75rem;
+  @include hai-meta;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: rgba(255, 255, 255, 0.8);
 }
 
 .city-details-page__map-stat-value {
-  font-size: 1.125rem;
+  @include hai-subsection-title;
   font-weight: 600;
 }
 
@@ -221,6 +219,7 @@
 }
 
 .city-details-page__map-info {
+  @include hai-body-small-muted;
   position: absolute;
   bottom: map.get($spacing-scale, 4);
   left: map.get($spacing-scale, 4);
@@ -228,8 +227,6 @@
   background-color: var(--mat-sys-surface);
   opacity: 0.9;
   padding: map.get($spacing-scale, 1) map.get($spacing-scale, 3);
-  font-size: 0.875rem;
   font-weight: 500;
-  color: var(--mat-sys-on-surface-variant);
   box-shadow: $shadow-sm;
 }

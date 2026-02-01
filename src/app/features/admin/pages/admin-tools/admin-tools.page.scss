@@ -5,86 +5,133 @@
 .admin-tools-page {
   display: flex;
   flex-direction: column;
-  gap: map.get($spacing-scale, 6);
+  // Fill visible viewport area (app header is 4rem; layout main has vertical padding).
+  height: calc(100vh - 7rem);
+  min-height: 0;
+  gap: map.get($spacing-scale, 3);
 }
 
-.admin-tools-page__header {
+.admin-tools-page__toolbar {
+  flex: none;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: $radius-xl;
+  padding: 0 map.get($spacing-scale, 2);
+}
+
+.admin-tools-page__toolbar-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.admin-tools-page__toolbar-text {
   display: flex;
   flex-direction: column;
-  gap: map.get($spacing-scale, 1);
+  gap: map.get($spacing-scale, 0.5);
+  min-width: 0;
 }
 
 .admin-tools-page__title {
-  font-size: 1.875rem;
+  font-size: 0.9375rem;
   font-weight: 700;
   color: var(--mat-sys-on-surface);
-  margin: 0;
 }
 
 .admin-tools-page__subtitle {
+  font-size: 0.875rem;
   color: var(--mat-sys-on-surface-variant);
 }
 
-.admin-tools-page__section-select {
+.admin-tools-page__columns {
+  flex: 1 1 0%;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: $radius-xl;
+  overflow: hidden;
+}
+
+.admin-tools-page__column {
   display: flex;
   flex-direction: column;
-  gap: map.get($spacing-scale, 2);
+  min-height: 0;
+  background: var(--mat-sys-surface);
 
-  mat-form-field {
-    width: 100%;
-    max-width: 20rem; // sm:w-80
+  &:not(:last-child) {
+    border-right: 1px solid var(--mat-sys-outline-variant);
   }
 }
 
-.admin-tools-page__section {
+.admin-tools-page__column-header {
+  padding: map.get($spacing-scale, 4) map.get($spacing-scale, 5);
+}
+
+.admin-tools-page__column-title {
   display: flex;
-  flex-direction: column;
-  gap: map.get($spacing-scale, 6);
+  align-items: center;
+  gap: map.get($spacing-scale, 1);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--mat-sys-on-surface-variant);
 }
 
-.admin-tools-page__card {
-  border: 1px solid var(--mat-sys-outline-variant);
-  box-shadow: $shadow-sm;
+.admin-tools-page__column-count {
+  margin-top: map.get($spacing-scale, 1);
+  font-size: 0.875rem;
+  color: var(--mat-sys-on-surface);
 }
 
-.admin-tools-page__card-header {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  gap: map.get($spacing-scale, 3);
-  border-bottom: 1px solid var(--mat-sys-outline-variant);
-  padding: map.get($spacing-scale, 3) map.get($spacing-scale, 4);
-}
-
-.admin-tools-page__card-header-content {
+.admin-tools-page__column-body {
   flex: 1 1 0%;
+  min-height: 0;
+  overflow: auto;
 }
 
-.admin-tools-page__card-title {
-  font-size: 1.25rem;
+.admin-tools-page__inv-row {
+  padding: map.get($spacing-scale, 3) map.get($spacing-scale, 5);
+}
+
+.admin-tools-page__inv-title {
+  font-size: 0.875rem;
   font-weight: 600;
   color: var(--mat-sys-on-surface);
-  margin: 0 0 map.get($spacing-scale, 1) 0;
 }
 
-.admin-tools-page__card-description {
+.admin-tools-page__inv-meta {
   color: var(--mat-sys-on-surface-variant);
-  margin: 0;
 }
 
-.admin-tools-page__card-button {
-  padding: map.get($spacing-scale, 2.5) map.get($spacing-scale, 5);
+.admin-tools-page__inv-desc {
+  color: var(--mat-sys-on-surface-variant);
 }
 
-.admin-tools-page__card-content {
-  max-height: 20rem;
-  overflow: auto;
-  padding: map.get($spacing-scale, 3) map.get($spacing-scale, 4);
+.admin-tools-page__empty {
+  padding: map.get($spacing-scale, 4) map.get($spacing-scale, 5);
+  color: var(--mat-sys-on-surface-variant);
 }
 
-.admin-tools-page__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  align-items: start;
-  gap: map.get($spacing-scale, 3);
+.admin-tools-page__column-footer {
+  padding: map.get($spacing-scale, 4) map.get($spacing-scale, 5);
+}
+
+.admin-tools-page__generate {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: map.get($spacing-scale, 1);
+}
+
+@media (max-width: 1023.98px) {
+  .admin-tools-page__columns {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-tools-page__column:not(:last-child) {
+    border-right: none;
+    border-bottom: 1px solid var(--mat-sys-outline-variant);
+  }
 }

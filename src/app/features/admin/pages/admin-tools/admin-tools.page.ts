@@ -1,167 +1,183 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
-import { TimelineNodeComponent } from '@shared';
+import { MatListModule } from '@angular/material/list';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatDividerModule } from '@angular/material/divider';
 
-interface TimelineItem {
-  title: string;
-  period: string;
-  reasoning: string;
-}
+type InventionCategory = 'scientific' | 'philosophical' | 'cultural';
 
-type AdminToolsSection = 'invention' | 'artistic' | 'philosophy';
+type Invention = {
+  id: string;
+  name: string;
+  category: InventionCategory;
+  description: string;
+  year: number;
+  era: string;
+  impact: number; // 0-100
+};
 
 @Component({
   selector: 'app-admin-tools',
   standalone: true,
   imports: [
     CommonModule,
-    MatCardModule,
+    MatToolbarModule,
     MatButtonModule,
     MatIconModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    TimelineNodeComponent,
+    MatDividerModule,
+    MatListModule,
   ],
   templateUrl: './admin-tools.page.html',
   styleUrl: './admin-tools.page.scss',
 })
 export class AdminToolsPage {
-  activeSection = signal<AdminToolsSection>('invention');
-
-  inventions = signal<TimelineItem[]>([
+  scientific = signal<Invention[]>([
     {
-      title: 'Fire Control',
-      period: 'Prehistoric Era',
-      reasoning:
-        'First major technological breakthrough enabling cooking, warmth, and protection. Essential prerequisite for all subsequent innovations.',
+      id: 'sci-1',
+      name: 'Wheel',
+      category: 'scientific',
+      description: 'Revolutionary transportation tool',
+      year: 142,
+      era: 'ancient',
+      impact: 95,
     },
     {
-      title: 'Stone Tools',
-      period: 'Stone Age',
-      reasoning:
-        'Building on fire control, shaped stones provided cutting and hunting advantages, leading to improved food processing capabilities.',
+      id: 'sci-2',
+      name: 'Agriculture',
+      category: 'scientific',
+      description: 'Systematic food production',
+      year: 218,
+      era: 'ancient',
+      impact: 98,
     },
     {
-      title: 'Agriculture',
-      period: 'Neolithic Period',
-      reasoning:
-        'Combination of tools and fire control enabled systematic food production, creating surplus and permanent settlements.',
+      id: 'sci-3',
+      name: 'Metallurgy',
+      category: 'scientific',
+      description: 'Working with metals',
+      year: 376,
+      era: 'ancient',
+      impact: 87,
     },
     {
-      title: 'The Wheel',
-      period: 'Bronze Age',
-      reasoning:
-        'Agricultural surplus created need for transportation. Wheel revolutionized movement of goods and people across settlements.',
-    },
-    {
-      title: 'Writing Systems',
-      period: 'Ancient Civilizations',
-      reasoning:
-        'Complex societies required record-keeping. Writing enabled knowledge preservation and administrative organization.',
-    },
-    {
-      title: 'Printing Press',
-      period: 'Renaissance',
-      reasoning:
-        'Writing systems established information value. Mass production of texts democratized knowledge and accelerated learning.',
+      id: 'sci-4',
+      name: 'Writing System',
+      category: 'scientific',
+      description: 'Recorded communication',
+      year: 445,
+      era: 'ancient',
+      impact: 92,
     },
   ]);
 
-  artisticMovements = signal<TimelineItem[]>([
+  philosophical = signal<Invention[]>([
     {
-      title: 'Cave Paintings',
-      period: 'Prehistoric Art',
-      reasoning:
-        'First human artistic expression, driven by need to communicate experiences and spiritual beliefs through visual representation.',
+      id: 'phi-1',
+      name: 'Ethics Framework',
+      category: 'philosophical',
+      description: 'Moral reasoning system',
+      year: 312,
+      era: 'ancient',
+      impact: 76,
     },
     {
-      title: 'Classical Realism',
-      period: 'Ancient Greece/Rome',
-      reasoning:
-        'Advanced civilizations developed sophisticated techniques to capture human form and idealized beauty, establishing artistic standards.',
+      id: 'phi-2',
+      name: 'Logic System',
+      category: 'philosophical',
+      description: 'Formal reasoning',
+      year: 398,
+      era: 'ancient',
+      impact: 81,
     },
     {
-      title: 'Renaissance',
-      period: '14th-17th Century',
-      reasoning:
-        'Revival of classical ideals combined with scientific understanding of perspective and anatomy, creating unprecedented realism.',
-    },
-    {
-      title: 'Impressionism',
-      period: '19th Century',
-      reasoning:
-        'Photography challenged traditional realism, leading artists to explore light, color, and momentary impressions rather than precise detail.',
-    },
-    {
-      title: 'Abstract Art',
-      period: 'Early 20th Century',
-      reasoning:
-        'Rejection of representational art in favor of pure form, color, and emotion, reflecting modern industrial and philosophical changes.',
-    },
-    {
-      title: 'Digital Art',
-      period: 'Late 20th Century',
-      reasoning:
-        'Computer technology enabled entirely new creative possibilities, democratizing art creation and distribution through digital platforms.',
+      id: 'phi-3',
+      name: 'Social Contract',
+      category: 'philosophical',
+      description: 'Theory of governance',
+      year: 567,
+      era: 'medieval',
+      impact: 73,
     },
   ]);
 
-  philosophicalIdeas = signal<TimelineItem[]>([
+  cultural = signal<Invention[]>([
     {
-      title: 'Mythological Thinking',
-      period: 'Prehistoric Societies',
-      reasoning:
-        'Early humans explained natural phenomena through supernatural narratives, establishing first systematic worldview frameworks.',
+      id: 'cul-1',
+      name: 'Musical Notation',
+      category: 'cultural',
+      description: 'System for recording music',
+      year: 289,
+      era: 'ancient',
+      impact: 68,
     },
     {
-      title: 'Pre-Socratic Philosophy',
-      period: 'Ancient Greece 6th Century BC',
-      reasoning:
-        'Shift from mythological to rational explanations of reality, questioning fundamental nature of existence and change.',
+      id: 'cul-2',
+      name: 'Epic Poetry',
+      category: 'cultural',
+      description: 'Narrative storytelling tradition',
+      year: 334,
+      era: 'ancient',
+      impact: 72,
     },
     {
-      title: 'Socratic Method',
-      period: 'Classical Athens',
-      reasoning:
-        'Development of systematic questioning and logical reasoning, establishing foundations for critical thinking and knowledge acquisition.',
+      id: 'cul-3',
+      name: 'Theater',
+      category: 'cultural',
+      description: 'Dramatic performance art',
+      year: 421,
+      era: 'ancient',
+      impact: 69,
     },
     {
-      title: 'Scholasticism',
-      period: 'Medieval Period',
-      reasoning:
-        'Integration of Aristotelian logic with religious doctrine, creating systematic theological and philosophical frameworks.',
-    },
-    {
-      title: 'Empiricism',
-      period: '17th-18th Century',
-      reasoning:
-        'Emphasis on sensory experience and observation as primary sources of knowledge, challenging purely rational approaches.',
-    },
-    {
-      title: 'Existentialism',
-      period: '19th-20th Century',
-      reasoning:
-        'Focus on individual existence, freedom, and choice in response to modern alienation and loss of traditional certainties.',
+      id: 'cul-4',
+      name: 'Visual Perspective',
+      category: 'cultural',
+      description: 'Artistic depth technique',
+      year: 512,
+      era: 'medieval',
+      impact: 64,
     },
   ]);
 
-  onGenerateNextInvention(): void {
-    // TODO: Implement AI generation of next invention
-    console.log('Generate next invention');
-  }
+  columns = computed(() => [
+    {
+      title: 'Scientific',
+      category: 'scientific' as const,
+      items: this.scientific(),
+      icon: 'science',
+    },
+    {
+      title: 'Philosophical',
+      category: 'philosophical' as const,
+      items: this.philosophical(),
+      icon: 'psychology',
+    },
+    {
+      title: 'Cultural',
+      category: 'cultural' as const,
+      items: this.cultural(),
+      icon: 'diversity_3',
+    },
+  ]);
 
-  onGenerateNextArtisticStage(): void {
-    // TODO: Implement AI generation of next artistic stage
-    console.log('Generate next artistic stage');
-  }
+  generateInvention(category: InventionCategory): void {
+    const newInvention: Invention = {
+      id: `${category}-${Date.now()}`,
+      name: `New ${category} discovery`,
+      category,
+      description: 'Generated invention',
+      year: 600,
+      era: 'medieval',
+      impact: Math.floor(Math.random() * 50) + 50,
+    };
 
-  onGenerateNextIdea(): void {
-    // TODO: Implement AI generation of next philosophical idea
-    console.log('Generate next idea');
+    if (category === 'scientific')
+      this.scientific.update((prev) => [...prev, newInvention]);
+    if (category === 'philosophical')
+      this.philosophical.update((prev) => [...prev, newInvention]);
+    if (category === 'cultural')
+      this.cultural.update((prev) => [...prev, newInvention]);
   }
 }

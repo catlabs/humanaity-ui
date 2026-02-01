@@ -1,133 +1,65 @@
 <div class="admin-tools-page">
-  <div class="admin-tools-page__header">
-    <h2 class="admin-tools-page__title">Admin Tools</h2>
-    <p class="admin-tools-page__subtitle">
-      Manage and configure simulation parameters
-    </p>
-  </div>
-
-  <div class="admin-tools-page__section-select">
-    <mat-form-field appearance="outline">
-      <mat-label>Section</mat-label>
-      <mat-select
-        [value]="activeSection()"
-        (selectionChange)="activeSection.set($event.value)"
-      >
-        <mat-option value="invention">Invention</mat-option>
-        <mat-option value="artistic">Artistic</mat-option>
-        <mat-option value="philosophy">Philosophy</mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-
-  <div class="admin-tools-page__section">
-    @switch (activeSection()) { @case ('invention') {
-    <!-- Invention Progression Simulator -->
-    <mat-card class="admin-tools-page__card">
-      <div class="admin-tools-page__card-header">
-        <div class="admin-tools-page__card-header-content">
-          <h3 class="admin-tools-page__card-title">
-            Invention Progression Simulator
-          </h3>
-          <p class="admin-tools-page__card-description">
-            Simulate the logical progression of human inventions throughout
-            history
-          </p>
+  <mat-toolbar class="admin-tools-page__toolbar app-surface-bar-bg">
+    <div class="admin-tools-page__toolbar-content">
+      <div class="admin-tools-page__toolbar-text">
+        <div class="admin-tools-page__title">Admin Tools: Inventions</div>
+        <div class="admin-tools-page__subtitle">
+          Manual invention generation by category
         </div>
+      </div>
+    </div>
+  </mat-toolbar>
+
+  <div class="admin-tools-page__columns">
+    @for (col of columns(); track col.category) {
+    <section class="admin-tools-page__column">
+      <div class="admin-tools-page__column-header">
+        <div class="admin-tools-page__column-title">
+          <mat-icon>{{ col.icon }}</mat-icon>
+          <span>{{ col.title }}</span>
+        </div>
+        <div class="admin-tools-page__column-count">
+          {{ col.items.length }} inventions
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="admin-tools-page__column-body">
+        <mat-nav-list>
+          @for (inv of col.items; track inv.id) {
+          <div mat-list-item class="admin-tools-page__inv-row">
+            <div matListItemTitle class="admin-tools-page__inv-title">
+              {{ inv.name }}
+            </div>
+            <div matListItemLine class="admin-tools-page__inv-meta">
+              Year {{ inv.year }} · {{ inv.era }} · {{ inv.impact }}%
+            </div>
+            <div matListItemLine class="admin-tools-page__inv-desc">
+              {{ inv.description }}
+            </div>
+          </div>
+          } @empty {
+          <div class="admin-tools-page__empty">No inventions</div>
+          }
+        </mat-nav-list>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="admin-tools-page__column-footer">
         <button
           mat-raised-button
           color="primary"
-          (click)="onGenerateNextInvention()"
-          class="admin-tools-page__card-button"
+          type="button"
+          class="admin-tools-page__generate"
+          (click)="generateInvention(col.category)"
         >
-          Generate Next Invention
+          <mat-icon>add</mat-icon>
+          Generate Next
         </button>
       </div>
-
-      <div class="admin-tools-page__card-content">
-        <div class="admin-tools-page__grid">
-          @for (invention of inventions(); track invention.title) {
-          <app-timeline-node
-            [title]="invention.title"
-            [period]="invention.period"
-            [reasoning]="invention.reasoning"
-          >
-          </app-timeline-node>
-          }
-        </div>
-      </div>
-    </mat-card>
-    } @case ('artistic') {
-    <!-- Artistic Evolution Simulator -->
-    <mat-card class="admin-tools-page__card">
-      <div class="admin-tools-page__card-header">
-        <div class="admin-tools-page__card-header-content">
-          <h3 class="admin-tools-page__card-title">
-            Artistic Evolution Simulator
-          </h3>
-          <p class="admin-tools-page__card-description">
-            Trace the evolution of artistic movements and their cultural impact
-          </p>
-        </div>
-        <button
-          mat-raised-button
-          color="primary"
-          (click)="onGenerateNextArtisticStage()"
-          class="admin-tools-page__card-button"
-        >
-          Next Artistic Stage
-        </button>
-      </div>
-
-      <div class="admin-tools-page__card-content">
-        <div class="admin-tools-page__grid">
-          @for (movement of artisticMovements(); track movement.title) {
-          <app-timeline-node
-            [title]="movement.title"
-            [period]="movement.period"
-            [reasoning]="movement.reasoning"
-          >
-          </app-timeline-node>
-          }
-        </div>
-      </div>
-    </mat-card>
-    } @case ('philosophy') {
-    <!-- Philosophical Ideas Simulator -->
-    <mat-card class="admin-tools-page__card">
-      <div class="admin-tools-page__card-header">
-        <div class="admin-tools-page__card-header-content">
-          <h3 class="admin-tools-page__card-title">
-            Philosophical Ideas Simulator
-          </h3>
-          <p class="admin-tools-page__card-description">
-            Explore the development of philosophical thought and reasoning
-            systems
-          </p>
-        </div>
-        <button
-          mat-raised-button
-          color="primary"
-          (click)="onGenerateNextIdea()"
-          class="admin-tools-page__card-button"
-        >
-          Generate Next Idea
-        </button>
-      </div>
-
-      <div class="admin-tools-page__card-content">
-        <div class="admin-tools-page__grid">
-          @for (idea of philosophicalIdeas(); track idea.title) {
-          <app-timeline-node
-            [title]="idea.title"
-            [period]="idea.period"
-            [reasoning]="idea.reasoning"
-          >
-          </app-timeline-node>
-          }
-        </div>
-      </div>
-    </mat-card>
-    } }
+    </section>
+    }
   </div>
 </div>

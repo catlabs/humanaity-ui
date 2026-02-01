@@ -1,0 +1,264 @@
+@use "sass:map";
+@use "../../../../../styles/tokens" as *;
+
+.simulation-detail {
+  display: flex;
+  flex-direction: column;
+  // Fill visible viewport area (global app header is 4rem; layout main adds vertical padding).
+  height: calc(100vh - 7rem);
+  min-height: 0;
+}
+
+.simulation-detail__info-bar {
+  flex: none;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: $radius-xl;
+  padding: 0 map.get($spacing-scale, 2);
+}
+
+.simulation-detail__icon-button {
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.simulation-detail__title {
+  display: flex;
+  flex-direction: column;
+  gap: map.get($spacing-scale, 0.5);
+  margin-left: map.get($spacing-scale, 2);
+  min-width: 0;
+}
+
+.simulation-detail__title-main {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--mat-sys-on-surface);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.simulation-detail__title-sub {
+  font-size: 0.75rem;
+  color: var(--mat-sys-on-surface-variant);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.simulation-detail__spacer {
+  flex: 1 1 auto;
+}
+
+.simulation-detail__action {
+  display: inline-flex;
+  align-items: center;
+  gap: map.get($spacing-scale, 1);
+}
+
+.simulation-detail__drawer-container {
+  margin-top: map.get($spacing-scale, 3);
+  flex: 1 1 0%;
+  min-height: 0;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: $radius-xl;
+  overflow: hidden;
+}
+
+.simulation-detail__drawer {
+  padding: map.get($spacing-scale, 3);
+}
+
+.simulation-detail__drawer--left {
+  width: 18rem;
+  max-width: 90vw;
+}
+
+.simulation-detail__drawer--right {
+  width: 24rem;
+  max-width: 90vw;
+}
+
+.simulation-detail__content {
+  height: 100%;
+  min-height: 0;
+  padding: map.get($spacing-scale, 3);
+}
+
+.simulation-detail__panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: $radius-lg;
+  background: var(--mat-sys-surface);
+  overflow: hidden;
+}
+
+.simulation-detail__panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: map.get($spacing-scale, 2);
+  padding: map.get($spacing-scale, 3) map.get($spacing-scale, 4);
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+
+.simulation-detail__panel-title {
+  display: inline-flex;
+  align-items: center;
+  gap: map.get($spacing-scale, 1);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--mat-sys-on-surface);
+}
+
+.simulation-detail__panel-section {
+  padding: map.get($spacing-scale, 3) map.get($spacing-scale, 4);
+}
+
+.simulation-detail__section-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--mat-sys-on-surface-variant);
+  margin-bottom: map.get($spacing-scale, 2);
+}
+
+.simulation-detail__stats {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+
+  td {
+    padding: map.get($spacing-scale, 1.5) 0;
+    color: var(--mat-sys-on-surface-variant);
+  }
+}
+
+.simulation-detail__stats-value {
+  text-align: right;
+  color: var(--mat-sys-on-surface);
+  font-weight: 600;
+}
+
+.simulation-detail__list-title {
+  text-transform: capitalize;
+}
+
+.simulation-detail__list-subtitle {
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.simulation-detail__empty {
+  padding: map.get($spacing-scale, 3) map.get($spacing-scale, 4);
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.simulation-detail__scroll {
+  flex: 1 1 0%;
+  min-height: 0;
+  overflow: auto;
+  padding: 0;
+}
+
+.simulation-detail__panel-footer {
+  padding: map.get($spacing-scale, 3) map.get($spacing-scale, 4);
+}
+
+.simulation-detail__invention-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: map.get($spacing-scale, 3);
+}
+
+.simulation-detail__invention-stat-label {
+  font-size: 0.75rem;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.simulation-detail__invention-stat-value {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--mat-sys-on-surface);
+  margin-top: map.get($spacing-scale, 0.5);
+}
+
+.simulation-detail__world {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: $radius-lg;
+  background: var(--mat-sys-surface);
+  overflow: hidden;
+}
+
+.simulation-detail__world-header {
+  padding: map.get($spacing-scale, 4);
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+
+.simulation-detail__world-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--mat-sys-on-surface);
+}
+
+.simulation-detail__world-hint {
+  margin-top: map.get($spacing-scale, 1);
+  font-size: 0.875rem;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.simulation-detail__world-body {
+  flex: 1 1 0%;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--mat-sys-surface-container-lowest);
+}
+
+.simulation-detail__placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: map.get($spacing-scale, 2);
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.simulation-detail__placeholder-icon {
+  font-size: 2rem;
+  height: 2rem;
+  width: 2rem;
+}
+
+.simulation-detail__placeholder-text {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.simulation-detail__world-footer {
+  padding: map.get($spacing-scale, 3) map.get($spacing-scale, 4);
+  border-top: 1px solid var(--mat-sys-outline-variant);
+  display: flex;
+  gap: map.get($spacing-scale, 2);
+}
+
+.simulation-detail__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: map.get($spacing-scale, 1);
+  padding: map.get($spacing-scale, 1) map.get($spacing-scale, 2);
+  border-radius: $radius-md;
+  border: 1px solid var(--mat-sys-outline-variant);
+  color: var(--mat-sys-on-surface-variant);
+
+  strong {
+    color: var(--mat-sys-on-surface);
+  }
+}
+

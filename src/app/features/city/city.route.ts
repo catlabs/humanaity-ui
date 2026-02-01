@@ -18,7 +18,10 @@ export const cityRoutes: Routes = [
   },
   {
     path: ':id',
-    loadComponent: () => import('./pages/details/city-details.page').then(m => m.CityDetailsPage),
+    loadComponent: () =>
+      import('./pages/simulation-detail/simulation-detail.component').then(
+        (m) => m.SimulationDetailComponent
+      ),
     resolve: {city: cityDetailsResolver}
   }
 ];

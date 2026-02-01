@@ -1,0 +1,298 @@
+<div class="simulation-detail">
+  <mat-toolbar class="simulation-detail__info-bar app-surface-bar-bg">
+    <button
+      mat-icon-button
+      type="button"
+      class="simulation-detail__icon-button"
+      (click)="toggleLeft()"
+      aria-label="Toggle filters panel"
+    >
+      <mat-icon>tune</mat-icon>
+    </button>
+
+    <div class="simulation-detail__title">
+      <div class="simulation-detail__title-main">
+        {{ city.name || "Simulation" }}
+      </div>
+      <div class="simulation-detail__title-sub">
+        Era: {{ currentEra() }} · Year: {{ currentYear() }} · Phase:
+        {{ worldPhase() }}
+      </div>
+    </div>
+
+    <span class="simulation-detail__spacer"></span>
+
+    <button mat-button type="button" class="simulation-detail__action">
+      <mat-icon>groups</mat-icon>
+      Population
+    </button>
+    <button mat-button type="button" class="simulation-detail__action">
+      <mat-icon>schedule</mat-icon>
+      Timeline
+    </button>
+
+    <button
+      mat-icon-button
+      type="button"
+      class="simulation-detail__icon-button"
+      (click)="toggleRight()"
+      aria-label="Toggle inspector panel"
+    >
+      <mat-icon>dock_to_right</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <mat-drawer-container
+    class="simulation-detail__drawer-container app-drawer-content-transparent"
+    autosize
+  >
+    <!-- Left: Controls Panel -->
+    <mat-drawer
+      position="start"
+      [mode]="leftDrawerMode()"
+      [opened]="leftOpen()"
+      (openedChange)="leftOpen.set($event)"
+      class="simulation-detail__drawer simulation-detail__drawer--left app-main-bg app-drawer-flat"
+    >
+      <div class="simulation-detail__panel">
+        <div class="simulation-detail__panel-header">
+          <div class="simulation-detail__panel-title">
+            <mat-icon>filter_list</mat-icon>
+            Filters
+          </div>
+        </div>
+
+        <mat-nav-list>
+          @for (state of humanStates; track state) {
+          <button mat-list-item type="button" (click)="toggleFilter(state)">
+            <mat-icon matListItemIcon>
+              {{
+                filters()[state]
+                  ? "check_box"
+                  : "check_box_outline_blank"
+              }}
+            </mat-icon>
+            <div matListItemTitle class="simulation-detail__list-title">
+              {{ state }}
+            </div>
+          </button>
+          }
+        </mat-nav-list>
+
+        <mat-divider></mat-divider>
+
+        <div class="simulation-detail__panel-section">
+          <div class="simulation-detail__section-title">Statistics</div>
+          <table class="simulation-detail__stats">
+            <tbody>
+              <tr>
+                <td>Total</td>
+                <td class="simulation-detail__stats-value">
+                  {{ populationTotal() }}
+                </td>
+              </tr>
+              <tr>
+                <td>Active</td>
+                <td class="simulation-detail__stats-value">
+                  {{ populationActive() }}
+                </td>
+              </tr>
+              <tr>
+                <td>Inventions</td>
+                <td class="simulation-detail__stats-value">
+                  {{ inventionCounts().total }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="simulation-detail__panel-section">
+          <div class="simulation-detail__section-title">
+            Humans ({{ filteredHumans().length }})
+          </div>
+          <mat-nav-list>
+            @for (human of filteredHumans(); track human.id) {
+              <button mat-list-item type="button" (click)="selectHuman(human)">
+                <mat-icon matListItemIcon>person</mat-icon>
+                <div matListItemTitle class="simulation-detail__list-title">
+                  {{ human.name }}
+                </div>
+                <div matListItemLine class="simulation-detail__list-subtitle">
+                  {{ human.primaryTrait }} · {{ human.state }}
+                </div>
+              </button>
+            } @empty {
+              <div class="simulation-detail__empty">No humans match filters</div>
+            }
+          </mat-nav-list>
+        </div>
+      </div>
+    </mat-drawer>
+
+    <!-- Right: Inspector Panel -->
+    <mat-drawer
+      position="end"
+      [mode]="rightDrawerMode()"
+      [opened]="rightOpen()"
+      (openedChange)="rightOpen.set($event)"
+      class="simulation-detail__drawer simulation-detail__drawer--right app-main-bg app-drawer-flat"
+    >
+      <div class="simulation-detail__panel">
+        @if (selectedHuman()) {
+          <div class="simulation-detail__panel-header">
+            <div class="simulation-detail__panel-title">
+              <mat-icon>person_search</mat-icon>
+              Human Inspector
+            </div>
+            <button
+              mat-icon-button
+              type="button"
+              (click)="clearSelection()"
+              aria-label="Clear selection"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+
+          <div class="simulation-detail__panel-section">
+            <div class="simulation-detail__section-title">
+              {{ selectedHuman()!.name }}
+            </div>
+            <table class="simulation-detail__stats">
+              <tbody>
+                <tr>
+                  <td>ID</td>
+                  <td class="simulation-detail__stats-value">
+                    {{ selectedHuman()!.id }}
+                  </td>
+                </tr>
+                <tr>
+                  <td>State</td>
+                  <td class="simulation-detail__stats-value">
+                    {{ selectedHuman()!.state }}
+                  </td>
+                </tr>
+                <tr>
+                  <td>Trait</td>
+                  <td class="simulation-detail__stats-value">
+                    {{ selectedHuman()!.primaryTrait }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        } @else {
+          <div class="simulation-detail__panel-header">
+            <div class="simulation-detail__panel-title">
+              <mat-icon>inventory_2</mat-icon>
+              Invention Registry
+            </div>
+          </div>
+
+          <div class="simulation-detail__panel-section simulation-detail__invention-stats">
+            <div class="simulation-detail__invention-stat">
+              <div class="simulation-detail__invention-stat-label">Scientific</div>
+              <div class="simulation-detail__invention-stat-value">
+                {{ inventionCounts().scientific }}
+              </div>
+            </div>
+            <div class="simulation-detail__invention-stat">
+              <div class="simulation-detail__invention-stat-label">Philosophical</div>
+              <div class="simulation-detail__invention-stat-value">
+                {{ inventionCounts().philosophical }}
+              </div>
+            </div>
+            <div class="simulation-detail__invention-stat">
+              <div class="simulation-detail__invention-stat-label">Cultural</div>
+              <div class="simulation-detail__invention-stat-value">
+                {{ inventionCounts().cultural }}
+              </div>
+            </div>
+          </div>
+
+          <mat-divider></mat-divider>
+
+          <div class="simulation-detail__panel-section simulation-detail__scroll">
+            <mat-nav-list>
+              @for (inv of inventions(); track inv.id) {
+                <button mat-list-item type="button" (click)="selectInvention(inv)">
+                  <mat-icon matListItemIcon>lightbulb</mat-icon>
+                  <div matListItemTitle class="simulation-detail__list-title">
+                    {{ inv.name }}
+                  </div>
+                  <div matListItemLine class="simulation-detail__list-subtitle">
+                    {{ inv.category }} · Year {{ inv.year }} · Impact {{ inv.impact }}%
+                  </div>
+                </button>
+              } @empty {
+                <div class="simulation-detail__empty">No inventions recorded</div>
+              }
+            </mat-nav-list>
+          </div>
+
+          <mat-divider></mat-divider>
+
+          <div class="simulation-detail__panel-footer">
+            <button
+              mat-raised-button
+              color="primary"
+              [matMenuTriggerFor]="generateMenu"
+              type="button"
+            >
+              <mat-icon>add</mat-icon>
+              Generate invention
+            </button>
+            <mat-menu #generateMenu="matMenu">
+              <button mat-menu-item (click)="generateInvention('scientific')">
+                <mat-icon>science</mat-icon>
+                <span>Scientific</span>
+              </button>
+              <button mat-menu-item (click)="generateInvention('philosophical')">
+                <mat-icon>psychology</mat-icon>
+                <span>Philosophical</span>
+              </button>
+              <button mat-menu-item (click)="generateInvention('cultural')">
+                <mat-icon>diversity_3</mat-icon>
+                <span>Cultural</span>
+              </button>
+            </mat-menu>
+          </div>
+        }
+      </div>
+    </mat-drawer>
+
+    <!-- Center: World View (placeholder) -->
+    <mat-drawer-content class="simulation-detail__content">
+      <div class="simulation-detail__world">
+        <div class="simulation-detail__world-header">
+          <div class="simulation-detail__world-title">World View</div>
+          <div class="simulation-detail__world-hint">
+            Placeholder for map/canvas. Use left panel to select a human, or right panel to inspect inventions.
+          </div>
+        </div>
+
+        <div class="simulation-detail__world-body">
+          <div class="simulation-detail__placeholder">
+            <mat-icon class="simulation-detail__placeholder-icon">public</mat-icon>
+            <div class="simulation-detail__placeholder-text">World canvas</div>
+          </div>
+        </div>
+
+        <div class="simulation-detail__world-footer">
+          <div class="simulation-detail__pill">
+            <span>Population</span>
+            <strong>{{ populationTotal() }}</strong>
+          </div>
+          <div class="simulation-detail__pill">
+            <span>Active</span>
+            <strong>{{ populationActive() }}</strong>
+          </div>
+        </div>
+      </div>
+    </mat-drawer-content>
+  </mat-drawer-container>
+</div>
+

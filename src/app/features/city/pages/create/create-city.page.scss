@@ -2,30 +2,27 @@
 @use "../../../../../styles/tokens" as *;
 @use "../../../../../styles/typography" as *;
 
-.create-city-page {
-  display: flex;
-  justify-content: center;
-}
+.page { display: flex; justify-content: center; }
 
-.create-city-page__card {
+.card {
   width: 100%;
-  max-width: 28rem; // max-w-md
+  max-width: 28rem;
   border: 1px solid var(--mat-sys-outline-variant);
   box-shadow: $shadow-sm;
 }
 
-.create-city-page__title {
+.title {
   @include hai-section-title;
   font-weight: 600;
 }
 
-.create-city-page__form {
+.form {
   display: flex;
   flex-direction: column;
   gap: map.get($spacing-scale, 4);
 }
 
-.create-city-page__error {
+.error {
   @include hai-body-small;
   border-radius: $radius-md;
   background-color: var(--mat-sys-error-container);
@@ -33,7 +30,7 @@
   color: var(--mat-sys-on-error-container);
 }
 
-.create-city-page__submit-button {
+.submit-btn {
   width: 100%;
   padding: map.get($spacing-scale, 3) 0;
 }

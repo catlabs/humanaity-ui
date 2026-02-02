@@ -1,127 +1,93 @@
 @use "sass:map";
 @use "../../../../../styles/tokens" as *;
-@use "../../../../../styles/breakpoints" as *;
 @use "../../../../../styles/typography" as *;
+@use "../../../../../styles/app-shell" as *;
 
-.city-list-page {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  gap: map.get($spacing-scale, 6);
+.page { @include hai-page-shell(4rem); }
+
+.header { @include hai-page-header; }
+
+.header-content {
+  @include hai-row(4);
+  justify-content: space-between;
 }
 
-.city-list-page__header {
-  display: flex;
-  flex-direction: column;
-  gap: map.get($spacing-scale, 3);
-
-  @include md {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
-}
-
-.city-list-page__title-section {
-  display: flex;
-  flex-direction: column;
-  gap: map.get($spacing-scale, 1);
-}
-
-.city-list-page__title {
-  @include hai-page-title;
+.title {
+  @include hai-subsection-title;
   font-weight: 700;
+  margin: 0 0 map.get($spacing-scale, 1) 0;
+}
+
+.subtitle {
+  @include hai-body-small-muted;
   margin: 0;
 }
 
-.city-list-page__subtitle {
-  color: var(--mat-sys-on-surface-variant);
+.new-button { @include hai-row(2); }
+
+.content { @include hai-page-content; }
+
+.table-wrapper { @include hai-table-wrapper; }
+.table { @include hai-table; }
+.table-header { @include hai-table-header; }
+
+.th {
+  @include hai-table-header-cell;
+  &--right { text-align: right; }
 }
 
-.city-list-page__new-button {
-  display: flex;
-  align-items: center;
-  gap: map.get($spacing-scale, 2);
-  padding: map.get($spacing-scale, 3) map.get($spacing-scale, 6);
-}
-
-.city-list-page__filters {
-  width: 100%;
-}
-
-.city-list-page__filter-bar {
-  display: flex;
-  width: 100%;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: map.get($spacing-scale, 2);
-  border-radius: $radius-lg;
-  background-color: var(--mat-sys-surface-container-low);
-  padding: map.get($spacing-scale, 2);
-}
-
-.city-list-page__filter-button {
-  @include hai-body-small-muted;
-  border-radius: $radius-md;
-  padding: map.get($spacing-scale, 2) map.get($spacing-scale, 4);
-  font-weight: 500;
-  transition: color 0.2s, background-color 0.2s, box-shadow 0.2s;
-  background-color: transparent;
-  border: none;
+.row {
+  @include hai-table-row;
   cursor: pointer;
-
-  &:hover {
-    color: var(--mat-sys-on-surface);
-  }
-
-  &.is-active {
-    background-color: var(--mat-sys-surface-container-highest);
-    color: var(--mat-sys-primary);
-    box-shadow: $shadow-sm;
-  }
 }
 
-.city-list-page__grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: map.get($spacing-scale, 6);
-
-  @include md {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @include lg {
-    grid-template-columns: repeat(3, 1fr);
-  }
+.cell {
+  @include hai-table-cell;
+  &--right { text-align: right; }
+  &--muted { color: var(--mat-sys-on-surface-variant); }
 }
 
-.city-list-page__empty {
-  grid-column: 1 / -1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-radius: $radius-xl;
-  border: 1px solid var(--mat-sys-outline-variant);
-  background-color: var(--mat-sys-surface-container-lowest);
+.sim-name {
+  @include hai-body-small;
+  font-weight: 500;
+  margin-bottom: map.get($spacing-scale, 0.5);
+}
+
+.sim-id { @include hai-meta; }
+
+.status { @include hai-row(2); }
+.status-dot { @include hai-status-dot; }
+
+.status-text {
+  @include hai-body-small;
+  text-transform: capitalize;
+}
+
+.actions {
+  @include hai-row(2);
+  justify-content: flex-end;
+}
+
+.action-btn {
+  width: 32px;
+  height: 32px;
+  &--delete { color: var(--mat-sys-error); }
+}
+
+.empty {
   padding: map.get($spacing-scale, 10);
   text-align: center;
   color: var(--mat-sys-on-surface-variant);
-  box-shadow: $shadow-sm;
 
   mat-icon {
     margin-bottom: map.get($spacing-scale, 3);
     font-size: 3rem;
-    opacity: 0.6;
+    opacity: 0.5;
   }
 
   p {
-    @include hai-subsection-title;
+    @include hai-body-small;
     font-weight: 500;
     margin: 0;
   }
-}
-
-.city-list-page__paginator {
-  display: flex;
-  justify-content: center;
 }

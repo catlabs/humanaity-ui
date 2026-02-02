@@ -1,10 +1,10 @@
-<div class="create-city-page">
-  <mat-card class="create-city-page__card">
+<div class="page">
+  <mat-card class="card">
     <mat-card-header>
-      <mat-card-title class="create-city-page__title">Create a New City</mat-card-title>
+      <mat-card-title class="title">Create a New City</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <form class="create-city-page__form" [formGroup]="cityForm" (ngSubmit)="onSubmit()">
+      <form class="form" [formGroup]="cityForm" (ngSubmit)="onSubmit()">
         <mat-form-field appearance="outline" subscriptSizing="dynamic">
           <mat-label>City Name</mat-label>
           <input matInput type="text" formControlName="name" placeholder="Enter city name">
@@ -14,23 +14,13 @@
         </mat-form-field>
 
         @if (errorMessage) {
-          <div class="create-city-page__error">{{ errorMessage }}</div>
+          <div class="error">{{ errorMessage }}</div>
         }
 
-        <button
-          mat-raised-button
-          color="primary"
-          type="submit"
-          class="create-city-page__submit-button"
-          [disabled]="cityForm.invalid || isLoading">
-          @if (isLoading) {
-            Creating...
-          } @else {
-            Create City
-          }
+        <button mat-raised-button color="primary" type="submit" class="submit-btn" [disabled]="cityForm.invalid || isLoading">
+          @if (isLoading) { Creating... } @else { Create City }
         </button>
       </form>
     </mat-card-content>
   </mat-card>
 </div>
-

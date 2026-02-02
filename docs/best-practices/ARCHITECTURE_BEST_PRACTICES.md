@@ -417,9 +417,10 @@ export class ItemCardComponent {
 - Spacing (`p-4`, `m-2`, `gap-4`)
 - Layout (`flex`, `grid`, `container`)
 - Responsive behavior (`md:`, `lg:`, `xl:`)
-- Typography (`text-lg`, `font-bold`)
 - Colors (unless Material tokens provide them)
 - Borders, shadows, etc.
+
+**Note:** Typography should use HAI mixins (see [Typography section](#typography-hai-mixins)), not Tailwind typography utilities. Use Tailwind for font-weight overrides only when needed (e.g., `font-bold` after `@include hai-body`).
 
 ```html
 <!-- ✅ CORRECT -->
@@ -449,6 +450,213 @@ SCSS files are **only allowed** for:
 
 **Never** write component-specific styles in `.scss` files. Use Tailwind classes in templates instead.
 
+### Typography (HAI Mixins)
+
+**All typography must use HAI mixins from `src/styles/_typography.scss`.** These mixins use Material 3 typography tokens and ensure consistent typography across the application.
+
+**Key Principles:**
+
+- **Always use HAI mixins** - Never hardcode `font-size`, `line-height`, or `font-weight` in component styles
+- **Material tokens only** - All typography uses `--mat-sys-*` CSS variables from Material 3
+- **No `@extend`** - Use `@include` with HAI mixins, never `@extend`
+- **Default font** - Body element has default typography (`font: var(--mat-sys-body-medium)`) that all text inherits
+
+**Available HAI Typography Mixins:**
+
+```scss
+// Page-level titles (large headings, ~30px)
+@include hai-page-title;
+
+// Large section titles (~24px)
+@include hai-headline-small;
+
+// Section titles (medium headings, ~20px)
+@include hai-section-title;
+
+// Subsection titles (smaller headings)
+@include hai-subsection-title;
+
+// Default body text (~16px)
+@include hai-body;
+
+// Small body text (~14px)
+@include hai-body-small;
+
+// Small body text with muted color (~14px)
+@include hai-body-small-muted;
+
+// Meta text / labels with muted color (small, ~12px)
+@include hai-meta;
+
+// Medium labels
+@include hai-label;
+
+// Small labels (same as meta but without color override)
+@include hai-label-small;
+```
+
+**Usage in Component SCSS:**
+
+```scss
+// ✅ CORRECT - Use HAI mixins
+@use "../../../../../styles/typography" as *;
+
+.component-title {
+  @include hai-section-title;
+  font-weight: 600; // Override weight if needed
+  margin-bottom: 1rem;
+}
+
+.component-subtitle {
+  @include hai-body-small-muted;
+}
+
+.component-body {
+  @include hai-body;
+}
+
+// ❌ WRONG - Hardcoded font values
+.component-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--mat-sys-on-surface);
+}
+
+// ❌ WRONG - Using @extend
+.component-title {
+  @extend .ha-section-title;
+}
+```
+
+**Rules:**
+
+- **Import typography mixins** - Add `@use "../../../../../styles/typography" as *;` (adjust path as needed) to component SCSS files that use typography
+- **Font-weight overrides** - You can override `font-weight` after `@include` if needed (e.g., `@include hai-body-small; font-weight: 600;`)
+- **Color overrides** - Preset mixins have fixed colors. Override color separately if needed for special cases (e.g., white text on dark backgrounds)
+- **No hardcoded sizes** - Never write `font-size: 1rem`, `font-size: 14px`, etc. Use mixins or Material tokens directly
+- **Material tokens direct** - For edge cases, you can use Material tokens directly: `font: var(--mat-sys-body-medium);` but prefer mixins
+
+**Default Typography:**
+
+The `body` element in `src/styles.scss` has `font: var(--mat-sys-body-medium);` set, so all text inherits proper Material typography by default. Only use mixins when you need a different typography scale.
+
+**Example Component:**
+
+```scss
+@use "sass:map";
+@use "../../../../../styles/tokens" as *;
+@use "../../../../../styles/typography" as *;
+
+.page-header {
+  @include hai-page-title;
+  font-weight: 700;
+  margin-bottom: map.get($spacing-scale, 4);
+}
+
+.page-subtitle {
+  @include hai-body-small-muted;
+  margin-bottom: map.get($spacing-scale, 6);
+}
+
+.section-title {
+  @include hai-section-title;
+  font-weight: 600;
+  margin-top: map.get($spacing-scale, 6);
+}
+
+.card-title {
+  @include hai-body;
+  font-weight: 600;
+}
+
+.card-meta {
+  @include hai-meta;
+}
+```
+
+### CSS Class Naming Convention
+
+**Use simple, semantic class names** — Angular's view encapsulation makes verbose BEM-style naming (e.g., `city-list-page__table-header-cell--right`) unnecessary.
+
+**Key Principles:**
+
+- **Simple names** - Use semantic names like `.header`, `.title`, `.content`, `.row`, `.cell` instead of verbose BEM patterns
+- **Leverage encapsulation** - Angular's `ViewEncapsulation.Emulated` (default) scopes styles to the component automatically
+- **Use modifiers sparingly** - For variants, use short modifier suffixes like `.cell--right`, `.btn--delete`
+- **Sass nesting** - Use `&--modifier` syntax within the parent selector for cleaner code
+
+**Examples:**
+
+```scss
+// ✅ CORRECT - Simple, semantic names with Sass nesting
+.page { @include hai-page-shell(4rem); }
+.header { @include hai-page-header; }
+.title { @include hai-subsection-title; font-weight: 700; }
+.content { @include hai-page-content; }
+.table { @include hai-table; }
+.row { @include hai-table-row; cursor: pointer; }
+.cell {
+  @include hai-table-cell;
+  &--right { text-align: right; }
+  &--muted { color: var(--mat-sys-on-surface-variant); }
+}
+.action-btn {
+  width: 32px;
+  height: 32px;
+  &--delete { color: var(--mat-sys-error); }
+}
+
+// ❌ WRONG - Verbose BEM naming
+.city-list-page { ... }
+.city-list-page__header { ... }
+.city-list-page__header-content { ... }
+.city-list-page__table-header-cell { ... }
+.city-list-page__table-header-cell--right { ... }
+```
+
+**HTML Template:**
+
+```html
+<!-- ✅ CORRECT -->
+<div class="page">
+  <header class="header">
+    <h1 class="title">Simulations</h1>
+  </header>
+  <div class="content">
+    <table class="table">
+      <tr class="row">
+        <td class="cell">Name</td>
+        <td class="cell cell--right">Population</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<!-- ❌ WRONG -->
+<div class="city-list-page">
+  <div class="city-list-page__header">
+    <h1 class="city-list-page__title">Simulations</h1>
+  </div>
+</div>
+```
+
+**Rules:**
+
+- **One root class per component** - Use `.page`, `.panel`, `.card`, etc. as the component root
+- **Short element names** - `.header`, `.content`, `.footer`, `.title`, `.subtitle`, `.actions`
+- **Common patterns** - `.row`, `.cell`, `.item`, `.list`, `.grid`, `.btn`, `.icon`
+- **Abbreviate when obvious** - `.btn` not `.button`, `.desc` not `.description`, `.img` not `.image`
+- **Modifier format** - Use `--` prefix: `.cell--right`, `.btn--primary`, `.status--active`
+- **Inline modifiers** - For single-property modifiers, keep them on one line: `&--right { text-align: right; }`
+
+**Benefits:**
+
+- **Readability** - HTML and SCSS are cleaner and easier to scan
+- **Maintainability** - Less repetitive code to update
+- **No conflicts** - Angular's view encapsulation prevents style leakage
+- **Consistency** - Same naming patterns across all components
+
 ## 🆕 Tailwind Usage Rules and Component Creation Guidelines
 
 1. When Tailwind utilities are enough
@@ -466,9 +674,11 @@ Tailwind is ideal for:
 - spacing and padding
 - grids and flex layouts
 - responsive breakpoints
-- typography and colors
+- colors (when Material tokens don't provide them)
 - borders, shadows, backgrounds
 - hover/focus styles
+
+**Note:** For typography, use HAI mixins instead of Tailwind typography utilities (see [Typography section](#typography-hai-mixins)).
 
 Do not create Angular components just to hide Tailwind utilities.
 
@@ -1198,6 +1408,9 @@ export default [
 15. **Defining types manually** → Use generated types from `api/model/models`
 16. **Not handling Blob responses** → Always handle Blob responses when using fetch API
 17. **Not regenerating API after backend changes** → Run generator when API spec changes
+18. **Hardcoding font-size/font-weight** → Always use HAI typography mixins (`@include hai-*`)
+19. **Using `@extend` for typography** → Use `@include` with HAI mixins, never `@extend`
+20. **Using Tailwind typography utilities** → Use HAI mixins for typography, not `text-lg`, `text-sm`, etc.
 
 ## Migration Checklist
 
@@ -1215,6 +1428,9 @@ When refactoring existing code:
 - [ ] Use generated types from `api/model/models` instead of manual types
 - [ ] Add Blob response handling if using fetch API
 - [ ] Verify routes use lazy loading
+- [ ] Replace hardcoded font-size/font-weight with HAI typography mixins
+- [ ] Replace any `@extend` usage with `@include hai-*` mixins
+- [ ] Add `@use "../../../../../styles/typography" as *;` import to component SCSS files using typography
 
 ## Examples
 

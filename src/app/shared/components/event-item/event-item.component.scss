@@ -1,13 +1,11 @@
 @use "sass:map";
 @use "../../../../styles/tokens" as *;
 @use "../../../../styles/typography" as *;
+@use "../../../../styles/app-shell" as *;
 
-.event-item {
-  display: flex;
-  gap: map.get($spacing-scale, 3);
-}
+.item { @include hai-row(3); }
 
-.event-item__icon {
+.icon {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -16,23 +14,20 @@
   border-radius: 50%;
 }
 
-.event-item__content {
-  min-width: 0;
-  flex: 1 1 0%;
-}
+.content { min-width: 0; flex: 1 1 0%; }
 
-.event-item__title {
+.title {
   @include hai-body-small;
   font-weight: 500;
   margin: 0;
 }
 
-.event-item__description {
+.desc {
   @include hai-meta;
   margin: map.get($spacing-scale, 0.5) 0 0 0;
 }
 
-.event-item__timestamp {
+.time {
   @include hai-meta;
   opacity: 0.7;
   margin: map.get($spacing-scale, 1) 0 0 0;

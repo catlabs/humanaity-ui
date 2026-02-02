@@ -1,256 +1,200 @@
 @use "sass:map";
 @use "../../../../../styles/tokens" as *;
 @use "../../../../../styles/typography" as *;
+@use "../../../../../styles/app-shell" as *;
 
-.simulation-detail {
-  display: flex;
-  flex-direction: column;
-  // Fill visible viewport area (global app header is 4rem; layout main adds vertical padding).
-  height: calc(100vh - 7rem);
-  min-height: 0;
-}
+.page { @include hai-page-shell(7rem); }
 
-.simulation-detail__info-bar {
+.info-bar {
   flex: none;
-  border: 1px solid var(--mat-sys-outline-variant);
-  border-radius: $radius-xl;
-  padding: 0 map.get($spacing-scale, 2);
+  // Proto intent: flat bar with border-bottom + denser vertical padding.
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 0;
+  padding: 0 map.get($spacing-scale, 8);
 }
 
-.simulation-detail__icon-button {
-  color: var(--mat-sys-on-surface-variant);
-}
+.icon-btn { color: var(--mat-sys-on-surface-variant); }
 
-.simulation-detail__title {
-  display: flex;
-  flex-direction: column;
-  gap: map.get($spacing-scale, 0.5);
+.title-block {
+  @include hai-col(0.5);
   margin-left: map.get($spacing-scale, 2);
   min-width: 0;
 }
 
-.simulation-detail__title-main {
-  @include hai-subsection-title;
+.title-main {
+  @include hai-body-small;
+  font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.simulation-detail__title-sub {
+.title-sub {
   @include hai-meta;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.simulation-detail__spacer {
-  flex: 1 1 auto;
-}
+.spacer { flex: 1 1 auto; }
+.action-btn { @include hai-row(1); }
 
-.simulation-detail__action {
-  display: inline-flex;
-  align-items: center;
-  gap: map.get($spacing-scale, 1);
-}
-
-.simulation-detail__drawer-container {
-  margin-top: map.get($spacing-scale, 3);
+.drawer-container {
+  // Proto intent: no extra gap between bar and content.
+  margin-top: 0;
   flex: 1 1 0%;
   min-height: 0;
-  border: 1px solid var(--mat-sys-outline-variant);
-  border-radius: $radius-xl;
+  border: none;
+  border-radius: 0;
   overflow: hidden;
 }
 
-.simulation-detail__drawer {
-  padding: map.get($spacing-scale, 3);
+.drawer {
+  // Proto intent: drawers are the panels (no extra “padding wrapper”).
+  padding: 0;
+  background: var(--mat-sys-surface-container-lowest);
 }
 
-.simulation-detail__drawer--left {
-  width: 18rem;
+.drawer--left {
+  width: 17.5rem; // 280px (proto)
   max-width: 90vw;
+  border-right: 1px solid var(--mat-sys-outline-variant);
 }
 
-.simulation-detail__drawer--right {
-  width: 24rem;
+.drawer--right {
+  width: 25rem; // 400px (proto)
   max-width: 90vw;
+  border-left: 1px solid var(--mat-sys-outline-variant);
 }
 
-.simulation-detail__content {
+.content {
   height: 100%;
   min-height: 0;
-  padding: map.get($spacing-scale, 3);
+  padding: 0;
 }
 
-.simulation-detail__panel {
-  display: flex;
-  flex-direction: column;
+.panel {
+  // Proto intent: avoid nested “panel inside panel” borders.
+  border: none;
+  border-radius: 0;
+  background: transparent;
   height: 100%;
-  min-height: 0;
-  border: 1px solid var(--mat-sys-outline-variant);
-  border-radius: $radius-lg;
-  background: var(--mat-sys-surface);
-  overflow: hidden;
 }
 
-.simulation-detail__panel-header {
-  display: flex;
-  align-items: center;
+.panel-header {
+  @include hai-panel-header;
+  @include hai-row(2);
   justify-content: space-between;
-  gap: map.get($spacing-scale, 2);
-  padding: map.get($spacing-scale, 3) map.get($spacing-scale, 4);
-  border-bottom: 1px solid var(--mat-sys-outline-variant);
 }
 
-.simulation-detail__panel-title {
+.panel-title {
+  @include hai-row(1);
   @include hai-body-small;
-  display: inline-flex;
-  align-items: center;
-  gap: map.get($spacing-scale, 1);
   font-weight: 600;
 }
 
-.simulation-detail__panel-section {
-  padding: map.get($spacing-scale, 3) map.get($spacing-scale, 4);
-}
+.panel-section { padding: map.get($spacing-scale, 4) map.get($spacing-scale, 6); }
+.panel-footer { @include hai-panel-footer; }
 
-.simulation-detail__section-title {
-  @include hai-meta;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  margin-bottom: map.get($spacing-scale, 2);
-}
+.section-title { @include hai-panel-section-title; }
 
-.simulation-detail__stats {
-  @include hai-body-small;
-  width: 100%;
-  border-collapse: collapse;
+.stats { @include hai-stats-table; }
 
-  td {
-    padding: map.get($spacing-scale, 1.5) 0;
-    color: var(--mat-sys-on-surface-variant);
-  }
-}
-
-.simulation-detail__stats-value {
+.stats-value {
   text-align: right;
   color: var(--mat-sys-on-surface);
   font-weight: 600;
 }
 
-.simulation-detail__list-title {
-  text-transform: capitalize;
+.list-title { text-transform: capitalize; }
+.list-subtitle { color: var(--mat-sys-on-surface-variant); }
+.empty { padding: map.get($spacing-scale, 4) map.get($spacing-scale, 6); color: var(--mat-sys-on-surface-variant); }
+
+.filters {
+  // Stack checkboxes vertically and align them flush-left.
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: map.get($spacing-scale, 3);
+  padding: map.get($spacing-scale, 4) map.get($spacing-scale, 6);
 }
 
-.simulation-detail__list-subtitle {
-  color: var(--mat-sys-on-surface-variant);
+.filters mat-checkbox {
+  width: 100%;
 }
 
-.simulation-detail__empty {
-  padding: map.get($spacing-scale, 3) map.get($spacing-scale, 4);
-  color: var(--mat-sys-on-surface-variant);
-}
-
-.simulation-detail__scroll {
-  flex: 1 1 0%;
-  min-height: 0;
-  overflow: auto;
+.scroll-area {
+  @include hai-panel-body;
   padding: 0;
 }
 
-.simulation-detail__panel-footer {
-  padding: map.get($spacing-scale, 3) map.get($spacing-scale, 4);
-}
-
-.simulation-detail__invention-stats {
+.invention-stats {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: map.get($spacing-scale, 3);
 }
 
-.simulation-detail__invention-stat-label {
-  @include hai-meta;
-}
+.stat-label { @include hai-meta; }
 
-.simulation-detail__invention-stat-value {
+.stat-value {
   @include hai-body;
   font-weight: 700;
   margin-top: map.get($spacing-scale, 0.5);
 }
 
-.simulation-detail__world {
-  display: flex;
-  flex-direction: column;
+.world {
+  border: none;
+  border-radius: 0;
+  background: transparent;
   height: 100%;
-  min-height: 0;
-  border: 1px solid var(--mat-sys-outline-variant);
-  border-radius: $radius-lg;
-  background: var(--mat-sys-surface);
-  overflow: hidden;
 }
 
-.simulation-detail__world-header {
-  padding: map.get($spacing-scale, 4);
-  border-bottom: 1px solid var(--mat-sys-outline-variant);
-}
+.world-header { @include hai-panel-header; }
 
-.simulation-detail__world-title {
+.world-title {
   @include hai-body-small;
   font-weight: 600;
 }
 
-.simulation-detail__world-hint {
+.world-hint {
   @include hai-body-small-muted;
   margin-top: map.get($spacing-scale, 1);
 }
 
-.simulation-detail__world-body {
+.world-body {
   flex: 1 1 0%;
   min-height: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--mat-sys-surface-container-lowest);
+  // Proto intent: canvas reads slightly “deeper” than side panels.
+  background: var(--mat-sys-surface);
 }
 
-.simulation-detail__placeholder {
-  display: flex;
-  flex-direction: column;
+.placeholder {
+  @include hai-col(2);
   align-items: center;
-  gap: map.get($spacing-scale, 2);
   color: var(--mat-sys-on-surface-variant);
 }
 
-.simulation-detail__placeholder-icon {
-  font-size: 2rem;
-  height: 2rem;
-  width: 2rem;
-}
+.placeholder-icon { font-size: 2rem; height: 2rem; width: 2rem; }
 
-.simulation-detail__placeholder-text {
+.placeholder-text {
   @include hai-body-small;
   font-weight: 600;
 }
 
-.simulation-detail__world-footer {
-  padding: map.get($spacing-scale, 3) map.get($spacing-scale, 4);
-  border-top: 1px solid var(--mat-sys-outline-variant);
-  display: flex;
-  gap: map.get($spacing-scale, 2);
+.world-footer {
+  @include hai-panel-footer;
+  @include hai-row(2);
 }
 
-.simulation-detail__pill {
-  display: inline-flex;
-  align-items: center;
-  gap: map.get($spacing-scale, 1);
+.pill {
+  @include hai-row(1);
+  @include hai-body-small;
   padding: map.get($spacing-scale, 1) map.get($spacing-scale, 2);
-  border-radius: $radius-md;
+  border-radius: $radius-sm;
   border: 1px solid var(--mat-sys-outline-variant);
   color: var(--mat-sys-on-surface-variant);
-
-  strong {
-    color: var(--mat-sys-on-surface);
-  }
+  strong { color: var(--mat-sys-on-surface); }
 }
-

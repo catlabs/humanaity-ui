@@ -1,12 +1,10 @@
-<div class="event-item">
-  <div class="event-item__icon" [style.background-color]="getBackgroundColor()">
+<div class="item">
+  <div class="icon" [style.background-color]="getBackgroundColor()">
     <mat-icon [style.color]="getIconColor()">{{ getIcon() }}</mat-icon>
   </div>
-  <div class="event-item__content">
-    <p class="event-item__title">{{ title() }}</p>
-    <p class="event-item__description">{{ description() }}</p>
-    <p class="event-item__timestamp">{{ timestamp() }}</p>
+  <div class="content">
+    <p class="title">{{ title() }}</p>
+    <p class="desc">{{ description() }}</p>
+    <p class="time">{{ timestamp() }}</p>
   </div>
 </div>
-
-

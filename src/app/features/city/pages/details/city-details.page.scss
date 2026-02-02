@@ -1,33 +1,26 @@
 @use "sass:map";
 @use "../../../../../styles/tokens" as *;
-@use "../../../../../styles/breakpoints" as *;
 @use "../../../../../styles/typography" as *;
+@use "../../../../../styles/app-shell" as *;
 
-.city-details-page {
-  // Fill the visible viewport area (app header is 4rem, layout main has py-6 => 3rem).
-  height: calc(100vh - 7rem);
-  min-height: 0;
-}
+.page { @include hai-page-shell(7rem); }
 
-.city-details-page__drawer-container {
-  height: 100%;
-  min-height: 0;
-}
+.drawer-container { height: 100%; min-height: 0; }
 
-.city-details-page__drawer {
-  width: 24rem; // w-96
+.drawer {
+  width: $panel-width-lg;
   max-width: 90vw;
   padding: map.get($spacing-scale, 4);
 }
 
-.city-details-page__drawer-content {
+.drawer-content {
   display: flex;
   height: 100%;
   min-height: 0;
   flex-direction: column;
 }
 
-.city-details-page__drawer-card {
+.drawer-card {
   display: flex;
   min-height: 0;
   flex: 1 1 0%;
@@ -37,50 +30,41 @@
   box-shadow: $shadow-sm;
 }
 
-.city-details-page__drawer-header {
-  display: flex;
-  flex: none;
-  align-items: center;
+.drawer-header {
+  @include hai-panel-header;
+  @include hai-row(2);
   justify-content: space-between;
-  border-bottom: 1px solid var(--mat-sys-outline-variant);
-  padding: map.get($spacing-scale, 4) map.get($spacing-scale, 5);
 }
 
-.city-details-page__drawer-title {
+.drawer-title {
   @include hai-body-small;
   font-weight: 600;
   margin: 0;
 }
 
-.city-details-page__drawer-close-button {
+.close-btn {
   color: var(--mat-sys-on-surface-variant);
   transition: color 0.2s;
-
-  &:hover {
-    color: var(--mat-sys-on-surface);
-  }
+  &:hover { color: var(--mat-sys-on-surface); }
 }
 
-.city-details-page__drawer-body {
-  min-height: 0;
-  flex: 1 1 0%;
-  overflow-y: auto;
-  padding: map.get($spacing-scale, 5);
+.drawer-body {
+  @include hai-panel-body-padded;
 }
 
-.city-details-page__drawer-empty {
+.drawer-empty {
   padding: map.get($spacing-scale, 6) 0;
   text-align: center;
   color: var(--mat-sys-on-surface-variant);
 }
 
-.city-details-page__content {
+.content {
   height: 100%;
   min-height: 0;
   padding: map.get($spacing-scale, 4);
 }
 
-.city-details-page__main {
+.main {
   display: flex;
   height: 100%;
   min-height: 0;
@@ -88,22 +72,19 @@
   gap: map.get($spacing-scale, 4);
 }
 
-.city-details-page__header {
-  display: flex;
-  height: 3rem; // h-12
+.header {
+  @include hai-row(4);
+  height: 3rem;
   flex: none;
-  align-items: center;
   justify-content: space-between;
 }
 
-.city-details-page__title-section {
-  display: flex;
+.title-section {
+  @include hai-row(3);
   min-width: 0;
-  align-items: center;
-  gap: map.get($spacing-scale, 3);
 }
 
-.city-details-page__title {
+.title {
   @include hai-body;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -112,37 +93,28 @@
   margin: 0;
 }
 
-.city-details-page__cycle {
+.cycle {
   @include hai-meta;
   white-space: nowrap;
 }
 
-.city-details-page__actions {
-  display: flex;
-  align-items: center;
-  gap: map.get($spacing-scale, 2);
-}
+.actions { @include hai-row(2); }
 
-.city-details-page__action-button {
+.action-btn {
+  @include hai-row(1);
   @include hai-body-small;
-  display: flex;
-  align-items: center;
-  gap: map.get($spacing-scale, 1);
   padding: map.get($spacing-scale, 2) map.get($spacing-scale, 4);
   font-weight: 600;
+}
 
-  &.surface-button {
+.surface-btn {
     background-color: var(--mat-sys-surface-container-high);
     color: var(--mat-sys-on-surface);
     transition: background-color 0.2s;
-
-    &:hover {
-      background-color: var(--mat-sys-surface-container-highest);
-    }
-  }
+  &:hover { background-color: var(--mat-sys-surface-container-highest); }
 }
 
-.city-details-page__map-container {
+.map-container {
   min-height: 0;
   flex: 1 1 0%;
   overflow: hidden;
@@ -151,74 +123,57 @@
   background-color: var(--mat-sys-surface-container-lowest);
 }
 
-.city-details-page__map-wrapper {
-  position: relative;
-  height: 100%;
-}
+.map-wrapper { position: relative; height: 100%; }
+.map { height: 100%; width: 100%; }
 
-.city-details-page__map {
-  height: 100%;
-  width: 100%;
-}
-
-.city-details-page__map-overlay {
+.map-overlay {
   position: absolute;
-  inset-x: 0;
+  left: 0;
+  right: 0;
   top: 0;
-  display: flex;
-  align-items: center;
-  gap: map.get($spacing-scale, 4);
+  @include hai-row(4);
   background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), transparent);
   padding: map.get($spacing-scale, 4);
   color: white;
 }
 
-.city-details-page__map-stat {
-  display: flex;
-  align-items: center;
-  gap: map.get($spacing-scale, 2);
-}
+.map-stat { @include hai-row(2); }
 
-.city-details-page__map-stat-label {
+.map-stat-label {
   @include hai-meta;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: rgba(255, 255, 255, 0.8);
 }
 
-.city-details-page__map-stat-value {
+.map-stat-value {
   @include hai-subsection-title;
   font-weight: 600;
 }
 
-.city-details-page__map-divider {
+.map-divider {
   height: 1.5rem;
   width: 1px;
   background-color: rgba(255, 255, 255, 0.3);
 }
 
-.city-details-page__map-controls {
+.map-controls {
   position: absolute;
   right: map.get($spacing-scale, 4);
   top: map.get($spacing-scale, 4);
-  display: flex;
-  flex-direction: column;
-  gap: map.get($spacing-scale, 2);
+  @include hai-col(2);
 }
 
-.city-details-page__map-control-button {
+.map-control-btn {
   border-radius: $radius-lg;
   background-color: var(--mat-sys-surface);
   opacity: 0.9;
   box-shadow: $shadow-sm;
   transition: background-color 0.2s, opacity 0.2s;
-
-  &:hover {
-    opacity: 1;
-  }
+  &:hover { opacity: 1; }
 }
 
-.city-details-page__map-info {
+.map-info {
   @include hai-body-small-muted;
   position: absolute;
   bottom: map.get($spacing-scale, 4);

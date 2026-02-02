@@ -74,4 +74,10 @@ export class CityService {
       map((response) => response['running'] ?? false)
     );
   }
+
+  deleteCity(id: string): Observable<void> {
+    return this.citiesService.deleteCity(id).pipe(
+      map(() => void 0)
+    );
+  }
 }

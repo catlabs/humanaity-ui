@@ -4,6 +4,7 @@
 @use "./styles/layout";
 @use "./styles/utilities";
 @use "./styles/typography";
+@use "./styles/app-shell";
 
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
 
@@ -51,14 +52,14 @@ body {
 // Dark mode: fall back to Material surface token.
 .app-surface-bar-bg,
 .app-header-bg {
-  background-color: #ffffff;
+  background-color: var(--mat-sys-surface-container-lowest);
   background-image: none;
 }
 
 html.dark .app-surface-bar-bg,
 html.dark .app-header-bg {
   background-image: none;
-  background-color: var(--mat-sys-surface);
+  background-color: var(--mat-sys-surface-container-lowest);
 }
 
 // Shared app background for main content areas (greyish in light mode).
@@ -68,7 +69,7 @@ html.dark .app-header-bg {
 }
 
 html.dark .app-main-bg {
-  background-color: var(--mat-sys-surface);
+  background-color: var(--mat-sys-surface-container-lowest);
 }
 
 // Utility: ensure Material drawers are visually "flat" (no rounding),

@@ -1,16 +1,8 @@
-<div class="app-layout app-main-bg">
-  <div class="app-layout__header-container">
-    <app-header
-      [showUserMenu]="showUserMenu()"
-      [userAvatar]="userAvatar()"
-      [userName]="userName()"
-    >
-    </app-header>
+<div class="layout app-main-bg">
+  <div class="header-container">
+    <app-header [showUserMenu]="showUserMenu()" [userAvatar]="userAvatar()" [userName]="userName()"></app-header>
   </div>
-
-  <main class="app-layout__main app-main-bg">
-    <app-container>
-      <router-outlet />
-    </app-container>
+  <main class="main app-main-bg">
+    <app-container><router-outlet /></app-container>
   </main>
 </div>

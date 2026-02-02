@@ -1,170 +1,103 @@
-<div class="city-details-page">
-  <mat-drawer-container
-    class="city-details-page__drawer-container app-drawer-content-transparent"
-    autosize
-  >
+<div class="page">
+  <mat-drawer-container class="drawer-container app-drawer-content-transparent" autosize>
     <mat-drawer
       position="end"
       [mode]="drawerMode()"
       [opened]="drawerOpen()"
       (openedChange)="drawerOpen.set($event)"
-      class="city-details-page__drawer app-main-bg app-drawer-flat"
+      class="drawer app-main-bg app-drawer-flat"
     >
-      <div class="city-details-page__drawer-content">
-        <mat-card class="city-details-page__drawer-card">
-          <div class="city-details-page__drawer-header">
-            <h3 class="city-details-page__drawer-title">Recent Events</h3>
-            <button
-              mat-icon-button
-              type="button"
-              class="city-details-page__drawer-close-button"
-              (click)="closeDrawer()"
-              aria-label="Collapse sidebar"
-            >
+      <div class="drawer-content">
+        <mat-card class="drawer-card">
+          <div class="drawer-header">
+            <h3 class="drawer-title">Recent Events</h3>
+            <button mat-icon-button type="button" class="close-btn" (click)="closeDrawer()" aria-label="Collapse sidebar">
               <mat-icon>chevron_right</mat-icon>
             </button>
           </div>
 
-          <div class="city-details-page__drawer-body">
+          <div class="drawer-body">
             @for (event of recentEvents(); track event.id) {
             <app-event-item
               [title]="event.title"
               [description]="event.description"
               [timestamp]="event.timestamp"
               [type]="event.type"
-            >
-            </app-event-item>
+            ></app-event-item>
             } @empty {
-            <div class="city-details-page__drawer-empty">No recent events</div>
+            <div class="drawer-empty">No recent events</div>
             }
           </div>
         </mat-card>
       </div>
     </mat-drawer>
 
-    <mat-drawer-content class="city-details-page__content">
-      <div class="city-details-page__main">
+    <mat-drawer-content class="content">
+      <div class="main">
         <!-- City Context Header -->
-        <div class="city-details-page__header">
-          <div class="city-details-page__title-section">
-            <h2 class="city-details-page__title">
-              {{ city.name }}
-            </h2>
-            <span class="city-details-page__cycle"> Cycle {{ cycle() }} </span>
+        <header class="header">
+          <div class="title-section">
+            <h2 class="title">{{ city.name }}</h2>
+            <span class="cycle">Cycle {{ cycle() }}</span>
           </div>
 
-          <div class="city-details-page__actions">
-            <button
-              mat-raised-button
-              color="primary"
-              class="city-details-page__action-button"
-              (click)="onStart()"
-              [disabled]="isRunning()"
-            >
+          <div class="actions">
+            <button mat-raised-button color="primary" class="action-btn" (click)="onStart()" [disabled]="isRunning()">
               <mat-icon>play_arrow</mat-icon>
               <span>Start</span>
             </button>
-            <button
-              mat-raised-button
-              class="city-details-page__action-button surface-button"
-              (click)="onPause()"
-              [disabled]="!isRunning()"
-            >
+            <button mat-raised-button class="action-btn surface-btn" (click)="onPause()" [disabled]="!isRunning()">
               <mat-icon>pause</mat-icon>
               <span>Pause</span>
             </button>
-            <button
-              mat-raised-button
-              color="primary"
-              class="city-details-page__action-button"
-              (click)="onStep(1)"
-            >
+            <button mat-raised-button color="primary" class="action-btn" (click)="onStep(1)">
               <mat-icon>skip_next</mat-icon>
               <span>+1</span>
             </button>
-            <button
-              mat-raised-button
-              color="primary"
-              class="city-details-page__action-button"
-              (click)="onStep(10)"
-            >
+            <button mat-raised-button color="primary" class="action-btn" (click)="onStep(10)">
               <mat-icon>fast_forward</mat-icon>
               <span>+10</span>
             </button>
           </div>
-        </div>
+        </header>
 
         <!-- Map Container -->
-        <div class="city-details-page__map-container">
-          <div class="city-details-page__map-wrapper">
-            <div #container class="city-details-page__map"></div>
+        <div class="map-container">
+          <div class="map-wrapper">
+            <div #container class="map"></div>
 
             <!-- Map Stats Overlay -->
-            <div class="city-details-page__map-overlay">
-              <div class="city-details-page__map-stat">
-                <div class="city-details-page__map-stat-label">Population</div>
-                <div class="city-details-page__map-stat-value">
-                  {{ population() }}
-                </div>
+            <div class="map-overlay">
+              <div class="map-stat">
+                <div class="map-stat-label">Population</div>
+                <div class="map-stat-value">{{ population() }}</div>
               </div>
-              <div class="city-details-page__map-divider"></div>
-              <div class="city-details-page__map-stat">
-                <div class="city-details-page__map-stat-label">Happiness</div>
-                <div
-                  class="city-details-page__map-stat-value"
-                  style="color: #a7f3d0"
-                >
-                  {{ happiness() }}%
-                </div>
+              <div class="map-divider"></div>
+              <div class="map-stat">
+                <div class="map-stat-label">Happiness</div>
+                <div class="map-stat-value" style="color: #a7f3d0">{{ happiness() }}%</div>
               </div>
-              <div class="city-details-page__map-divider"></div>
-              <div class="city-details-page__map-stat">
-                <div class="city-details-page__map-stat-label">Resources</div>
-                <div
-                  class="city-details-page__map-stat-value"
-                  style="color: #fde68a"
-                >
-                  {{ resources() }}
-                </div>
+              <div class="map-divider"></div>
+              <div class="map-stat">
+                <div class="map-stat-label">Resources</div>
+                <div class="map-stat-value" style="color: #fde68a">{{ resources() }}</div>
               </div>
             </div>
 
             <!-- Map Controls -->
-            <div class="city-details-page__map-controls">
+            <div class="map-controls">
               @if (!drawerOpen()) {
-              <button
-                mat-icon-button
-                type="button"
-                class="city-details-page__map-control-button"
-                (click)="openDrawer()"
-                aria-label="Open sidebar"
-              >
+              <button mat-icon-button type="button" class="map-control-btn" (click)="openDrawer()" aria-label="Open sidebar">
                 <mat-icon>chevron_left</mat-icon>
               </button>
               }
-
-              <button
-                mat-icon-button
-                class="city-details-page__map-control-button"
-              >
-                <mat-icon>add</mat-icon>
-              </button>
-              <button
-                mat-icon-button
-                class="city-details-page__map-control-button"
-              >
-                <mat-icon>remove</mat-icon>
-              </button>
-              <button
-                mat-icon-button
-                class="city-details-page__map-control-button"
-              >
-                <mat-icon>fullscreen</mat-icon>
-              </button>
+              <button mat-icon-button class="map-control-btn"><mat-icon>add</mat-icon></button>
+              <button mat-icon-button class="map-control-btn"><mat-icon>remove</mat-icon></button>
+              <button mat-icon-button class="map-control-btn"><mat-icon>fullscreen</mat-icon></button>
             </div>
 
             <!-- Grid Info -->
-            <div class="city-details-page__map-info">Grid: 100x100</div>
+            <div class="map-info">Grid: 100x100</div>
           </div>
         </div>
       </div>

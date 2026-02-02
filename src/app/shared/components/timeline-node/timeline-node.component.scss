@@ -1,13 +1,13 @@
 @use "sass:map";
 @use "../../../../styles/tokens" as *;
 @use "../../../../styles/typography" as *;
+@use "../../../../styles/app-shell" as *;
 
-.timeline-node {
-  display: flex;
+.node {
+  @include hai-row(3);
   width: 100%;
   align-items: flex-start;
   justify-content: space-between;
-  gap: map.get($spacing-scale, 3);
   border-radius: $radius-xl;
   border: 1px solid var(--mat-sys-outline-variant);
   background-color: var(--mat-sys-surface-container-lowest);
@@ -15,24 +15,21 @@
   box-shadow: $shadow-sm;
 }
 
-.timeline-node__content {
-  min-width: 0;
-  flex: 1 1 0%;
-}
+.content { min-width: 0; flex: 1 1 0%; }
 
-.timeline-node__title {
+.title {
   @include hai-body-small;
   font-weight: 600;
   line-height: 1.375;
   margin: 0;
 }
 
-.timeline-node__period {
+.period {
   @include hai-meta;
   margin: map.get($spacing-scale, 1) 0 0 0;
 }
 
-.timeline-node__button {
+.info-btn {
   height: 2rem;
   width: 2rem;
   flex-shrink: 0;

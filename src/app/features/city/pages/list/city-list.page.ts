@@ -1,15 +1,24 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { CityOutput } from '@api';
-import { SimulationCardComponent, SimulationCardData, SimulationStatus } from '@shared';
 import { CityService } from '../../city.service';
 
-type FilterTab = 'all' | 'running' | 'completed' | 'draft';
+type SimulationStatus = 'running' | 'paused' | 'stopped';
+type Era = 'ancient' | 'medieval' | 'industrial' | 'modern';
+
+interface SimulationRow {
+  id: number;
+  name: string;
+  status: SimulationStatus;
+  population: number;
+  year: number;
+  era: Era;
+  inventions: number;
+  lastUpdated: string;
+}
 
 @Component({
   selector: 'app-city-list',
@@ -17,10 +26,7 @@ type FilterTab = 'all' | 'running' | 'completed' | 'draft';
   imports: [
     CommonModule,
     MatButtonModule,
-    MatIconModule,
-    MatTabsModule,
-    MatPaginatorModule,
-    SimulationCardComponent
+    MatIconModule
   ],
   templateUrl: './city-list.page.html',
   styleUrl: './city-list.page.scss'
@@ -31,27 +37,24 @@ export class CityListPage implements OnInit {
   private cityService = inject(CityService);
 
   cities = signal<CityOutput[]>([]);
-  filteredCities = signal<SimulationCardData[]>([]);
-  activeFilter: FilterTab = 'all';
-  pageSize = 9;
-  currentPage = 0;
+  simulations = signal<SimulationRow[]>([]);
 
   ngOnInit() {
     // Load cities from route data or service
     const routeData = this.route.snapshot.data['cities'];
     if (routeData) {
       this.cities.set(routeData);
+      this.convertCitiesToSimulations();
     } else {
       this.loadCities();
     }
-    this.applyFilter();
   }
 
   loadCities(): void {
     this.cityService.getCities().subscribe({
       next: (cities) => {
         this.cities.set(cities);
-        this.applyFilter();
+        this.convertCitiesToSimulations();
       },
       error: (error) => {
         console.error('Error loading cities:', error);
@@ -59,60 +62,90 @@ export class CityListPage implements OnInit {
     });
   }
 
-  onFilterChange(filter: FilterTab): void {
-    this.activeFilter = filter;
-    this.currentPage = 0;
-    this.applyFilter();
+  convertCitiesToSimulations(): void {
+    const sims = this.cities().map(city => this.convertToSimulationRow(city));
+    this.simulations.set(sims);
   }
 
-  applyFilter(): void {
-    let filtered = this.cities().map(city => this.convertToSimulationCard(city));
+  convertToSimulationRow(city: CityOutput): SimulationRow {
+    // Derive population from humans array length
+    const population = city.humans?.length || 0;
     
-    if (this.activeFilter !== 'all') {
-      filtered = filtered.filter(card => {
-        if (this.activeFilter === 'running') return card.status === 'running';
-        if (this.activeFilter === 'completed') return card.status === 'completed';
-        if (this.activeFilter === 'draft') return card.status === 'draft';
-        return true;
-      });
-    }
-
-    this.filteredCities.set(filtered);
-  }
-
-  convertToSimulationCard(city: CityOutput): SimulationCardData {
-    // Map city to simulation card data
-    // For now, we'll use default values - you can enhance this based on actual city data
-    const status: SimulationStatus = 'draft'; // TODO: Get actual status from city or simulation service
+    // Mock/derive other fields - TODO: Replace with actual data from simulation service
+    const statuses: SimulationStatus[] = ['running', 'paused', 'stopped'];
+    const status = statuses[Math.floor(Math.random() * statuses.length)] as SimulationStatus;
+    
+    // Derive year and era from population or use defaults
+    const year = 500 + (population * 10);
+    const eras: Era[] = ['ancient', 'medieval', 'industrial', 'modern'];
+    const era = eras[Math.floor(year / 500) % eras.length] as Era;
+    
+    // Mock inventions count (could be derived from actual data later)
+    const inventions = Math.floor(population * 0.5);
+    
+    // Mock last updated (could use actual timestamp from city data)
+    const lastUpdated = this.getRelativeTime(city.id || 0);
     
     return {
       id: city.id!,
       name: city.name || 'Unnamed Simulation',
-      description: 'Human civilization simulation with AI-generated inhabitants and real-time interactions.',
-      status: status,
-      icon: 'location_city',
-      iconColor: '#3b82f6',
-      createdAt: 'Recently',
-      lastRun: 'Never'
+      status,
+      population,
+      year,
+      era,
+      inventions,
+      lastUpdated
     };
   }
 
-  onCardClick(cityId: number): void {
-    this.router.navigate(['/cities', cityId]);
+  getRelativeTime(cityId: number): string {
+    // Mock relative time based on city ID
+    const times = ['2 minutes ago', '1 hour ago', '5 minutes ago', '3 days ago'];
+    return times[cityId % times.length];
+  }
+
+  onRowClick(simulation: SimulationRow): void {
+    this.router.navigate(['/cities', simulation.id]);
   }
 
   onCreateNew(): void {
     this.router.navigate(['/cities/create']);
   }
 
-  onPageChange(event: PageEvent): void {
-    this.currentPage = event.pageIndex;
-    this.pageSize = event.pageSize;
+  onToggleStatus(simulation: SimulationRow, event: Event): void {
+    event.stopPropagation();
+    // TODO: Implement status toggle logic
+    const newStatus: SimulationStatus = simulation.status === 'running' ? 'paused' : 'running';
+    this.simulations.update(sims => 
+      sims.map(s => s.id === simulation.id ? { ...s, status: newStatus } : s)
+    );
   }
 
-  getPaginatedCities(): SimulationCardData[] {
-    const start = this.currentPage * this.pageSize;
-    const end = start + this.pageSize;
-    return this.filteredCities().slice(start, end);
+  onDelete(simulation: SimulationRow, event: Event): void {
+    event.stopPropagation();
+    // TODO: Implement delete logic
+    if (confirm(`Are you sure you want to delete "${simulation.name}"?`)) {
+      this.cityService.deleteCity(simulation.id.toString()).subscribe({
+        next: () => {
+          this.simulations.update(sims => sims.filter(s => s.id !== simulation.id));
+        },
+        error: (error) => {
+          console.error('Error deleting city:', error);
+        }
+      });
+    }
+  }
+
+  getStatusColor(status: SimulationStatus): string {
+    switch (status) {
+      case 'running':
+        return '#34D399'; // green
+      case 'paused':
+        return '#F59E0B'; // yellow/amber
+      case 'stopped':
+        return '#6B7280'; // gray
+      default:
+        return '#6B7280';
+    }
   }
 }

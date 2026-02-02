@@ -1,20 +1,9 @@
-<div class="timeline-node">
-  <div class="timeline-node__content">
-    <div class="timeline-node__title">
-      {{ title() }}
-    </div>
-    <div class="timeline-node__period">
-      {{ period() }}
-    </div>
+<div class="node">
+  <div class="content">
+    <div class="title">{{ title() }}</div>
+    <div class="period">{{ period() }}</div>
   </div>
-
-  <button
-    mat-icon-button
-    color="primary"
-    class="timeline-node__button"
-    (click)="openReasoningDialog()"
-    aria-label="View full AI reasoning"
-  >
+  <button mat-icon-button color="primary" class="info-btn" (click)="openReasoningDialog()" aria-label="View full AI reasoning">
     <mat-icon>info</mat-icon>
   </button>
 </div>

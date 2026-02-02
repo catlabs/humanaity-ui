@@ -22,8 +22,7 @@
 }
 
 .title-main {
-  @include hai-body-small;
-  font-weight: 500;
+  @include hai-page-title;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -89,8 +88,7 @@
 
 .panel-title {
   @include hai-row(1);
-  @include hai-body-small;
-  font-weight: 600;
+  @include hai-section-title;
 }
 
 .panel-section { padding: map.get($spacing-scale, 4) map.get($spacing-scale, 6); }
@@ -152,8 +150,7 @@
 .world-header { @include hai-panel-header; }
 
 .world-title {
-  @include hai-body-small;
-  font-weight: 600;
+  @include hai-section-title;
 }
 
 .world-hint {
@@ -181,7 +178,6 @@
 
 .placeholder-text {
   @include hai-body-small;
-  font-weight: 600;
 }
 
 .world-footer {

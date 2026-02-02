@@ -27,8 +27,7 @@
 }
 
 .title {
-  @include hai-body-small;
-  font-weight: 700;
+  @include hai-page-title;
 }
 
 .subtitle { @include hai-body-small-muted; }

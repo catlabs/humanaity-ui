@@ -50,8 +50,7 @@
 }
 
 .card-title {
-  @include hai-body;
-  font-weight: 600;
+  @include hai-section-title;
   margin: 0;
 }
 

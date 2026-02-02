@@ -13,8 +13,7 @@
 }
 
 .title {
-  @include hai-subsection-title;
-  font-weight: 700;
+  @include hai-page-title;
   margin: 0 0 map.get($spacing-scale, 1) 0;
 }
 

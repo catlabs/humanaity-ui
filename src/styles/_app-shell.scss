@@ -76,8 +76,7 @@
 
 // Panel section title (uppercase label)
 @mixin hai-panel-section-title {
-  @include hai-meta;
-  font-weight: 600;
+  @include hai-label-muted;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   margin-bottom: map.get($spacing-scale, 2);
@@ -144,12 +143,11 @@
 
 // Table header cell (prototype: px-6 py-3 uppercase)
 @mixin hai-table-header-cell {
-  @include hai-meta;
+  @include hai-label-muted;
   padding: map.get($spacing-scale, 3) map.get($spacing-scale, 6);
   text-align: left;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  font-weight: 500;
 }
 
 // Table body row (prototype: border-b hover)

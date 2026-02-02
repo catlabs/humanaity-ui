@@ -49,7 +49,6 @@
 
 .logo-text {
   @include hai-headline-small;
-  font-weight: 600;
   margin: 0;
 }
 
@@ -61,7 +60,6 @@
 .login-form {
   .form-title {
     @include hai-headline-small;
-    font-weight: 700;
     margin: 0 0 1.5rem 0;
     text-align: center;
   }

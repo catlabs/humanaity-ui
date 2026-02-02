@@ -10,8 +10,7 @@
   }
 
   .panel-title {
-    @include hai-body-small;
-    font-weight: 600;
+    @include hai-section-title;
     margin: 0;
   }
 
@@ -38,8 +37,7 @@
 .entity-info { flex: 1; min-width: 0; }
 
 .entity-name {
-  @include hai-body;
-  font-weight: 600;
+  @include hai-section-title;
   margin: 0 0 map.get($spacing-scale, 1) 0;
 }
 

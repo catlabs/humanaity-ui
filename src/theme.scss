@@ -52,14 +52,34 @@ $dark-theme: create-theme(dark);
   @include mat.system-level-colors($light-theme);
   @include mat.system-level-typography($light-theme);
 
-  // Typography override: make global <h2> smaller.
-  // In Material v3, mat.typography-hierarchy() uses `font: var(--mat-sys-display-medium)`.
-  // Override the shorthand token directly so the hierarchy picks it up.
+  // HumanAIty brand: wordmark "Human" color (light theme)
+  --hai-brand-human: #1f2937;
+  // Secondary/subtitle text color (light theme uses Material token)
+  --hai-text-secondary: var(--mat-sys-on-surface-variant);
+
+  // HumanAIty Typography Token Overrides
+  // We use a compact typography scale for this app:
+  // - title-medium (18px/700) = Page H1 (largest title)
+  // - title-small (16px/600) = Section titles
+  // - body-small (14px/400) = Subtitles, secondary text
+  // - label-small = Meta text
   @include mat.theme-overrides(
     (
-      display-medium: 400 24px/32px var(--mat-sys-display-medium-font),
-      display-medium-size: 24px,
-      display-medium-line-height: 32px,
+      // Page H1 - largest title in the app
+      title-medium: 700 18px/24px var(--mat-sys-title-medium-font),
+      title-medium-size: 18px,
+      title-medium-line-height: 24px,
+      title-medium-weight: 700,
+      // Section titles
+      title-small: 600 16px/22px var(--mat-sys-title-small-font),
+      title-small-size: 16px,
+      title-small-line-height: 22px,
+      title-small-weight: 600,
+      // Subtitles / secondary header text
+      body-small: 400 14px/20px var(--mat-sys-body-small-font),
+      body-small-size: 14px,
+      body-small-line-height: 20px,
+      body-small-weight: 400,
     )
   );
 
@@ -90,6 +110,11 @@ html.dark {
   color-scheme: dark;
   @include mat.all-component-colors($dark-theme);
   @include mat.system-level-colors($dark-theme);
+
+  // HumanAIty brand: wordmark "Human" color (dark theme)
+  --hai-brand-human: #9ca3af;
+  // Secondary/subtitle text color (dark theme) - reusable for subtitles, secondary headers, etc.
+  --hai-text-secondary: #9ca3af;
 
   // Dark-mode brand override. Keep primary the same brand color, but use a deeper container.
   --mat-sys-primary: #2563eb;

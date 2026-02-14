@@ -8,20 +8,6 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
 
-// Global layout tokens
-:root {
-  --app-max-width: 80rem;
-  --app-gutter: clamp(16px, 3vw, 32px);
-}
-
-// Generic app container wrapper
-.app-container {
-  width: 100%;
-  max-width: var(--app-max-width);
-  margin-inline: auto;
-  padding-inline: var(--app-gutter);
-}
-
 /* Box-sizing for consistent layout */
 *,
 *::before,
@@ -47,29 +33,28 @@ body {
   color: var(--mat-sys-on-surface);
 }
 
-// Reusable background for sticky header bars.
-// Light mode: solid white (ends white).
-// Dark mode: fall back to Material surface token.
-.app-surface-bar-bg,
-.app-header-bg {
+// Material Symbols defaults — tweak these variables to change icon style globally.
+// No Angular Material tokens exist for these; font-variation-settings is the standard way.
+:root {
+  --hai-icon-fill: 0;   // 0 = outlined, 1 = filled
+  --hai-icon-wght: 300;  // 100–700 (300 = light)
+  --hai-icon-grad: 0;    // -50–200
+  --hai-icon-opsz: 24;   // 20–48
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+    'FILL' var(--hai-icon-fill),
+    'wght' var(--hai-icon-wght),
+    'GRAD' var(--hai-icon-grad),
+    'opsz' var(--hai-icon-opsz);
+}
+
+// Light theme: body already provides white via var(--mat-sys-surface).
+// Dark theme: marked elements get a slightly elevated surface tone.
+html.dark .app-surface-bg {
   background-color: var(--mat-sys-surface-container-lowest);
   background-image: none;
-}
-
-html.dark .app-surface-bar-bg,
-html.dark .app-header-bg {
-  background-image: none;
-  background-color: var(--mat-sys-surface-container-lowest);
-}
-
-// Shared app background for main content areas (greyish in light mode).
-// Uses Material design tokens so it stays consistent with theming.
-.app-main-bg {
-  background-color: var(--mat-sys-surface-container-low);
-}
-
-html.dark .app-main-bg {
-  background-color: var(--mat-sys-surface-container-lowest);
 }
 
 // Utility: ensure Material drawers are visually "flat" (no rounding),

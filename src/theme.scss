@@ -56,6 +56,8 @@ $dark-theme: create-theme(dark);
   --hai-brand-human: #1f2937;
   // Secondary/subtitle text color (light theme uses Material token)
   --hai-text-secondary: var(--mat-sys-on-surface-variant);
+  // Label color for uppercase UI labels (panel titles, table headers, etc.)
+  --hai-label-color: #737373;
 
   // HumanAIty Typography Token Overrides
   // We use a compact typography scale for this app:
@@ -80,6 +82,11 @@ $dark-theme: create-theme(dark);
       body-small-size: 14px,
       body-small-line-height: 20px,
       body-small-weight: 400,
+      // Medium labels (12px/400)
+      label-medium: 400 12px/16px var(--mat-sys-label-medium-font),
+      label-medium-size: 12px,
+      label-medium-line-height: 16px,
+      label-medium-weight: 400,
     )
   );
 
@@ -90,6 +97,8 @@ $dark-theme: create-theme(dark);
   --mat-sys-primary-container: #dbeafe;
   --mat-sys-on-primary-container: #1e3a8a;
   --mat-sys-inverse-primary: #93c5fd;
+  // Force pure white surfaces in light theme (Material may generate a tinted off-white).
+  --mat-sys-surface: #ffffff;
   // Used for elevation overlays / tinted surfaces in M3.
   --mat-sys-surface-tint: #2563eb;
   // "Fixed" roles are used by some M3 component variants and states.
@@ -97,6 +106,9 @@ $dark-theme: create-theme(dark);
   --mat-sys-on-primary-fixed: #1e3a8a;
   --mat-sys-primary-fixed-dim: #93c5fd;
   --mat-sys-on-primary-fixed-variant: #1e40af;
+
+  // Use the softer outline-variant for all <mat-divider> separators
+  --mat-divider-color: var(--mat-sys-outline-variant);
 
   @include mat.sidenav-overrides(
     (
@@ -115,6 +127,8 @@ html.dark {
   --hai-brand-human: #9ca3af;
   // Secondary/subtitle text color (dark theme) - reusable for subtitles, secondary headers, etc.
   --hai-text-secondary: #9ca3af;
+  // Label color (dark theme)
+  --hai-label-color: #6b7280;
 
   // Dark-mode brand override. Keep primary the same brand color, but use a deeper container.
   --mat-sys-primary: #2563eb;

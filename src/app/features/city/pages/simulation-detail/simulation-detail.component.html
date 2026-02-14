@@ -1,9 +1,5 @@
 <div class="page">
-  <mat-toolbar class="info-bar app-surface-bar-bg">
-    <button mat-icon-button type="button" class="icon-btn" (click)="toggleLeft()" aria-label="Toggle filters panel">
-      <mat-icon>tune</mat-icon>
-    </button>
-
+  <mat-toolbar class="info-bar app-surface-bg">
     <div class="title-block">
       <div class="title-main">{{ city.name || "Simulation" }}</div>
       <div class="title-sub">Era: {{ currentEra() }} · Year: {{ currentYear() }} · Phase: {{ worldPhase() }}</div>
@@ -19,25 +15,20 @@
       <mat-icon>schedule</mat-icon>
       Timeline
     </button>
-
-    <button mat-icon-button type="button" class="icon-btn" (click)="toggleRight()" aria-label="Toggle inspector panel">
-      <mat-icon>dock_to_right</mat-icon>
-    </button>
   </mat-toolbar>
 
   <mat-drawer-container class="drawer-container app-drawer-content-transparent" autosize>
     <!-- Left: Controls Panel -->
     <mat-drawer
       position="start"
-      [mode]="leftDrawerMode()"
-      [opened]="leftOpen()"
-      (openedChange)="leftOpen.set($event)"
-      class="drawer drawer--left app-main-bg app-drawer-flat"
+      mode="side"
+      opened
+      class="drawer drawer--left app-surface-bg app-drawer-flat"
     >
       <div class="panel">
         <div class="panel-header">
           <div class="panel-title">
-            <mat-icon>filter_list</mat-icon>
+            <mat-icon>filter_alt</mat-icon>
             Filters
           </div>
         </div>
@@ -88,10 +79,9 @@
     <!-- Right: Inspector Panel -->
     <mat-drawer
       position="end"
-      [mode]="rightDrawerMode()"
-      [opened]="rightOpen()"
-      (openedChange)="rightOpen.set($event)"
-      class="drawer drawer--right app-main-bg app-drawer-flat"
+      mode="side"
+      opened
+      class="drawer drawer--right app-surface-bg app-drawer-flat"
     >
       <div class="panel">
         @if (selectedHuman()) {

@@ -14,7 +14,7 @@
 // @param $color - Optional color override
 @mixin _hai-typography($font-token, $color: null) {
   font: $font-token;
-
+  
   @if $color {
     color: $color;
   }
@@ -63,15 +63,18 @@
   @include _hai-typography(var(--mat-sys-label-small), var(--hai-text-secondary));
 }
 
-// Medium labels (12px/500)
+// Medium labels (12px/500, uppercase)
+// Use for panel titles, section labels, UI headings
 @mixin hai-label {
-  @include _hai-typography(var(--mat-sys-label-medium), var(--mat-sys-on-surface));
+  @include _hai-typography(var(--mat-sys-label-medium), var(--hai-label-color));
+  text-transform: uppercase;
 }
 
-// Medium labels with muted/secondary color (12px/500)
+// Medium labels with muted/secondary color (12px/500, uppercase)
 // Use for table headers, small UI headings, secondary labels
 @mixin hai-label-muted {
   @include _hai-typography(var(--mat-sys-label-medium), var(--hai-text-secondary));
+  text-transform: uppercase;
 }
 
 // Item title (typically 14px/500)

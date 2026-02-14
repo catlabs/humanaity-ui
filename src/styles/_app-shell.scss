@@ -9,27 +9,27 @@
 // 1. Page Shell - Full-height layout with header + scrollable content
 // -----------------------------------------------------------------------------
 
-// Full-height page container (accounts for app header)
-@mixin hai-page-shell($header-height: 4rem) {
+// Full-height page container — fills remaining space inside .main
+@mixin hai-page-shell {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - #{$header-height});
+  flex: 1 1 0%;
   min-height: 0;
 }
 
-// Page header bar with border-bottom (prototype: px-8 py-4)
+// Page header bar with border-bottom
 @mixin hai-page-header {
   flex: none;
   border-bottom: 1px solid var(--mat-sys-outline-variant);
-  padding: map.get($spacing-scale, 4) map.get($spacing-scale, 8);
+  padding: map.get($spacing-scale, 4) 20px;
 }
 
-// Scrollable content area (prototype: flex-1 overflow-auto px-8 py-6)
+// Scrollable content area
 @mixin hai-page-content {
   flex: 1 1 0%;
   min-height: 0;
   overflow: auto;
-  padding: map.get($spacing-scale, 6) map.get($spacing-scale, 8);
+  padding: map.get($spacing-scale, 6) 20px;
 }
 
 // -----------------------------------------------------------------------------
@@ -74,10 +74,9 @@
   border-top: 1px solid var(--mat-sys-outline-variant);
 }
 
-// Panel section title (uppercase label)
+// Panel section title
 @mixin hai-panel-section-title {
   @include hai-label-muted;
-  text-transform: uppercase;
   letter-spacing: 0.04em;
   margin-bottom: map.get($spacing-scale, 2);
 }

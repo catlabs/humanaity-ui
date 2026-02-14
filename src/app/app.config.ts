@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import {provideRouter} from '@angular/router';
 import {provideAnimations} from '@angular/platform-browser/animations';
+import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
 
 import {routes} from './app.routes';
 import {provideClientHydration, withEventReplay} from '@angular/platform-browser';
@@ -25,6 +26,7 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(withEventReplay()),
     provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
     provideApi('http://localhost:8080'),
-    provideAnimations()
+    provideAnimations(),
+    { provide: MAT_ICON_DEFAULT_OPTIONS, useValue: { fontSet: 'material-symbols-outlined' } },
   ]
 };

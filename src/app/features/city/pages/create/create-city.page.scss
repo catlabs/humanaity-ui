@@ -2,7 +2,7 @@
 @use "../../../../../styles/tokens" as *;
 @use "../../../../../styles/typography" as *;
 
-.page { display: flex; justify-content: center; }
+.page { display: flex; justify-content: center; padding: 20px; }
 
 .card {
   width: 100%;

@@ -420,7 +420,7 @@ export class ItemCardComponent {
 - Colors (unless Material tokens provide them)
 - Borders, shadows, etc.
 
-**Note:** Typography should use HAI mixins (see [Typography section](#typography-hai-mixins)), not Tailwind typography utilities. Use Tailwind for font-weight overrides only when needed (e.g., `font-bold` after `@include hai-body`).
+**Note:** Typography should use HAI mixins (see [Typography section](#typography-hai-mixins)), not Tailwind typography utilities. Do not use Tailwind font-weight utilities (`font-bold`, `font-semibold`, etc.) to override mixin weights — use the correct mixin instead.
 
 ```html
 <!-- ✅ CORRECT -->
@@ -457,6 +457,7 @@ SCSS files are **only allowed** for:
 **Key Principles:**
 
 - **Always use HAI mixins** - Never hardcode `font-size`, `line-height`, or `font-weight` in component styles
+- **No `font-weight` overrides** - Never override `font-weight` after a mixin `@include`. Each mixin defines its own weight via the Material token it wraps. If you need a different weight, use a different mixin or create a new one in `_typography.scss`
 - **Material tokens only** - All typography uses `--mat-sys-*` CSS variables from Material 3
 - **No `@extend`** - Use `@include` with HAI mixins, never `@extend`
 - **Default font** - Body element has default typography (`font: var(--mat-sys-body-medium)`) that all text inherits
@@ -464,46 +465,48 @@ SCSS files are **only allowed** for:
 **Available HAI Typography Mixins:**
 
 ```scss
-// Page-level titles (large headings, ~30px)
+// Page-level title (18px/700) — main page headings
 @include hai-page-title;
 
-// Large section titles (~24px)
-@include hai-headline-small;
-
-// Section titles (medium headings, ~20px)
+// Section title (16px/600) — card headers, panel titles
 @include hai-section-title;
 
-// Subsection titles (smaller headings)
-@include hai-subsection-title;
+// Subtitle / secondary text (14px/400, muted)
+@include hai-subtitle;
 
-// Default body text (~16px)
+// Default body text (16px/400)
 @include hai-body;
 
-// Small body text (~14px)
+// Small body text (14px/400)
 @include hai-body-small;
 
-// Small body text with muted color (~14px)
+// Small body text with muted color (14px/400)
 @include hai-body-small-muted;
 
-// Meta text / labels with muted color (small, ~12px)
-@include hai-meta;
+// Item title (14px/500) — list items, compact card titles
+@include hai-item-title;
 
-// Medium labels
+// Medium labels (12px/500, uppercase)
 @include hai-label;
 
-// Small labels (same as meta but without color override)
+// Medium labels with muted color (12px/500, uppercase)
+@include hai-label-muted;
+
+// Meta text (11px/500, muted) — timestamps, counts
+@include hai-meta;
+
+// Small labels (11px/500) — same as meta but primary color
 @include hai-label-small;
 ```
 
 **Usage in Component SCSS:**
 
 ```scss
-// ✅ CORRECT - Use HAI mixins
+// ✅ CORRECT - Use HAI mixins (each mixin defines its own weight)
 @use "../../../../../styles/typography" as *;
 
 .component-title {
   @include hai-section-title;
-  font-weight: 600; // Override weight if needed
   margin-bottom: 1rem;
 }
 
@@ -511,8 +514,14 @@ SCSS files are **only allowed** for:
   @include hai-body-small-muted;
 }
 
-.component-body {
-  @include hai-body;
+.component-label {
+  @include hai-label;
+}
+
+// ❌ WRONG - Overriding font-weight after a mixin
+.component-title {
+  @include hai-body-small;
+  font-weight: 600; // Don't do this — use a mixin that already has the weight you need
 }
 
 // ❌ WRONG - Hardcoded font values
@@ -532,7 +541,7 @@ SCSS files are **only allowed** for:
 **Rules:**
 
 - **Import typography mixins** - Add `@use "../../../../../styles/typography" as *;` (adjust path as needed) to component SCSS files that use typography
-- **Font-weight overrides** - You can override `font-weight` after `@include` if needed (e.g., `@include hai-body-small; font-weight: 600;`)
+- **No `font-weight` overrides** - Never write `font-weight: …` after `@include hai-*`. If no existing mixin matches the weight you need, add a new mixin to `_typography.scss` that wraps the correct Material token
 - **Color overrides** - Preset mixins have fixed colors. Override color separately if needed for special cases (e.g., white text on dark backgrounds)
 - **No hardcoded sizes** - Never write `font-size: 1rem`, `font-size: 14px`, etc. Use mixins or Material tokens directly
 - **Material tokens direct** - For edge cases, you can use Material tokens directly: `font: var(--mat-sys-body-medium);` but prefer mixins
@@ -549,8 +558,7 @@ The `body` element in `src/styles.scss` has `font: var(--mat-sys-body-medium);` 
 @use "../../../../../styles/typography" as *;
 
 .page-header {
-  @include hai-page-title;
-  font-weight: 700;
+  @include hai-page-title;       // 18px/700 — weight is built into the mixin
   margin-bottom: map.get($spacing-scale, 4);
 }
 
@@ -560,14 +568,12 @@ The `body` element in `src/styles.scss` has `font: var(--mat-sys-body-medium);` 
 }
 
 .section-title {
-  @include hai-section-title;
-  font-weight: 600;
+  @include hai-section-title;    // 16px/600 — weight is built into the mixin
   margin-top: map.get($spacing-scale, 6);
 }
 
 .card-title {
-  @include hai-body;
-  font-weight: 600;
+  @include hai-item-title;       // 14px/500 — use the mixin that matches the weight you need
 }
 
 .card-meta {
@@ -592,7 +598,7 @@ The `body` element in `src/styles.scss` has `font: var(--mat-sys-body-medium);` 
 // ✅ CORRECT - Simple, semantic names with Sass nesting
 .page { @include hai-page-shell(4rem); }
 .header { @include hai-page-header; }
-.title { @include hai-subsection-title; font-weight: 700; }
+.title { @include hai-section-title; }
 .content { @include hai-page-content; }
 .table { @include hai-table; }
 .row { @include hai-table-row; cursor: pointer; }

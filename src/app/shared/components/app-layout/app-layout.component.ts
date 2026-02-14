@@ -2,7 +2,7 @@ import { Component, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, ActivatedRoute } from '@angular/router';
 import { AppHeaderComponent } from '../app-header/app-header.component';
-import { AppContainerComponent } from '../app-container/app-container.component';
+
 
 interface HeaderRouteData {
   showUserMenu?: boolean;
@@ -16,8 +16,7 @@ interface HeaderRouteData {
   imports: [
     CommonModule,
     RouterOutlet,
-    AppHeaderComponent,
-    AppContainerComponent
+    AppHeaderComponent
   ],
   templateUrl: './app-layout.component.html',
   styleUrl: './app-layout.component.scss'

@@ -3,7 +3,7 @@
 @use "../../../../../styles/typography" as *;
 @use "../../../../../styles/app-shell" as *;
 
-.page { @include hai-page-shell(4rem); }
+.page { @include hai-page-shell; }
 
 .header { @include hai-page-header; }
 

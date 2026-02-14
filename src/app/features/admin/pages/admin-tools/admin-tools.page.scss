@@ -4,7 +4,7 @@
 @use "../../../../../styles/app-shell" as *;
 
 .page {
-  @include hai-page-shell(7rem);
+  @include hai-page-shell;
   // Proto intent: full-bleed columns, no extra “card” gap.
   gap: 0;
 }
@@ -13,7 +13,7 @@
   flex: none;
   border-bottom: 1px solid var(--mat-sys-outline-variant);
   border-radius: 0;
-  padding: 0 map.get($spacing-scale, 8);
+  padding: 0 20px;
 }
 
 .toolbar-content {

@@ -3,17 +3,14 @@
 @use "../../../../../styles/typography" as *;
 @use "../../../../../styles/app-shell" as *;
 
-.page { @include hai-page-shell(7rem); }
+.page { @include hai-page-shell; }
 
 .info-bar {
   flex: none;
-  // Proto intent: flat bar with border-bottom + denser vertical padding.
   border-bottom: 1px solid var(--mat-sys-outline-variant);
   border-radius: 0;
-  padding: 0 map.get($spacing-scale, 8);
+  padding: 0 20px;
 }
-
-.icon-btn { color: var(--mat-sys-on-surface-variant); }
 
 .title-block {
   @include hai-col(0.5);
@@ -22,7 +19,7 @@
 }
 
 .title-main {
-  @include hai-page-title;
+  @include hai-item-title;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -88,7 +85,7 @@
 
 .panel-title {
   @include hai-row(1);
-  @include hai-section-title;
+  @include hai-label;
 }
 
 .panel-section { padding: map.get($spacing-scale, 4) map.get($spacing-scale, 6); }

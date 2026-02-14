@@ -1,11 +1,8 @@
-import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { BreakpointObserver } from '@angular/cdk/layout';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { CommonModule } from '@angular/common';
 import {
   Component,
   computed,
   inject,
-  PLATFORM_ID,
   signal,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -15,11 +12,9 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatSidenavModule, type MatDrawerMode } from '@angular/material/sidenav';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { CityOutput } from '@api';
-import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 type HumanState =
   | 'active'
@@ -64,30 +59,8 @@ type Invention = {
 })
 export class SimulationDetailComponent {
   private route = inject(ActivatedRoute);
-  private platformId = inject(PLATFORM_ID);
-  private breakpointObserver = inject(BreakpointObserver);
-  private isBrowser = isPlatformBrowser(this.platformId);
 
   city: CityOutput = this.route.snapshot.data['city'];
-
-  isMobile = toSignal(
-    this.isBrowser
-      ? this.breakpointObserver
-          .observe('(max-width: 1023.98px)')
-          .pipe(map((result) => result.matches))
-      : of(false),
-    { initialValue: false }
-  );
-
-  leftDrawerMode = computed<MatDrawerMode>(() =>
-    this.isMobile() ? 'over' : 'side'
-  );
-  rightDrawerMode = computed<MatDrawerMode>(() =>
-    this.isMobile() ? 'over' : 'side'
-  );
-
-  leftOpen = signal(true);
-  rightOpen = signal(true);
 
   // View model (placeholder data; structure-focused)
   readonly humanStates: HumanState[] = [
@@ -175,14 +148,6 @@ export class SimulationDetailComponent {
     };
   });
 
-  toggleLeft(): void {
-    this.leftOpen.set(!this.leftOpen());
-  }
-
-  toggleRight(): void {
-    this.rightOpen.set(!this.rightOpen());
-  }
-
   toggleFilter(state: HumanState): void {
     this.filters.update((prev) => ({ ...prev, [state]: !prev[state] }));
   }
@@ -190,7 +155,6 @@ export class SimulationDetailComponent {
   selectHuman(human: Human): void {
     this.selectedHuman.set(human);
     this.selectedInvention.set(null);
-    if (this.isMobile()) this.rightOpen.set(true);
   }
 
   clearSelection(): void {
@@ -201,7 +165,6 @@ export class SimulationDetailComponent {
   selectInvention(invention: Invention): void {
     this.selectedInvention.set(invention);
     this.selectedHuman.set(null);
-    if (this.isMobile()) this.rightOpen.set(true);
   }
 
   generateInvention(category: InventionCategory): void {
@@ -215,7 +178,6 @@ export class SimulationDetailComponent {
     this.inventions.update((prev) => [next, ...prev]);
     this.selectedInvention.set(next);
     this.selectedHuman.set(null);
-    if (this.isMobile()) this.rightOpen.set(true);
   }
 }
 

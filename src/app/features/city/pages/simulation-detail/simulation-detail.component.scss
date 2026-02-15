@@ -1,9 +1,18 @@
 @use "sass:map";
-@use "../../../../../styles/tokens" as *;
-@use "../../../../../styles/typography" as *;
-@use "../../../../../styles/app-shell" as *;
+@use "tokens" as *;
+@use "typography" as *;
+@use "app-shell" as *;
 
-.page { @include hai-page-shell; }
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0%;
+  min-height: 0;
+}
+
+.page {
+  @include hai-page-shell;
+}
 
 .info-bar {
   flex: none;
@@ -32,8 +41,12 @@
   text-overflow: ellipsis;
 }
 
-.spacer { flex: 1 1 auto; }
-.action-btn { @include hai-row(1); }
+.spacer {
+  flex: 1 1 auto;
+}
+.action-btn {
+  @include hai-row(1);
+}
 
 .drawer-container {
   // Proto intent: no extra gap between bar and content.
@@ -54,13 +67,11 @@
 .drawer--left {
   width: 17.5rem; // 280px (proto)
   max-width: 90vw;
-  border-right: 1px solid var(--mat-sys-outline-variant);
 }
 
 .drawer--right {
   width: 25rem; // 400px (proto)
   max-width: 90vw;
-  border-left: 1px solid var(--mat-sys-outline-variant);
 }
 
 .content {
@@ -88,12 +99,20 @@
   @include hai-label;
 }
 
-.panel-section { padding: map.get($spacing-scale, 4) map.get($spacing-scale, 6); }
-.panel-footer { @include hai-panel-footer; }
+.panel-section {
+  padding: map.get($spacing-scale, 4) map.get($spacing-scale, 6);
+}
+.panel-footer {
+  @include hai-panel-footer;
+}
 
-.section-title { @include hai-panel-section-title; }
+.section-title {
+  @include hai-panel-section-title;
+}
 
-.stats { @include hai-stats-table; }
+.stats {
+  @include hai-stats-table;
+}
 
 .stats-value {
   text-align: right;
@@ -101,9 +120,16 @@
   font-weight: 600;
 }
 
-.list-title { text-transform: capitalize; }
-.list-subtitle { color: var(--mat-sys-on-surface-variant); }
-.empty { padding: map.get($spacing-scale, 4) map.get($spacing-scale, 6); color: var(--mat-sys-on-surface-variant); }
+.list-title {
+  text-transform: capitalize;
+}
+.list-subtitle {
+  color: var(--mat-sys-on-surface-variant);
+}
+.empty {
+  padding: map.get($spacing-scale, 4) map.get($spacing-scale, 6);
+  color: var(--mat-sys-on-surface-variant);
+}
 
 .filters {
   // Stack checkboxes vertically and align them flush-left.
@@ -129,7 +155,9 @@
   gap: map.get($spacing-scale, 3);
 }
 
-.stat-label { @include hai-meta; }
+.stat-label {
+  @include hai-meta;
+}
 
 .stat-value {
   @include hai-body;
@@ -144,15 +172,14 @@
   height: 100%;
 }
 
-.world-header { @include hai-panel-header; }
-
-.world-title {
-  @include hai-section-title;
+.world-header {
+  @include hai-panel-header;
+  @include hai-row(2);
+  justify-content: space-between;
 }
 
-.world-hint {
-  @include hai-body-small-muted;
-  margin-top: map.get($spacing-scale, 1);
+.world-title {
+  @include hai-label;
 }
 
 .world-body {
@@ -171,7 +198,11 @@
   color: var(--mat-sys-on-surface-variant);
 }
 
-.placeholder-icon { font-size: 2rem; height: 2rem; width: 2rem; }
+.placeholder-icon {
+  font-size: 2rem;
+  height: 2rem;
+  width: 2rem;
+}
 
 .placeholder-text {
   @include hai-body-small;
@@ -189,5 +220,7 @@
   border-radius: $radius-sm;
   border: 1px solid var(--mat-sys-outline-variant);
   color: var(--mat-sys-on-surface-variant);
-  strong { color: var(--mat-sys-on-surface); }
+  strong {
+    color: var(--mat-sys-on-surface);
+  }
 }

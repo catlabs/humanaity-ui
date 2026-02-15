@@ -1,7 +1,7 @@
 @use "sass:map";
-@use "../../../../styles/tokens" as *;
-@use "../../../../styles/typography" as *;
-@use "../../../../styles/app-shell" as *;
+@use "tokens" as *;
+@use "typography" as *;
+@use "app-shell" as *;
 
 .header {
   width: 100%;

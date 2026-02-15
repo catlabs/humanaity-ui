@@ -503,7 +503,7 @@ SCSS files are **only allowed** for:
 
 ```scss
 // ✅ CORRECT - Use HAI mixins (each mixin defines its own weight)
-@use "../../../../../styles/typography" as *;
+@use "typography" as *;
 
 .component-title {
   @include hai-section-title;
@@ -540,7 +540,7 @@ SCSS files are **only allowed** for:
 
 **Rules:**
 
-- **Import typography mixins** - Add `@use "../../../../../styles/typography" as *;` (adjust path as needed) to component SCSS files that use typography
+- **Import typography mixins** - Add `@use "typography" as *;` to component SCSS files that use typography (resolved via `stylePreprocessorOptions.includePaths` in `angular.json`)
 - **No `font-weight` overrides** - Never write `font-weight: …` after `@include hai-*`. If no existing mixin matches the weight you need, add a new mixin to `_typography.scss` that wraps the correct Material token
 - **Color overrides** - Preset mixins have fixed colors. Override color separately if needed for special cases (e.g., white text on dark backgrounds)
 - **No hardcoded sizes** - Never write `font-size: 1rem`, `font-size: 14px`, etc. Use mixins or Material tokens directly
@@ -554,8 +554,8 @@ The `body` element in `src/styles.scss` has `font: var(--mat-sys-body-medium);` 
 
 ```scss
 @use "sass:map";
-@use "../../../../../styles/tokens" as *;
-@use "../../../../../styles/typography" as *;
+@use "tokens" as *;
+@use "typography" as *;
 
 .page-header {
   @include hai-page-title;       // 18px/700 — weight is built into the mixin
@@ -1436,7 +1436,7 @@ When refactoring existing code:
 - [ ] Verify routes use lazy loading
 - [ ] Replace hardcoded font-size/font-weight with HAI typography mixins
 - [ ] Replace any `@extend` usage with `@include hai-*` mixins
-- [ ] Add `@use "../../../../../styles/typography" as *;` import to component SCSS files using typography
+- [ ] Add `@use "typography" as *;` import to component SCSS files using typography
 
 ## Examples
 

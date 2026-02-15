@@ -2,7 +2,10 @@
   <mat-toolbar class="info-bar app-surface-bg">
     <div class="title-block">
       <div class="title-main">{{ city.name || "Simulation" }}</div>
-      <div class="title-sub">Era: {{ currentEra() }} · Year: {{ currentYear() }} · Phase: {{ worldPhase() }}</div>
+      <div class="title-sub">
+        Era: {{ currentEra() }} · Year: {{ currentYear() }} · Phase:
+        {{ worldPhase() }}
+      </div>
     </div>
 
     <span class="spacer"></span>
@@ -17,7 +20,10 @@
     </button>
   </mat-toolbar>
 
-  <mat-drawer-container class="drawer-container app-drawer-content-transparent" autosize>
+  <mat-drawer-container
+    class="drawer-container app-drawer-content-transparent"
+    autosize
+  >
     <!-- Left: Controls Panel -->
     <mat-drawer
       position="start"
@@ -50,9 +56,18 @@
           <div class="section-title">Statistics</div>
           <table class="stats">
             <tbody>
-              <tr><td>Total</td><td class="stats-value">{{ populationTotal() }}</td></tr>
-              <tr><td>Active</td><td class="stats-value">{{ populationActive() }}</td></tr>
-              <tr><td>Inventions</td><td class="stats-value">{{ inventionCounts().total }}</td></tr>
+              <tr>
+                <td>Total</td>
+                <td class="stats-value">{{ populationTotal() }}</td>
+              </tr>
+              <tr>
+                <td>Active</td>
+                <td class="stats-value">{{ populationActive() }}</td>
+              </tr>
+              <tr>
+                <td>Inventions</td>
+                <td class="stats-value">{{ inventionCounts().total }}</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -60,13 +75,17 @@
         <mat-divider></mat-divider>
 
         <div class="panel-section">
-          <div class="section-title">Humans ({{ filteredHumans().length }})</div>
+          <div class="section-title">
+            Humans ({{ filteredHumans().length }})
+          </div>
           <mat-nav-list>
             @for (human of filteredHumans(); track human.id) {
               <button mat-list-item type="button" (click)="selectHuman(human)">
                 <mat-icon matListItemIcon>person</mat-icon>
                 <div matListItemTitle class="list-title">{{ human.name }}</div>
-                <div matListItemLine class="list-subtitle">{{ human.primaryTrait }} · {{ human.state }}</div>
+                <div matListItemLine class="list-subtitle">
+                  {{ human.primaryTrait }} · {{ human.state }}
+                </div>
               </button>
             } @empty {
               <div class="empty">No humans match filters</div>
@@ -90,7 +109,12 @@
               <mat-icon>person_search</mat-icon>
               Human Inspector
             </div>
-            <button mat-icon-button type="button" (click)="clearSelection()" aria-label="Clear selection">
+            <button
+              mat-icon-button
+              type="button"
+              (click)="clearSelection()"
+              aria-label="Clear selection"
+            >
               <mat-icon>close</mat-icon>
             </button>
           </div>
@@ -99,9 +123,20 @@
             <div class="section-title">{{ selectedHuman()!.name }}</div>
             <table class="stats">
               <tbody>
-                <tr><td>ID</td><td class="stats-value">{{ selectedHuman()!.id }}</td></tr>
-                <tr><td>State</td><td class="stats-value">{{ selectedHuman()!.state }}</td></tr>
-                <tr><td>Trait</td><td class="stats-value">{{ selectedHuman()!.primaryTrait }}</td></tr>
+                <tr>
+                  <td>ID</td>
+                  <td class="stats-value">{{ selectedHuman()!.id }}</td>
+                </tr>
+                <tr>
+                  <td>State</td>
+                  <td class="stats-value">{{ selectedHuman()!.state }}</td>
+                </tr>
+                <tr>
+                  <td>Trait</td>
+                  <td class="stats-value">
+                    {{ selectedHuman()!.primaryTrait }}
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -120,7 +155,9 @@
             </div>
             <div class="stat-block">
               <div class="stat-label">Philosophical</div>
-              <div class="stat-value">{{ inventionCounts().philosophical }}</div>
+              <div class="stat-value">
+                {{ inventionCounts().philosophical }}
+              </div>
             </div>
             <div class="stat-block">
               <div class="stat-label">Cultural</div>
@@ -133,10 +170,17 @@
           <div class="panel-section scroll-area">
             <mat-nav-list>
               @for (inv of inventions(); track inv.id) {
-                <button mat-list-item type="button" (click)="selectInvention(inv)">
+                <button
+                  mat-list-item
+                  type="button"
+                  (click)="selectInvention(inv)"
+                >
                   <mat-icon matListItemIcon>lightbulb</mat-icon>
                   <div matListItemTitle class="list-title">{{ inv.name }}</div>
-                  <div matListItemLine class="list-subtitle">{{ inv.category }} · Year {{ inv.year }} · Impact {{ inv.impact }}%</div>
+                  <div matListItemLine class="list-subtitle">
+                    {{ inv.category }} · Year {{ inv.year }} · Impact
+                    {{ inv.impact }}%
+                  </div>
                 </button>
               } @empty {
                 <div class="empty">No inventions recorded</div>
@@ -147,7 +191,12 @@
           <mat-divider></mat-divider>
 
           <div class="panel-footer">
-            <button mat-raised-button color="primary" [matMenuTriggerFor]="generateMenu" type="button">
+            <button
+              mat-raised-button
+              color="primary"
+              [matMenuTriggerFor]="generateMenu"
+              type="button"
+            >
               <mat-icon>add</mat-icon>
               Generate invention
             </button>
@@ -156,7 +205,10 @@
                 <mat-icon>science</mat-icon>
                 <span>Scientific</span>
               </button>
-              <button mat-menu-item (click)="generateInvention('philosophical')">
+              <button
+                mat-menu-item
+                (click)="generateInvention('philosophical')"
+              >
                 <mat-icon>psychology</mat-icon>
                 <span>Philosophical</span>
               </button>
@@ -175,7 +227,9 @@
       <div class="world">
         <div class="world-header">
           <div class="world-title">World View</div>
-          <div class="world-hint">Placeholder for map/canvas. Use left panel to select a human, or right panel to inspect inventions.</div>
+          <button mat-icon-button type="button" aria-label="Next">
+            <mat-icon>navigate_next</mat-icon>
+          </button>
         </div>
 
         <div class="world-body">
@@ -186,8 +240,12 @@
         </div>
 
         <div class="world-footer">
-          <div class="pill"><span>Population</span><strong>{{ populationTotal() }}</strong></div>
-          <div class="pill"><span>Active</span><strong>{{ populationActive() }}</strong></div>
+          <div class="pill">
+            <span>Population</span><strong>{{ populationTotal() }}</strong>
+          </div>
+          <div class="pill">
+            <span>Active</span><strong>{{ populationActive() }}</strong>
+          </div>
         </div>
       </div>
     </mat-drawer-content>

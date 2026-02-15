@@ -1,7 +1,7 @@
 @use "sass:map";
-@use "../../../../../styles/tokens" as *;
-@use "../../../../../styles/breakpoints" as *;
-@use "../../../../../styles/typography" as *;
+@use "tokens" as *;
+@use "breakpoints" as *;
+@use "typography" as *;
 
 .page {
   display: flex;

@@ -31,6 +31,9 @@
                 "output": "/assets"
               }
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/styles"]
+            },
             "styles": [
               "src/styles.scss",
               "src/theme.scss"
@@ -104,6 +107,9 @@
                 "output": "/assets"
               }
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/styles"]
+            },
             "styles": [
               "src/styles.scss",
               "src/theme.scss"

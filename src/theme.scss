@@ -99,6 +99,8 @@ $dark-theme: create-theme(dark);
   --mat-sys-inverse-primary: #93c5fd;
   // Force pure white surfaces in light theme (Material may generate a tinted off-white).
   --mat-sys-surface: #ffffff;
+  // Custom divider / border color (light theme)
+  --mat-sys-outline-variant: #eaeaea;
   // Used for elevation overlays / tinted surfaces in M3.
   --mat-sys-surface-tint: #2563eb;
   // "Fixed" roles are used by some M3 component variants and states.
@@ -113,6 +115,7 @@ $dark-theme: create-theme(dark);
   @include mat.sidenav-overrides(
     (
       container-background-color: var(--mat-sys-surface-container-low),
+      container-divider-color: var(--mat-sys-outline-variant),
     )
   );
 }
@@ -130,6 +133,9 @@ html.dark {
   // Label color (dark theme)
   --hai-label-color: #6b7280;
 
+  // Custom divider / border color (dark theme)
+  --mat-sys-outline-variant: #1f2937;
+
   // Dark-mode brand override. Keep primary the same brand color, but use a deeper container.
   --mat-sys-primary: #2563eb;
   --mat-sys-on-primary: #ffffff;
@@ -145,6 +151,7 @@ html.dark {
   @include mat.sidenav-overrides(
     (
       container-background-color: var(--mat-sys-surface),
+      container-divider-color: var(--mat-sys-outline-variant),
     )
   );
 }

@@ -1,8 +1,8 @@
 @use "sass:map";
-@use "../../../../styles/tokens" as *;
-@use "../../../../styles/breakpoints" as *;
-@use "../../../../styles/typography" as *;
-@use "../../../../styles/app-shell" as *;
+@use "tokens" as *;
+@use "breakpoints" as *;
+@use "typography" as *;
+@use "app-shell" as *;
 
 .footer {
   margin-top: auto;

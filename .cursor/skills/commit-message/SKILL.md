@@ -7,7 +7,8 @@ description: Generate a Conventional Commit message from git changes (prefer sta
 
 ## Goal
 
-Generate a high-quality Conventional Commit message by analyzing git changes.
+Generate high-quality Conventional Commit messages by analyzing git changes.
+When the user asks to commit changes, group them into coherent work subjects and create the commits in the command line instead of only proposing messages.
 Prefer staged changes because they reflect what will actually be committed.
 
 ## Mandatory Guidelines (Single Source of Truth)
@@ -64,6 +65,14 @@ Special: `build`, `ci`, `ui`, `ux`, `config`
 git status --porcelain
 ```
 
+### 1.5. Decide whether work must be split
+
+- Review the full set of changes and identify distinct work subjects
+- If the user worked on more than one subject, create multiple commits
+- Keep each commit focused on one logical change only
+- Do not force one commit per repository when one repository contains unrelated work
+- If a repository has no changes, do not create a commit there
+
 ### 2. Prefer staged diff
 
 - If there are staged changes, run:
@@ -85,6 +94,7 @@ git diff
 - Identify which features / technical layers are affected
 - Determine the primary intent: new feature, bug fix, refactor, etc.
 - Decide on the most accurate `<type>` and `<scope>`
+- Propose a commit grouping plan before staging when the changes span multiple subjects
 
 ### 4. Draft the message
 
@@ -92,9 +102,18 @@ git diff
 - Only add a body if the "why" isn't obvious from the subject
 - Add a footer only if there is a breaking change or the user provides issue numbers
 
-### 5. Present the message
+### 5. Commit when requested
 
-Output the final commit message inside a fenced code block so the user can copy it directly.
+- If the user asks you to commit, stage only the files for one work subject at a time
+- Create the commit yourself from the command line
+- Repeat for each additional work subject
+- After each commit, verify the remaining worktree before creating the next one
+- If the user only asked for a commit message, present the message without committing
+
+### 6. Present the result
+
+- If you did not commit, output the final commit message inside a fenced code block
+- If you created commits, report the commit subjects and hashes back to the user
 
 ## Examples
 

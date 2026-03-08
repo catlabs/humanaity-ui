@@ -1,200 +1,116 @@
-# Humanaity Frontend
+# Humanaity UI
 
-Application Angular moderne avec système d'authentification complet, API REST avec OpenAPI et architecture réactive.
+Angular 20 frontend for the Humanaity project. It handles authentication, city browsing and creation, simulation views, and integration with the Spring Boot backend through a generated OpenAPI client.
 
-## Stack Technique
+## Stack
 
-- **Angular 20** - Framework moderne avec standalone components
-- **TypeScript 5.8** - Typage strict
-- **Angular Material** - Composants UI Material Design
-- **RxJS 7.8** - Programmation réactive
-- **REST API** - Communication avec backend Spring Boot
-- **OpenAPI Generator** - Génération automatique de types et services TypeScript
-- **Tailwind CSS** - Utility-first CSS
-- **Angular SSR** - Server-Side Rendering
-- **Pixi.js** - Rendu graphique 2D pour les visualisations
+- Angular 20 with standalone components
+- TypeScript 5.8 in strict mode
+- Angular Material + SCSS
+- RxJS for async flows
+- Angular SSR / hydration support
+- OpenAPI Generator for typed API services and models
+- Pixi.js for the simulation canvas
 
-## Fonctionnalités d'Authentification
+## Current Features
 
-### Pages d'Authentification
+- Authentication pages for `login` and `signup`
+- JWT-based session handling with access + refresh tokens
+- Route protection with `authGuard`
+- HTTP interceptor that attaches bearer tokens and retries on `401` via refresh
+- City pages for listing all cities, creating a city, and listing the current user's cities
+- City detail / simulation page backed by Pixi.js rendering
+- Admin tools page under `/admin`
+- Light/dark theme handling through `ThemeService`
 
-- **Login** (`/login`) - Connexion avec validation de formulaire
-- **Signup** (`/signup`) - Inscription avec confirmation de mot de passe
-- Navigation conditionnelle selon l'état d'authentification
+## Project Structure
 
-### Reactive Forms
-
-- Validation en temps réel (email, password, confirmPassword)
-- Messages d'erreur contextuels
-- Désactivation du bouton submit si formulaire invalide
-- Gestion des erreurs serveur avec affichage utilisateur
-
-### AuthGuard
-
-- Protection des routes sensibles (`canActivate`)
-- Redirection automatique vers `/login` si non authentifié
-- Préservation de l'URL de destination (`returnUrl`)
-- Vérification de validité du token (expiration)
-
-### HTTP Interceptor
-
-**Fonctionnalités avancées :**
-- Ajout automatique du header `Authorization: Bearer <token>` sur toutes les requêtes
-- Exclusion des endpoints `/auth/**` (pas de token nécessaire)
-- **Refresh automatique** : en cas de 401, tentative de refresh du token
-- Retry automatique de la requête originale avec le nouveau token
-- Déconnexion et redirection si le refresh échoue
-- Gestion des erreurs HTTP centralisée
-
-### AuthService
-
-- Gestion centralisée de l'authentification
-- Stockage sécurisé des tokens (localStorage avec vérification SSR)
-- Méthodes typées : `login()`, `signup()`, `refreshToken()`, `logout()`
-- Vérification d'authentification avec décodage JWT côté client
-- Support SSR (vérification `isPlatformBrowser`)
-
-## Architecture
-
-### Structure Modulaire
-
+```text
+src/app/
+├── api/                  # Generated OpenAPI client
+├── core/                 # App-wide guards, interceptors, services, utilities
+├── features/
+│   ├── admin/
+│   ├── auth/
+│   └── city/
+├── shared/               # Reusable layout and UI components
+├── app.config.ts         # Global Angular providers
+└── app.routes.ts         # Root routing
 ```
-app/
-├── api/               # Modèles et services générés depuis OpenAPI
-│   ├── api/           # Services REST générés
-│   │   ├── authController.service.ts
-│   │   ├── cities.service.ts
-│   │   └── humans.service.ts
-│   ├── model/         # Modèles TypeScript générés
-│   │   ├── authRequest.ts
-│   │   ├── cityOutput.ts
-│   │   └── ...
-│   └── configuration.ts
-├── auth/              # Module d'authentification
-│   ├── auth.service.ts
-│   ├── auth.guard.ts
-│   ├── auth.interceptor.ts
-│   └── pages/         # Login & Signup components
-├── city/              # Feature module
-└── core/              # Services partagés
-```
-
-### Standalone Components
-
-- Tous les composants sont standalone (pas de NgModules)
-- Imports explicites pour la tree-shaking optimale
-- Configuration moderne avec `app.config.ts`
-
-### Services Typés
-
-- **Modèles générés automatiquement** depuis la spécification OpenAPI du backend
-- Services REST typés générés (`AuthControllerService`, `CitiesService`, `HumansService`, etc.)
-- Services injectables avec `inject()` (nouvelle API Angular)
-- Observable-based pour les opérations asynchrones
-- Typage strict garanti par la génération OpenAPI
 
 ### Routing
 
-- Routes protégées avec `canActivate: [authGuard]`
-- Lazy loading des feature modules
-- Navigation programmatique avec préservation d'état
+- `/login`
+- `/signup`
+- `/cities`
+- `/cities/create`
+- `/cities/mine`
+- `/cities/:id`
+- `/admin`
 
-## Compétences Démontrées
+All routes under `/cities` and `/admin` are protected by the auth guard.
 
-✅ **Angular Moderne**
-- Standalone components (Angular 14+)
-- Signals pour la réactivité (`signal()`)
-- Injection moderne avec `inject()`
-- SSR-ready avec vérifications platform
+## Backend Integration
 
-✅ **Gestion d'État Réactive**
-- RxJS pour les flux asynchrones
-- Interceptors pour la logique cross-cutting
-- Guards pour la protection des routes
-- Services centralisés pour la logique métier
+The app is configured to call the backend at `http://localhost:8080` via `provideApi()` in `src/app/app.config.ts`.
 
-✅ **Sécurité Frontend**
-- Validation côté client et serveur
-- Gestion sécurisée des tokens (SSR-safe)
-- Refresh automatique transparent pour l'utilisateur
-- Protection XSS avec Angular sanitization
+Generated API code lives in `src/app/api/`:
 
-✅ **UX/UI**
-- Reactive Forms avec validation en temps réel
-- Messages d'erreur contextuels
-- Material Design pour la cohérence visuelle
-- Navigation fluide avec états de chargement
+- `src/app/api/api/` contains generated Angular services
+- `src/app/api/model/` contains generated request/response models
 
-✅ **Intégration Backend**
-- Communication REST avec HttpClient
-- **Génération automatique** de modèles et services depuis OpenAPI
-- Typage strict garanti entre frontend et backend
-- Gestion d'erreurs HTTP centralisée
-- Synchronisation tokens frontend/backend
-- Support CORS configuré
+Feature services wrap the generated client where app-specific behavior is needed.
 
-## Configuration
+## Getting Started
 
-### Interceptor HTTP
+### Prerequisites
 
-```typescript
-// app.config.ts
-provideHttpClient(
-  withFetch(),
-  withInterceptors([authInterceptor])
-)
-```
+- Node.js and npm
+- The backend running locally on `http://localhost:8080`
 
-### Routes Protégées
-
-```typescript
-{
-  path: 'cities',
-  children: cityRoutes,
-  canActivate: [authGuard]
-}
-```
-
-## Démarrage
-
-### Installation
+### Install dependencies
 
 ```bash
 npm install
 ```
 
-### Génération des modèles API
+### Start the development server
 
-Les modèles TypeScript et services Angular sont générés automatiquement depuis la spécification OpenAPI du backend.
+```bash
+npm start
+```
 
-**Prérequis :**
-1. Démarrer le backend Spring Boot sur `http://localhost:8080`
-2. Vérifier que l'OpenAPI est accessible : `http://localhost:8080/v3/api-docs`
+The app will be available at `http://localhost:4200`.
 
-**Génération :**
+## Available Scripts
+
+```bash
+npm start        # Angular dev server
+npm run build    # Production build
+npm run watch    # Development build in watch mode
+npm test         # Karma test runner
+```
+
+### Regenerate the OpenAPI client
+
+If the backend API changes, regenerate the frontend client with:
+
 ```bash
 npm run api:generate
 ```
 
-Cette commande va :
-- Récupérer la spécification OpenAPI depuis le backend
-- Générer les modèles TypeScript dans `src/app/api/model/`
-- Générer les services Angular dans `src/app/api/api/`
+This pulls `http://localhost:8080/v3/api-docs` and updates `src/app/api/`.
 
-**Note :** Régénérez les modèles après chaque modification de l'API backend.
+## SSR Build
 
-### Lancement de l'application
+Build the app:
 
 ```bash
-ng serve
+npm run build
 ```
 
-L'application est accessible sur `http://localhost:4200`
-
-## Build Production
+Run the generated server bundle:
 
 ```bash
-ng build
+npm run serve:ssr:humanaity-ui
 ```
-
-Build optimisé avec SSR disponible dans `dist/`

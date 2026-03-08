@@ -21,8 +21,7 @@ $tertiary: mat.$cyan-palette;
         use-system-variables: true,
         // Use Inter across Material's typography tokens.
         // (Inter is loaded globally in src/styles.scss)
-        plain-family:
-          (
+        plain-family: (
             Inter,
             Roboto,
             "Helvetica Neue",
@@ -86,7 +85,7 @@ $dark-theme: create-theme(dark);
       label-medium: 400 12px/16px var(--mat-sys-label-medium-font),
       label-medium-size: 12px,
       label-medium-line-height: 16px,
-      label-medium-weight: 400,
+      label-medium-weight: 400
     )
   );
 
@@ -116,6 +115,14 @@ $dark-theme: create-theme(dark);
     (
       container-background-color: var(--mat-sys-surface-container-low),
       container-divider-color: var(--mat-sys-outline-variant),
+    )
+  );
+
+  // Checkbox behavior: compact target and no state-layer visual.
+  @include mat.checkbox-overrides(
+    (
+      touch-target-display: none,
+      state-layer-size: 30px,
     )
   );
 }
